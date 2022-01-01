@@ -1,4 +1,8 @@
 
+build:
+	tsc src/main.ts
+
+
 clean:
 	rm app.zip
 

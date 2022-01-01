@@ -1,28 +1,24 @@
 
-# New York Times Crossword Chrome Extension
+# NYT Crossword
 
-## Auth0 Login?
+This is a two part project.
 
-## Process
+## Web
 
-1. Opens leaderboard: https://www.nytimes.com/puzzles/leaderboards
-2. For each lbd-score with a lbd-score__rank, record the lbd-score__name and lbd-score__time for the day
-3. Every time someone runs the extension, update the db
+This is a simple leaderboard webpage that displays a leaderboard for the crossword. There is also a collection of Netlify functions that read and write to the Fauna db.
 
-## Database
+## Chrome
+
+This is a simple chrome extension that runs every time a user loads the leaderboard and stores any new results found. For security, this is an unlisted Chrome extension.
+
+- Load all usernames and times for date
+- If the username is not in there, add it
 
 ### Times
-
-- Username
-- Date
-- Time
-
-### GroupUsers
-
-- GroupID
-- Username
-
-### Groups
-
-- GroupID
-- Name
+```json
+{
+  "date": "2021-12-24",
+  "username": "username_string",
+  "time": 42
+}
+```
