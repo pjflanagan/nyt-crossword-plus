@@ -2,6 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { Layout } from 'antd';
 
+// import * as Style from './style.module.css';
+
 const { Header, Content } = Layout; // Sider
 
 const MainComponent: FC = () => {
@@ -31,11 +33,11 @@ const MainComponent: FC = () => {
   // }, [leaderboardData]);
 
   return (
-    <Layout>
-      <Header>
-        Header
+    <Layout style={{ minHeight: '100%' }}>
+      <Header style={{ color: '#fff' }}>
+        New York Times Crossword Leaderboard Plus
       </Header>
-      <Content>
+      <Content style={{ padding: '1em' }}>
         Content
       </Content>
     </Layout>

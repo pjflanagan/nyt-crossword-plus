@@ -3,3 +3,7 @@
 **/*.DS_Store
 .hold
 .env
+node_modules
+.netlify
+.cache
+**/public
