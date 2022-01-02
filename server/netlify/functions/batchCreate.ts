@@ -2,17 +2,12 @@ import { Handler } from '@netlify/functions';
 import { isEmpty } from 'lodash';
 
 import { errorResponse } from '../api';
+import { CreateRequestBody } from './create';
 
-export type CreateRequestBody = {
-  username: string,
-  date: string,
-  time: number,
-};
-
-const FAUNA_ACCESS_TOKEN = process.env.FAUNA_ACCESS_TOKEN;
+type BatchCreateRequestBody = CreateRequestBody[];
 
 const handler: Handler = async (event, context) => {
-  const { username, date, time }: CreateRequestBody = JSON.parse(event.body);
+  const batchCreateRequest: BatchCreateRequestBody = JSON.parse(event.body);
 
   // if (isEmpty(lat) || isEmpty(lon)) {
   //   return errorResponse({

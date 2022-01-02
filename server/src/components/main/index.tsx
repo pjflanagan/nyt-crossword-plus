@@ -1,5 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
+import { Layout } from 'antd';
+
+const { Header, Content } = Layout; // Sider
 
 const MainComponent: FC = () => {
 
@@ -28,8 +31,15 @@ const MainComponent: FC = () => {
   // }, [leaderboardData]);
 
   return (
-    <main>
-    </main>
+    <Layout>
+      <Header>
+        Header
+      </Header>
+      <Content>
+        Content
+      </Content>
+    </Layout>
+
   )
 }
 
