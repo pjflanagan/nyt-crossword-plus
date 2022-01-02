@@ -6,10 +6,11 @@
   "content_scripts": [
     {
       "js": [
+        "package/jquery-3.3.1.min.js",
         "main.js"
       ],
       "matches": [
-        "https://www.zappos.com/*"
+        "https://www.nytimes.com/puzzles/leaderboards"
       ]
     }
   ]
