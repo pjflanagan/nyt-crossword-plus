@@ -1,5 +1,5 @@
 
-const DOMAIN = 'nytcrossword.flanny.app'; // localhost:8888
+const DOMAIN = 'nytcrosswordplus.flanny.app'; // localhost:8888
 
 const COLORS = {
   BLUE: '#3981f0',
@@ -87,6 +87,9 @@ async function submitEntries(entries) {
   }
 
   try {
+    // we do not store the response because we are using no-cors, which makes
+    // the response "opaque" and unreadable, instead we just record that the 
+    // request was sent, not any result from the request
     await fetch(
       `http://${DOMAIN}/.netlify/functions/batchCreate`,
       {

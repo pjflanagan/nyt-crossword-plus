@@ -1,6 +1,6 @@
 
 const HEADERS = {
-  'Access-Control-Allow-Origin': '*', // https://www.nytimes.com, https://nytcrossword.flanny.app
+  'Access-Control-Allow-Origin': '*', // https://www.nytimes.com, https://nytcrosswordplus.flanny.app
   'Content-Type': 'application/json',
 };
 

@@ -14,6 +14,10 @@ This is a simple chrome extension that runs every time a user loads the leaderbo
 - Load all usernames and times for date
 - If the username is not in there, add it
 
+To install, see the `README.md` file in `./chrome`.
+
+## DB
+
 ### Times
 ```json
 {

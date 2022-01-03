@@ -35,6 +35,18 @@ export const readTimesByDate = async (client: faunadb.Client, date: string) => {
   return entries.data;
 }
 
+export const readTimesByUsername = async (client: faunadb.Client, username: string) => {
+  const entries: TimeByDateIndex = await client.query(
+    Paginate(
+      Match(
+        Index('times_by_username'),
+        username
+      )
+    )
+  );
+  return entries.data;
+}
+
 export const insertTimes = async (client: faunadb.Client, entries: TimeEntry[]) => {
   await client.query(
     Map(

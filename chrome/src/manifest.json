@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "New York Times Crossword",
+  "name": "New York Times Crossword Plus",
   "version": "0.1.0",
-  "description": "An extension for saving NYT Crossword Results",
+  "description": "An extension for saving NYT Mini Crossword results",
   "content_scripts": [
     {
       "js": [
