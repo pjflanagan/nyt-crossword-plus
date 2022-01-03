@@ -1,4 +1,14 @@
 
+const DOMAIN = 'nytcrossword.flanny.app'; // localhost:8888
+
+const COLORS = {
+  BLUE: '#3981f0',
+  RED: 'red',
+  GREEN: 'green',
+}
+
+// Formmating and Parsing
+
 function prefix0(num) {
   return (num.length < 2) ? '0' + num : num;
 }
@@ -26,9 +36,14 @@ function parseUsername(username) {
   return username.replace('(you)', '').trim();
 }
 
-function crawlPage() {
-  // TODO: make the sure page says The Mini Crossword .lbd-type__subhead
+// Crawling
 
+function crawlHeaderForValidation() {
+  const titleString = $('.lbd-type__subhead').text().trim();
+  return titleString === 'The Mini Crossword';
+}
+
+function crawlPage() {
   const dateString = $('.lbd-type__date').text();
   const date = formatDate(dateString);
 
@@ -49,8 +64,10 @@ function crawlPage() {
   return entries;
 }
 
+// Output
+
 function makeHeader() {
-  $('.lbd-board__header').append(`<h4>Updating</h4>`);
+  $('.lbd-board__header').append(`<h4></h4>`);
   $('.lbd-board__header h4').css({ padding: '0.6em' });
 }
 
@@ -60,36 +77,60 @@ function updateHeader(newText, color = 'black') {
 
 }
 
-function submitEntries(entries) {
+// Data
+
+async function submitEntries(entries) {
+  if (entries.length === 0) {
+    return {
+      errorMessage: `No one has played today's crossword yet`
+    }
+  }
+
+  try {
+    await fetch(
+      `http://${DOMAIN}/.netlify/functions/batchCreate`,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ entries }),
+      }
+    );
+  } catch (e) {
+    return {
+      errorMessage: 'Unable to upload entries'
+    }
+  }
+
   return {
-    statusCode: 200,
-  };
-  // return $.post(
-  //   '//nytcrossword.flanny.app/.netlify/functions/batchCreate',
-  //   {
-  //     data: entries
-  //   },
-  //   (result) => {
-  //     return result;
-  //   }
-  // ).fail(
-  //   () => ({ statusCode: 'error' })
-  // );
+    successMessage: 'Leaderboard update sent'
+  }
 }
 
+// Main
+
 (async function () {
+
+  // validate we are on the right page
+  const validPageTitle = crawlHeaderForValidation();
   makeHeader();
+  if (!validPageTitle) {
+    updateHeader('Info: Will only update for the Daily Mini Crossword', COLORS.BLUE);
+    return;
+  }
+  updateHeader('Updating...');
+
+  // crawl the page for entries
   const entries = crawlPage();
   console.table(entries);
 
+  // submit the entries to the backend and handle errors
   const result = await submitEntries(entries);
-
-  if (result.statusCode != 200) {
-    console.error('Error submitting entries');
-    updateHeader('Error updating', 'red');
+  if (result.errorMessage && result.errorMessage !== '') {
+    console.error('Error submitting leaderboard entries:', result.errorMessage);
+    updateHeader(`Error: ${result.errorMessage}`, COLORS.RED);
     return;
   }
-  console.log('Successfully logged new entries');
-  updateHeader('Update complete', 'green');
+  console.log('Successfully submitted new leaderboard entries');
+  updateHeader(`Success: ${result.successMessage}`, COLORS.GREEN);
 
 })();

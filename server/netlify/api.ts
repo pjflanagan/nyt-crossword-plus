@@ -1,25 +1,27 @@
-import fetch from 'node-fetch';
 
-export const errorResponse = (e) => {
+const HEADERS = {
+  'Access-Control-Allow-Origin': '*', // https://www.nytimes.com, https://nytcrossword.flanny.app
+  'Content-Type': 'application/json',
+};
+
+export const errorResponse = (statusCode: number, message: string) => {
+  console.error(message);
   return {
-    statusCode: e.statusCode || 500,
+    statusCode: statusCode || 500,
+    headers: HEADERS,
     body: JSON.stringify({
-      error: e.message
+      errorMessage: message
     })
   }
 }
 
-export const baseFetchEndpoint = async function (endpoint) {
-  let response;
-
-  try {
-    response = await fetch(endpoint);
-  } catch (e) {
-    return errorResponse(e);
-  }
-
+export const validResponse = (body: any) => {
   return {
     statusCode: 200,
-    body: JSON.stringify(await response.json())
+    headers: HEADERS,
+    body: JSON.stringify({
+      ...body,
+      errorMessage: '',
+    })
   };
 }

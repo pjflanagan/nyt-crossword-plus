@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 const TITLE = 'NYT Crossword Leaderboard Plus';
 const DESCRIPTION = 'An improved NYT Crossword Leaderboard';
 const KEYWORDS = `drunk, weather, temperature, drinks, channel`;
-const ROOT = "https://nytcrossword.flanny.app";
+const ROOT = "https://nytcrosswordplus.flanny.app";
 
 const IMG = `${ROOT}/img/social/social.png`;
 const IMG_TW = `${ROOT}/img/social/social-tw.png`;

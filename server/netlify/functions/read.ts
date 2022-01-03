@@ -1,19 +1,34 @@
 import { Handler } from '@netlify/functions';
 import { isEmpty } from 'lodash';
 
-import { errorResponse } from '../api';
+import { validResponse, errorResponse } from '../api';
+import { getFaunaClient, readTimesByDate } from '../db';
 
-const FAUNA_ACCESS_TOKEN = process.env.FAUNA_ACCESS_TOKEN;
+type ReadQueryParameters = {
+  date: string;
+}
 
 const handler: Handler = async (event, context) => {
-  const { time } = event.queryStringParameters;
+  const { date } = event.queryStringParameters as ReadQueryParameters;
 
-  // read 
+  // error check
+  if (isEmpty(date)) {
+    return errorResponse(400, `Query parameter (date) is required`);
+  }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ time })
-  };
+  // run query
+  const client = getFaunaClient();
+  let entries;
+  try {
+    entries = await readTimesByDate(client, date);
+  } catch (e) {
+    return errorResponse(500, `DB Error: unable to load data, ${e}`);
+  }
+
+  // respond
+  return validResponse({
+    entries
+  });
 }
 
 export { handler };
