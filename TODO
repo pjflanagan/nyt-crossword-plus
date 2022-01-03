@@ -1,10 +1,24 @@
 
-This should be in my Flanny Apps folder because it's a flanny app first
+# MVP
 
 CHROME:
-- [ ] Make the extenion look nice
-- [ ] Make the extenion link to the webpage
-- [ ] Put the extenion on the web store
+- [ ] link to the webpage
+- [ ] Make it look nice
+- [ ] Put it on the web store
 
 WEB:
 - [ ] use an admin key on requests for a little security idk?
+- [ ] Homepage is overall page
+  - load data for the past week but can also be month, year, all time
+  - links from every name to the user page
+
+# MVP 2
+
+CHROME:
+- [ ] cache
+  - cache the saved data (date and list of names)
+  - if there are no new ones from last successful request send, don't send a request
+
+WEB:
+- [ ] Login
+- [ ] Groups page for editable groups
