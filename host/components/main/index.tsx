@@ -42,14 +42,28 @@ const MainComponent: FC = () => {
           <Countdown />
         </Row>
         <Row>
-          <Button icon={<QuestionCircleOutlined />} href='//www.nytimes.com/crosswords/game/mini' style={{ margin: '0.5em' }} target="_blank">Play Today's Puzzle</Button>
-          <Button icon={<OrderedListOutlined />} href='//www.nytimes.com/puzzles/leaderboards' style={{ margin: '0.5em' }} target="_blank">See Today's Leaderboard</Button>
+          <Button
+            icon={<QuestionCircleOutlined />}
+            href="//www.nytimes.com/crosswords/game/mini"
+            style={{ margin: '0.5em' }}
+            target="_blank"
+          >
+            {`Play Today's Puzzle`}
+          </Button>
+          <Button
+            icon={<OrderedListOutlined />}
+            href="//www.nytimes.com/puzzles/leaderboards"
+            style={{ margin: '0.5em' }}
+            target="_blank"
+          >
+            {`See Today's Leaderboard`}
+          </Button>
         </Row>
 
         <Divider />
 
         <h1>View a Group</h1>
-        <p>Enter a group name and password to see a group's stats.</p>
+        <p>{`Enter a group name and password to see a group's stats.`}</p>
         <Row>
           <Input
             style={{ margin: '0.5em 0', maxWidth: '480px' }}
