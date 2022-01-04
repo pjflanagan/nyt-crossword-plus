@@ -2,9 +2,10 @@
 # MVP
 
 CHROME:
-- [ ] link to the webpage
+- [ ] link to the leaderboard
+- [ ] link to the leaderboard plus
 - [ ] Make it look nice
-- [ ] Put it on the web store
+- [ ] Put it on the web store unlisted
 
 WEB:
 - [ ] use an admin key on requests for a little security idk?

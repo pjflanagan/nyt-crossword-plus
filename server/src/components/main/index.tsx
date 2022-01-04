@@ -1,36 +1,28 @@
-import React, { FC, useState, useEffect } from 'react';
-import { isEmpty } from 'lodash';
-import { Layout } from 'antd';
+import React, { FC, useState } from 'react';
+import { Layout, Row, Input, Button, Divider, Alert } from 'antd';
+import { TeamOutlined, LockOutlined, QuestionCircleOutlined, OrderedListOutlined, LoginOutlined } from '@ant-design/icons';
+import sha256 from 'crypto-js/sha256';
 
-// import * as Style from './style.module.css';
+import { Countdown } from './countdown';
 
-const { Header, Content } = Layout; // Sider
+const { Header, Content } = Layout;
 
 const MainComponent: FC = () => {
 
-  const [leaderboardData, setLeaderboardData] = useState<any>(null);
+  const [groupName, setGroupName] = useState<string>('');
+  const [groupPassword, setGroupPassword] = useState<string>('');
+  const [isError, setIsError] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (isEmpty(leaderboardData)) {
-      let newLeaderboardData;
-      (async function () {
-        try {
-          // newWeatherData = await API.fetchWeatherData(coords);
-          // console.log(newWeatherData);
-        } catch (e) {
-          // setErrorMessage(getRandomPhraseFromSection(errorUnableToFetchWeather));
-          return;
-        }
-        setLeaderboardData(newLeaderboardData);
-      })();
+  const onSubmit = () => {
+    if (groupPassword === '' || groupName === '') {
+      setIsError(true);
+      return;
     }
-  }, []);
+    const hash = sha256(groupPassword).toString();
+    window.location.replace(`${window.location.origin}/group/${groupName}?p=${hash}`);
+  }
 
-  // useEffect(() => {
-  //   if (leaderboardData) {
-  //     // Make the display with the leaderboard data?
-  //   }
-  // }, [leaderboardData]);
+  // TODO: onKeyDown, if return then submit
 
   return (
     <Layout style={{ minHeight: '100%' }}>
@@ -38,7 +30,61 @@ const MainComponent: FC = () => {
         New York Times Crossword Leaderboard Plus
       </Header>
       <Content style={{ padding: '1em' }}>
-        Content
+        <h1>New York Times Crossword</h1>
+        <p>Time until the next crossword drops:</p>
+        <Row>
+          <Countdown />
+        </Row>
+        <Row>
+          <Button icon={<QuestionCircleOutlined />} href='//www.nytimes.com/crosswords/game/mini' style={{ margin: '0.5em' }} target="_blank">Play Today's Puzzle</Button>
+          <Button icon={<OrderedListOutlined />} href='//www.nytimes.com/puzzles/leaderboards' style={{ margin: '0.5em' }} target="_blank">See Today's Leaderboard</Button>
+        </Row>
+
+        <Divider />
+
+        <h1>View a Group</h1>
+        <p>Enter a group name and password to see a group's stats.</p>
+        <Row>
+          <Input
+            style={{ margin: '0.5em 0', maxWidth: '480px' }}
+            size="large"
+            placeholder="Group Name"
+            prefix={<TeamOutlined />}
+            value={groupName}
+            onChange={e => setGroupName(e.target.value)}
+          />
+        </Row>
+        <Row>
+          <Input
+            style={{ margin: '0.5em 0', maxWidth: '480px' }}
+            size="large"
+            placeholder="Group Password"
+            prefix={<LockOutlined />}
+            value={groupPassword}
+            onChange={e => setGroupPassword(e.target.value)}
+            type="password"
+          />
+        </Row>
+        <Row>
+          <Button
+            icon={<LoginOutlined />}
+            style={{ margin: '0.5em' }}
+            type="primary"
+            onClick={onSubmit}
+          >
+            See Group
+          </Button>
+        </Row>
+        {
+          isError && <Alert
+            message="Error"
+            description="Please enter both a group name and a password"
+            type="error"
+            closable
+            style={{ maxWidth: '480px' }}
+            onClose={() => setIsError(false)}
+          />
+        }
       </Content>
     </Layout>
 
