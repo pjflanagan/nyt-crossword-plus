@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, KeyboardEventHandler } from 'react';
 import { Layout, Row, Input, Button, Divider, Alert } from 'antd';
 import { TeamOutlined, LockOutlined, QuestionCircleOutlined, OrderedListOutlined, LoginOutlined } from '@ant-design/icons';
 import sha256 from 'crypto-js/sha256';
@@ -19,10 +19,16 @@ const MainComponent: FC = () => {
       return;
     }
     const hash = sha256(groupPassword).toString();
+
+    // TODO: don't use replace, we want to be able to use the back button
     window.location.replace(`${window.location.origin}/group/${groupName}?p=${hash}`);
   }
 
-  // TODO: onKeyDown, if return then submit
+  const onKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      onSubmit();
+    }
+  }
 
   return (
     <Layout style={{ minHeight: '100%' }}>
@@ -52,6 +58,7 @@ const MainComponent: FC = () => {
             prefix={<TeamOutlined />}
             value={groupName}
             onChange={e => setGroupName(e.target.value)}
+            onKeyPress={onKeyPress}
           />
         </Row>
         <Row>
@@ -62,6 +69,7 @@ const MainComponent: FC = () => {
             prefix={<LockOutlined />}
             value={groupPassword}
             onChange={e => setGroupPassword(e.target.value)}
+            onKeyPress={onKeyPress}
             type="password"
           />
         </Row>

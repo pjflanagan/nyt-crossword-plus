@@ -1,9 +1,9 @@
 
-# New York Times Crossword Chrome Extension
+# New York Times Crossword Chrome Extension v2
 
 ## Auth0 Login
 
-Users will login with Auth0 and enter their name, then they'll run the extension on the leaderboard and if the name they entered matches the one with "(you)" written on it then we consider that verified.
+Users will login with Auth0 and enter their name, they'll also login on the Chrome extension. Then they'll run the extension on the leaderboard and if the name they entered matches the one with "(you)" written on it then we consider that verified.
 
 ## Process
 

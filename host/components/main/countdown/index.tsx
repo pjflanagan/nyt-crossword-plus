@@ -4,14 +4,18 @@ import moment from 'moment';
 
 // TODO: https://spin.atomicobject.com/2016/07/25/date-math-time-zones-moment/
 
+const HOUR_IN_S = 60 * 60;
+const DAY_IN_S = 24 * HOUR_IN_S;
+const MINUTE_IN_MS = 60 * 1000;
+
 const prefix0 = (num: string): string => {
   return (num.length === 1) ? `0${num}` : num;
 }
 
 // time is in seconds
 const formatTime = (time: number): string => {
-  const hours = Math.floor(time / 3600);
-  const minutes = Math.floor(time % 3600 / 60);
+  const hours = Math.floor(time / HOUR_IN_S);
+  const minutes = Math.floor(time % HOUR_IN_S / 60);
   return `${hours}h:${prefix0(`${minutes}`)}m`;
 }
 
@@ -48,19 +52,20 @@ const getTimeUntilNextRelease = () => {
   return getNextReleaseTime().diff(moment(), 'seconds');
 }
 
-const DAY = 24 * 60 * 60;
-
 const Countdown: FC = () => {
-  const [time, setTime] = useState<number>(10000);
+  const [time, setTime] = useState<number>(0);
 
   useEffect(() => {
     setTime(getTimeUntilNextRelease());
+    setInterval(() => {
+      setTime(getTimeUntilNextRelease());
+    }, MINUTE_IN_MS);
   }, []);
 
   return (
     <Progress
       size="small"
-      percent={(DAY - time) / DAY * 100}
+      percent={(DAY_IN_S - time) / DAY_IN_S * 100}
       status="active"
       format={() => formatTime(time)}
       style={{ padding: '2em', maxWidth: '480px' }}
