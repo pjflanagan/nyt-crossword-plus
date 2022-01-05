@@ -1,31 +1,36 @@
 import { useRouter } from 'next/router';
 
 import { GroupComponent } from '../../components';
+import { TimeEntry } from '../../types';
 
-export default function PageGroup({ }) { // leaderboard
+const HOST = 'http://localhost:52251' // 'https://nytcrosswordplus.flanny.app/;
+
+export default function PageGroup({ entries }) {
   const router = useRouter()
   const { name } = router.query;
+
   return (
     <>
-      {/* leaderboard={leaderboard} */}
-      <GroupComponent name={name as string} />
+      <GroupComponent name={name as string} entries={entries as TimeEntry[]} />
     </>
   );
 }
 
 export async function getServerSideProps({ params }) {
-  const { name } = params.name;
+  const { name } = params;
 
-  // TODO: I can probably just write the fauna code here
-  // but maybe shouldn't and instead write an api
-  // const resp = await fetch
-  // const data = await resp.json()
+  const url = encodeURI(`${HOST}/.netlify/functions/readGroupTimes?groupName=${name}`);
+  const resp = await fetch(url);
+  let { entries, errorMessage } = await resp.json();
 
-  const leaderboard = {};
+  if (errorMessage && errorMessage !== '') {
+    console.error(errorMessage);
+    entries = [];
+  }
 
   return {
     props: {
-      leaderboard
+      entries
     }
   }
 }

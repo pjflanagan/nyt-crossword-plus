@@ -4,7 +4,7 @@ import { Handler } from '@netlify/functions';
 
 import { validResponse, errorResponse } from '../api';
 import { getFaunaClient, readTimesByDate, insertTimes } from '../db';
-import { TimeEntry, TimeByDateIndexDataEntry } from '../types';
+import { TimeEntry, TimeByDateIndexDataEntry } from '../../types';
 
 // const {
 //   Get

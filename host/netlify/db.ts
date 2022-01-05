@@ -1,6 +1,6 @@
 import faunadb from 'faunadb';
 
-import { TimeEntry, TimeByDateIndex } from './types';
+import { TimeEntry, TimeByDateIndex } from '../types';
 
 const {
   Paginate,
@@ -10,7 +10,10 @@ const {
   Lambda,
   Var,
   Collection,
-  Create
+  Create,
+  Join,
+  Select,
+  Get
 } = faunadb.query;
 
 const FAUNADB_ACCESS_SECRET = process.env.FAUNADB_ACCESS_SECRET || '';
@@ -24,7 +27,7 @@ export const getFaunaClient = () => {
 }
 
 export const readTimesByDate = async (client: faunadb.Client, date: string) => {
-  const entries: TimeByDateIndex = await client.query(
+  const entry: TimeByDateIndex = await client.query(
     Paginate(
       Match(
         Index('times_by_date'),
@@ -32,19 +35,39 @@ export const readTimesByDate = async (client: faunadb.Client, date: string) => {
       )
     )
   );
-  return entries.data;
+  return entry.data;
 }
 
-export const readTimesByUsername = async (client: faunadb.Client, username: string) => {
-  const entries: TimeByDateIndex = await client.query(
+export const readGroupByName = async (client: faunadb.Client, name: string) => {
+  const entry: TimeByDateIndex = await client.query(
     Paginate(
       Match(
-        Index('times_by_username'),
-        username
+        Index('group_by_name'),
+        name
       )
     )
   );
-  return entries.data;
+  return entry.data;
+}
+
+export const readGroupTimes = async (client: faunadb.Client, groupName: string) => {
+  const entry: TimeByDateIndex = await client.query(
+    Map(
+      Paginate(
+        Join(
+          Match(Index("group_member_usernames_by_group_name"), groupName),
+          Index("times_by_username")
+        )
+      ),
+      Lambda(
+        "X",
+        Select("data",
+          Get(Var("X"))
+        )
+      )
+    )
+  );
+  return entry.data;
 }
 
 export const insertTimes = async (client: faunadb.Client, entries: TimeEntry[]) => {
