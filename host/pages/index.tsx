@@ -1,7 +1,7 @@
 
 import { MainComponent } from '../components';
 
-export default function Home() {
+export default function PageIndex() {
   return (
     <>
       <MainComponent />

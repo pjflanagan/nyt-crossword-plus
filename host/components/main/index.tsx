@@ -20,8 +20,10 @@ const MainComponent: FC = () => {
     }
     const hash = sha256(groupPassword).toString();
 
-    // TODO: don't use replace, we want to be able to use the back button
-    window.location.replace(`${window.location.origin}/group/${groupName}?p=${hash}`);
+    // TODO: validate using the backend if this page exists and if the password
+    // is correct, if it is then go to that page
+    // maybe here we can store a cookie with allowed pages
+    window.location.href = `${window.location.origin}/group/${groupName}?p=${hash}`;
   }
 
   const onKeyPress = (e: any) => {
