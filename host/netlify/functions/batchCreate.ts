@@ -1,14 +1,8 @@
 import { Handler } from '@netlify/functions';
-// import faunadb from 'faunadb';
-// import { isEmpty } from 'lodash';
 
 import { validResponse, errorResponse } from '../api';
 import { getFaunaClient, readTimesByDate, insertTimes } from '../db';
 import { TimeEntry, TimeByDateIndexDataEntry } from '../../types';
-
-// const {
-//   Get
-// } = faunadb.query;
 
 type BatchCreateRequestBody = {
   entries: TimeEntry[]

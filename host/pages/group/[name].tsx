@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { GroupComponent } from '../../components';
 import { TimeEntry } from '../../types';
 
-const HOST = 'http://localhost:52251' // 'https://nytcrosswordplus.flanny.app/;
+const HOST = 'https://nytcrosswordplus.flanny.app/'; // 'http://localhost:52251'
 
 export default function PageGroup({ entries }) {
   const router = useRouter()
