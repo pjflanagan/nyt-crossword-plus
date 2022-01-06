@@ -20,6 +20,10 @@ export type UserStat = {
   firstPlaceFinishes: number;
   averagePlace: number;
   gamesPlayed: number;
+  power: {
+    rating: number;
+    index: number;
+  };
 }
 
 export type TimeByDateIndexDataEntry = [number, string];

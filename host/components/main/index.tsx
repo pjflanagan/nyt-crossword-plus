@@ -2,6 +2,7 @@ import React, { FC, useState, KeyboardEventHandler } from 'react';
 import { Layout, Row, Input, Button, Divider, Alert } from 'antd';
 import { TeamOutlined, LockOutlined, QuestionCircleOutlined, OrderedListOutlined, LoginOutlined } from '@ant-design/icons';
 import sha256 from 'crypto-js/sha256';
+import { toLower, trim } from 'lodash';
 
 import { Countdown } from './countdown';
 
@@ -21,11 +22,12 @@ const MainComponent: FC = () => {
       return;
     }
     const hash = sha256(groupPassword).toString();
+    const validatedGroupName = toLower(trim(groupName));
 
     // TODO: validate using the backend if this page exists and if the password
     // is correct, if it is then go to that page
     // maybe here we can store a cookie with allowed pages
-    window.location.href = `${window.location.origin}/group/${groupName}?p=${hash}`;
+    window.location.href = `${window.location.origin}/group/${validatedGroupName}?p=${hash}`;
   }
 
   const onKeyPress = (e: any) => {
@@ -62,6 +64,8 @@ const MainComponent: FC = () => {
           >
             {`See Today's Leaderboard`}
           </Button>
+          {/* <Badge.Ribbon text="No Update Today" color="red"> */}
+          {/* TODO: a note here that says if the Plus Leaderboard has been updated today */}
         </Row>
 
         <Divider />

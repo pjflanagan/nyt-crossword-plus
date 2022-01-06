@@ -1,61 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Layout, Typography, Empty } from 'antd';
 import _ from 'lodash';
 
-import { PlacedEntry, TimeEntry, UserStat, DateEntries } from '../../types';
+import { PlacedEntry, TimeEntry } from '../../types';
 
 import { StatsComponent } from './stats';
 import { TableComponent } from './table';
-import { GraphComponent, GraphType } from './graph';
+import { GraphComponent } from './graph';
+import { Filter, DEFAULT_FILTER } from './filter';
+import { makeStats, makeGraph, makeTable, getPlacedEntries } from './helpers';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
-const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
-  return _.keys(dateGroups).map(date => {
-    const datePlaces = [];
-    let lastTime = 0;
-    let place = 0;
-    dateGroups[date].forEach((entry) => {
-      if (lastTime !== entry.time) {
-        ++place;
-      }
-      lastTime = entry.time;
-      datePlaces.push({
-        ...entry,
-        place,
-      });
-    });
-    return datePlaces;
-  }).flat();
-};
-
-const makeGraph = (dateGroups: DateEntries): GraphType[] => { // bestTime, bestUsername
-  return _.reverse(_.keys(dateGroups)).map(date => {
-    const averageTime = _.mean(dateGroups[date].map(e => e.time))
-    return {
-      date,
-      averageTime
-    }
-  });
-}
-
-const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
-  const usernameGroups = _.groupBy(placedEntries, 'username');
-  return _.keys(usernameGroups).map(username => {
-    const userEntries = usernameGroups[username];
-    const userTimes = userEntries.map(e => e.time);
-    const userPlaces = userEntries.map(e => e.place);
-    return {
-      username,
-      bestTime: _.min(userTimes),
-      averageTime: _.round(_.mean(userTimes), 2),
-      firstPlaceFinishes: _.sum(userPlaces.filter(place => place === 1)),
-      averagePlace: _.round(_.mean(userPlaces), 2),
-      gamesPlayed: userEntries.length,
-    };
-  }).flat();
-}
 
 type GroupComponentProps = {
   name: string;
@@ -67,39 +24,52 @@ const GroupComponent: FC<GroupComponentProps> = ({
   entries
 }) => {
 
-  // TODO: exclude Sundays option and calendar dates in filters
+  const [placedEntries, setPlacedEntries] = useState<PlacedEntry[]>([]);
+  const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
+
+  const dashboardData = useMemo(() => {
+    // this runs only when the filter or placedEntries changes
+    // TODO: filter the placedEntries here
+
+    const graph = makeGraph(placedEntries);
+    const table = makeTable(placedEntries);
+    const { bestTime, averageTime, bestAvePlace, highestPowerIndex } = makeStats(placedEntries, table);
+
+    return {
+      graph,
+      table,
+      bestTime,
+      averageTime,
+      bestAvePlace,
+      highestPowerIndex
+    };
+
+  }, [placedEntries, filter]);
+
+  useEffect(() => {
+    // this runs once on load to calculate place by dates for every entry
+    const orderedEntries = _.orderBy(entries, 'time', 'asc');
+    const dateGroups = _.groupBy(orderedEntries, 'date');
+    const onloadPlacedEntries = getPlacedEntries(dateGroups);
+    setPlacedEntries(onloadPlacedEntries);
+  }, []);
+
 
   const renderContent = () => {
-    if (entries.length === 0) {
+    if (placedEntries.length === 0) {
       return <Empty />
     }
 
-    // TODO: filter dates here
-    const orderedEntries = _.orderBy(entries, 'time', 'asc');
-    const dateGroups = _.groupBy(orderedEntries, 'date');
-    const placedEntries = getPlacedEntries(dateGroups);
-
-    // chart
-    const graph = makeGraph(dateGroups);
-
-    // table
-    const table = makeTable(placedEntries);
-
-    // stats
-    const bestTime = placedEntries[0];
-    const averageTime = _.mean(placedEntries.map(e => e.time));
-    const bestAvePlace = _.reduce(table, (bestUserStat, currentUserStat) => {
-      if (currentUserStat.averagePlace < bestUserStat.averagePlace) {
-        return currentUserStat;
-      }
-      return bestUserStat;
-    })
-
     return (
       <>
-        <StatsComponent bestAvePlace={bestAvePlace} bestTime={bestTime} averageTime={averageTime} />
-        <GraphComponent graph={graph} />
-        <TableComponent table={table} />
+        <StatsComponent
+          bestAvePlace={dashboardData.bestAvePlace}
+          bestTime={dashboardData.bestTime}
+          averageTime={dashboardData.averageTime}
+          highestPowerIndex={dashboardData.highestPowerIndex}
+        />
+        <GraphComponent graph={dashboardData.graph} />
+        <TableComponent table={dashboardData.table} />
       </>
     );
   }

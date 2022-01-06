@@ -7,6 +7,7 @@ import { TimeEntry, UserStat } from '../../../types';
 
 type StatsComponentProps = {
   bestAvePlace: UserStat;
+  highestPowerIndex: UserStat;
   bestTime: TimeEntry;
   averageTime: number;
 }
@@ -15,11 +16,19 @@ const StatsComponent: FC<StatsComponentProps> = ({
   bestAvePlace,
   bestTime,
   averageTime,
+  highestPowerIndex,
 }) => {
+
+  const highestPowerIndexTitle = (
+    <div style={{ height: '44px' }}>
+      <p style={{ margin: 0, fontSize: '1.2em' }}>Highest Power Rating</p>
+      <p style={{ margin: 0, fontSize: '0.9em' }}>{highestPowerIndex.username}</p>
+    </div>
+  );
 
   const bestAvePlaceTitle = (
     <div style={{ height: '44px' }}>
-      <p style={{ margin: 0, fontSize: '1.2em' }}>Highest Ave Place</p>
+      <p style={{ margin: 0, fontSize: '1.2em' }}>Best Ave Place</p>
       <p style={{ margin: 0, fontSize: '0.9em' }}>{bestAvePlace.username}</p>
     </div>
   );
@@ -40,6 +49,12 @@ const StatsComponent: FC<StatsComponentProps> = ({
 
   return (
     <Row>
+      <Card>
+        <Statistic
+          title={highestPowerIndexTitle}
+          value={highestPowerIndex.power.rating}
+        />
+      </Card>
       <Card>
         <Statistic
           title={bestAvePlaceTitle}
