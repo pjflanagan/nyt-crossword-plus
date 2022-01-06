@@ -16,8 +16,8 @@ export type PlacedEntry = TimeEntry & {
 export type UserStat = {
   username: string;
   bestTime: number;
-  firstPlaceFinishes: number;
   averageTime: number;
+  firstPlaceFinishes: number;
   averagePlace: number;
   gamesPlayed: number;
 }

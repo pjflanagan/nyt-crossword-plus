@@ -30,7 +30,7 @@ export const readTimesByDate = async (client: faunadb.Client, date: string) => {
   const entry: TimeByDateIndex = await client.query(
     Paginate(
       Match(
-        Index('times_by_date'),
+        Index('time_and_username_by_date'),
         date
       )
     )

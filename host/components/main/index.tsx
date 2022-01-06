@@ -9,6 +9,8 @@ const { Header, Content } = Layout;
 
 const MainComponent: FC = () => {
 
+  // TODO: load cookies for which groups we have logged into
+
   const [groupName, setGroupName] = useState<string>('');
   const [groupPassword, setGroupPassword] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);

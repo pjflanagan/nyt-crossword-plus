@@ -1,27 +1,28 @@
 import React, { FC } from 'react';
 import { Row, Card, Statistic } from 'antd';
 import _ from 'lodash';
-
-import { TimeEntry } from '../../../types';
 import moment from 'moment';
 
+import { TimeEntry, UserStat } from '../../../types';
+
 type StatsComponentProps = {
-  placedEntries: TimeEntry[];
+  bestAvePlace: UserStat;
+  bestTime: TimeEntry;
+  averageTime: number;
 }
 
 const StatsComponent: FC<StatsComponentProps> = ({
-  placedEntries,
+  bestAvePlace,
+  bestTime,
+  averageTime,
 }) => {
 
-  const bestTime = placedEntries[0];
-  const averageTime = _.mean(placedEntries.map(e => e.time));
-
-  // const highestAveTime = (
-  //   <div style={{ height: '44px' }}>
-  //     <p style={{ margin: 0, fontSize: '1.2em' }}>Highest Ave Place</p>
-  //     <p style={{ margin: 0, fontSize: '0.9em' }}>{bestTime.username}</p>
-  //   </div>
-  // );
+  const bestAvePlaceTitle = (
+    <div style={{ height: '44px' }}>
+      <p style={{ margin: 0, fontSize: '1.2em' }}>Highest Ave Place</p>
+      <p style={{ margin: 0, fontSize: '0.9em' }}>{bestAvePlace.username}</p>
+    </div>
+  );
 
   const bestTimeDateFormatted = moment(bestTime.date).format('MMM D');
   const bestTimeTitle = (
@@ -41,6 +42,12 @@ const StatsComponent: FC<StatsComponentProps> = ({
     <Row>
       <Card>
         <Statistic
+          title={bestAvePlaceTitle}
+          value={bestAvePlace.averagePlace}
+        />
+      </Card>
+      <Card>
+        <Statistic
           title={bestTimeTitle}
           value={bestTime.time}
           suffix="s"
@@ -49,7 +56,7 @@ const StatsComponent: FC<StatsComponentProps> = ({
       <Card>
         <Statistic
           title={aveTimeTitle}
-          value={Math.round(averageTime * 10) / 10}
+          value={_.round(averageTime, 2)}
           suffix="s"
         />
       </Card>
