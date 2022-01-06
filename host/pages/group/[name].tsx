@@ -11,9 +11,7 @@ export default function PageGroup({ entries }) {
   const { name } = router.query;
 
   return (
-    <>
-      <GroupComponent name={name as string} entries={entries as TimeEntry[]} />
-    </>
+    <GroupComponent name={name as string} entries={entries as TimeEntry[]} />
   );
 }
 

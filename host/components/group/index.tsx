@@ -58,7 +58,11 @@ const GroupComponent: FC<GroupComponentProps> = ({
 
   const renderContent = () => {
     if (placedEntries.length === 0) {
-      return <Empty />
+      return (
+        <Row className={Style.emptyRow}>
+          <Empty />
+        </Row>
+      );
     }
 
     return (
