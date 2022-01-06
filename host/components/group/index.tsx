@@ -7,7 +7,7 @@ import { PlacedEntry, TimeEntry } from '../../types';
 import { StatsComponent } from './stats';
 import { TableComponent } from './table';
 import { GraphComponent } from './graph';
-import { Filter, DEFAULT_FILTER } from './filter';
+import { Filter, DEFAULT_FILTER, FilterComponent } from './filter';
 import { makeStats, makeGraph, makeTable, getPlacedEntries } from './helpers';
 
 const { Header, Content } = Layout;
@@ -62,6 +62,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
 
     return (
       <>
+        <FilterComponent filter={filter} setFilter={setFilter} />
         <StatsComponent
           bestAvePlace={dashboardData.bestAvePlace}
           bestTime={dashboardData.bestTime}

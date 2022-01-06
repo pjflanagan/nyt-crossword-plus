@@ -69,11 +69,9 @@ const TableComponent: FC<TableComponentProps> = ({
 
   return (
     <Row>
-      {/* TODO: figure out what is wrong here */}
-      {/* eslint-disable-next-line */}
       <Table
         dataSource={table}
-        columns={COLUMNS}
+        columns={COLUMNS as any}
         pagination={{ pageSize: 20 }}
         scroll={{ y: 480, x: 900 }}
       />

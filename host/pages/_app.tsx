@@ -13,7 +13,7 @@ const IMG_TW = `${ROOT}/img/social/social-tw.png`;
 const AUTHOR = "Peter James Flanagan";
 const HANDLE = "@peterjflan";
 
-// TODO: google analytics tag G-CNFGV4ZHRG
+const GOOGLE_ANALYTICS_TAG = 'G-CNFGV4ZHRG';
 
 function App({ Component, pageProps }) {
   return (
@@ -42,6 +42,24 @@ function App({ Component, pageProps }) {
         <meta name="twitter:site" content={HANDLE} />
         <meta name="twitter:creator" content={HANDLE} />
         <meta name="twitter:image" content={IMG_TW} />
+
+        {/* Global Site Tag (gtag.js) - Google Analytics */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_TAG}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ANALYTICS_TAG}', {
+              page_path: window.location.pathname,
+            });
+          `,
+          }}
+        />
 
         {/* npm run pwa-asset-gen */}
         <link rel="apple-touch-icon" href="../pwa/apple-icon-180.png" />
