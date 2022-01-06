@@ -1,11 +1,51 @@
 import React, { FC } from 'react';
-import { Layout, Typography } from 'antd';
-// TODO: import _ from 'lodash';
+import { Layout, Typography, Empty } from 'antd';
+import _ from 'lodash';
 
-import { TimeEntry } from '../../types';
+import { PlacedEntry, TimeEntry, UserStat, DateEntries } from '../../types';
+
+import { StatsComponent } from './stats';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
+
+const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
+  return _.keys(dateGroups).map(date => {
+    const datePlaces = [];
+    let lastTime = 0;
+    let place = 0;
+    dateGroups[date].forEach((entry) => {
+      if (lastTime !== entry.time) {
+        ++place;
+      }
+      lastTime = entry.time;
+      datePlaces.push({
+        ...entry,
+        place,
+      });
+    });
+    return datePlaces;
+  }).flat();
+};
+
+// const makeGraph = (dateGroups: DateEntries): [moment.Moment, { averageTime, bestTime, bestUsername } ]
+
+const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
+  const usernameGroups = _.groupBy(placedEntries, 'username');
+  return _.keys(usernameGroups).map(username => {
+    const userEntries = usernameGroups[username];
+    const userTimes = userEntries.map(e => e.time);
+    const userPlaces = userEntries.map(e => e.place);
+    return {
+      username,
+      bestTime: _.min(userTimes),
+      averageTime: _.mean(userTimes),
+      averagePlace: _.mean(userPlaces),
+      gamesPlayed: userEntries.length,
+      firstPlaceFinishes: _.sum(userPlaces.filter(place => place === 1)),
+    };
+  }).flat();
+}
 
 type GroupComponentProps = {
   name: string;
@@ -17,12 +57,27 @@ const GroupComponent: FC<GroupComponentProps> = ({
   entries
 }) => {
 
-  // TODO: if no entries, then say something and quit
+  // TODO: exclude Sundays option and calendar dates in filters
 
-  // TODO: exclude Sundays option in filters
+  const renderContent = () => {
+    if (entries.length === 0) {
+      return <Empty />
+    }
 
-  const bestTime = entries.sort((a, b) => a.time - b.time)[0];
-  const averageTime = entries.map(e => e.time).reduce((sum, c) => sum + c) / entries.length;
+    // TODO: filter dates here
+    const orderedEntries = _.orderBy(entries, 'time', 'asc');
+    const dateGroups = _.groupBy(orderedEntries, 'date');
+    const placedEntries = getPlacedEntries(dateGroups);
+    // const dateChart = makeChart(dateGroups);
+    const table = makeTable(placedEntries);
+    console.table(table);
+
+    return (
+      <>
+        <StatsComponent placedEntries={placedEntries} />
+      </>
+    );
+  }
 
   return (
     <Layout style={{ minHeight: '100%' }}>
@@ -31,8 +86,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
       </Header>
       <Content style={{ padding: '1em' }}>
         <Title>{name}</Title>
-        <Title level={2}>{`Best Time: ${bestTime.time}s by ${bestTime.username} on ${bestTime.date}`}</Title>
-        <Title level={2}>{`Average Time: ${Math.round(averageTime * 10) / 10}s`}</Title>
+        {renderContent()}
       </Content>
     </Layout>
   );
