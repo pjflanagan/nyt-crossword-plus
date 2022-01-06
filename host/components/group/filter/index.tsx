@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
-import { Row, Radio, Checkbox } from 'antd';
+import { Row, Radio, Checkbox, Space } from 'antd';
+
+import Style from './style.module.css';
 
 export type Filter = {
   excludeSundays: boolean;
@@ -36,16 +38,14 @@ const FilterComponent: FC<FilterComponentProps> = ({
   }
 
   return (
-    <Row>
-      {/* Buttons that say week month and all */}
+    <Space className={Style.filter}>
       <Radio.Group value={filter.duration} onChange={changeDuration}>
         <Radio.Button value="week">Week</Radio.Button>
         <Radio.Button value="month">Month</Radio.Button>
         <Radio.Button value="all">All</Radio.Button>
       </Radio.Group>
-      {/* Checkbox for include sundays */}
       <Checkbox onChange={changeExcludeSundays}>Exclude Sundays</Checkbox>
-    </Row>
+    </Space>
   );
 }
 

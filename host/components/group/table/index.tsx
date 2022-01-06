@@ -3,6 +3,8 @@ import { Row, Table, Tooltip } from 'antd';
 
 import { UserStat } from '../../../types';
 
+import Style from './style.module.css';
+
 const COLUMNS = [
   {
     title: 'Name',
@@ -68,7 +70,7 @@ const TableComponent: FC<TableComponentProps> = ({
 }) => {
 
   return (
-    <Row>
+    <Row className={Style.tableRow}>
       <Table
         dataSource={table}
         columns={COLUMNS as any}

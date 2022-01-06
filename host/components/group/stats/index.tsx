@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { Row, Card, Statistic } from 'antd';
+import { Row, Card, Statistic, Space } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 
 import { TimeEntry, UserStat } from '../../../types';
+
+import Style from './style.module.css';
 
 type StatsComponentProps = {
   bestAvePlace: UserStat;
@@ -47,8 +49,17 @@ const StatsComponent: FC<StatsComponentProps> = ({
     </div>
   );
 
+  // const renderStatisticTitle = (title, subTitle) => {
+  //   return (
+  //     <div style={{ height: '44px' }}>
+  //       <p style={{ margin: 0, fontSize: '1.2em' }}>Best Time</p>
+  //       <p style={{ margin: 0, fontSize: '0.9em' }}>{`${bestTime.username} - ${bestTimeDateFormatted}`}</p>
+  //     </div>
+  //   )
+  // }
+
   return (
-    <Row>
+    <Row className={Style.statsRow}>
       <Card>
         <Statistic
           title={highestPowerIndexTitle}

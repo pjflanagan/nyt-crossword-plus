@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Layout, Typography, Empty } from 'antd';
+import { Row, Col, Typography, Empty } from 'antd';
 import _ from 'lodash';
 
+import { PageComponent } from '../page';
 import { PlacedEntry, TimeEntry } from '../../types';
 
 import { StatsComponent } from './stats';
@@ -10,9 +11,9 @@ import { GraphComponent } from './graph';
 import { Filter, DEFAULT_FILTER, FilterComponent } from './filter';
 import { makeStats, makeGraph, makeTable, getPlacedEntries } from './helpers';
 
-const { Header, Content } = Layout;
-const { Title } = Typography;
+import Style from './style.module.css';
 
+const { Title } = Typography;
 
 type GroupComponentProps = {
   name: string;
@@ -62,7 +63,6 @@ const GroupComponent: FC<GroupComponentProps> = ({
 
     return (
       <>
-        <FilterComponent filter={filter} setFilter={setFilter} />
         <StatsComponent
           bestAvePlace={dashboardData.bestAvePlace}
           bestTime={dashboardData.bestTime}
@@ -76,15 +76,17 @@ const GroupComponent: FC<GroupComponentProps> = ({
   }
 
   return (
-    <Layout style={{ minHeight: '100%' }}>
-      <Header style={{ color: '#fff' }}>
-        New York Times Crossword Leaderboard Plus
-      </Header>
-      <Content style={{ padding: '1em' }}>
-        <Title>{name}</Title>
-        {renderContent()}
-      </Content>
-    </Layout>
+    <PageComponent>
+      <Row>
+        <Col span={8}>
+          <Title className={Style.title}>{name}</Title>
+        </Col>
+        <Col span={16}>
+          <FilterComponent filter={filter} setFilter={setFilter} />
+        </Col>
+      </Row>
+      {renderContent()}
+    </PageComponent>
   );
 }
 
