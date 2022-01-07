@@ -3,8 +3,7 @@ import { useRouter } from 'next/router';
 import { GroupComponent } from '../../components';
 import { TimeEntry } from '../../types';
 
-// TODO: make this an environment var
-const HOST = 'https://nytcrosswordplus.flanny.app/'; // 'http://localhost:52251'
+const DOMAIN = process.env.DOMAIN || '';
 
 export default function PageGroup({ entries }) {
   const router = useRouter()
@@ -18,7 +17,12 @@ export default function PageGroup({ entries }) {
 export async function getServerSideProps({ params }) {
   const { name } = params;
 
-  const url = encodeURI(`${HOST}/.netlify/functions/readGroupTimes?groupName=${name}`);
+  let url = encodeURI(`${DOMAIN}/.netlify/functions/readGroupTimes?groupName=${name}`);
+  if (name === 'test') {
+    // TODO: v1 call a URL that generates random data
+    url = encodeURI(`${DOMAIN}/data/test.json`);
+  }
+
   const resp = await fetch(url);
   let { entries, errorMessage } = await resp.json();
 

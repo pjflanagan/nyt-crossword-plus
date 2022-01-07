@@ -1,0 +1,205 @@
+{
+  "entries": [
+    {
+      "username": "Spiderman",
+      "time": 99,
+      "date": "2022-01-01"
+    },
+    {
+      "username": "Captain America",
+      "date": "2022-01-01",
+      "time": 11
+    },
+    {
+      "username": "Hulk",
+      "time": 101,
+      "date": "2022-01-02"
+    },
+    {
+      "username": "Iron Man",
+      "date": "2022-01-02",
+      "time": 119
+    },
+    {
+      "username": "Captain America",
+      "date": "2022-01-02",
+      "time": 134
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Black Widow",
+      "time": 33
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Captain America",
+      "time": 38
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Spiderman",
+      "time": 58
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Nebula",
+      "time": 59
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Thor",
+      "time": 38
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Black Panther",
+      "time": 35
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Shuri",
+      "time": 113
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Dr. Strange",
+      "time": 180
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Iron Man",
+      "time": 14
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Hulk",
+      "time": 147
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Scarlet Witch",
+      "time": 70
+    },
+    {
+      "date": "2022-01-03",
+      "username": "Star Lord",
+      "time": 105
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Spiderman",
+      "time": 27
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Captain America",
+      "time": 20
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Star Lord",
+      "time": 28
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Black Panther",
+      "time": 31
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Nebula",
+      "time": 33
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Black Widow",
+      "time": 37
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Shuri",
+      "time": 43
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Scarlet Witch",
+      "time": 44
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Dr. Strange",
+      "time": 53
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Iron Man",
+      "time": 20
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Thor",
+      "time": 23
+    },
+    {
+      "date": "2022-01-04",
+      "username": "Hulk",
+      "time": 31
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Captain Marvel",
+      "time": 13
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Scarlet Witch",
+      "time": 16
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Shuri",
+      "time": 25
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Black Panther",
+      "time": 29
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Star Lord",
+      "time": 39
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Spiderman",
+      "time": 42
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Black Widow",
+      "time": 46
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Nebula",
+      "time": 67
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Dr. Strange",
+      "time": 69
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Iron Man",
+      "time": 16
+    },
+    {
+      "date": "2022-01-05",
+      "username": "Captain America",
+      "time": 27
+    }
+  ],
+  "errorMessage": ""
+}

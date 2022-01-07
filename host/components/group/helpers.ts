@@ -9,7 +9,8 @@ import {
   orderBy,
   flatten,
   first,
-  filter
+  filter,
+  map
 } from 'lodash';
 import moment from 'moment';
 
@@ -57,12 +58,16 @@ export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
   return dates.map(date => {
     const dateLeaderboard = dateGroups[date];
     const averageTime = round(mean(dateLeaderboard.map(e => e.time)), 2);
-    const bestTimeEntry = first(orderBy(dateLeaderboard, 'time', 'asc'));
+    const bestTime = first(orderBy(dateLeaderboard, 'time', 'asc')).time;
+    const bestTimeUsername = map(
+      filter(dateLeaderboard, (e) => e.time === bestTime),
+      e => e.username
+    ).join(', ');
     return {
       date: moment(date).format('MMM D'),
       averageTime,
-      bestTime: bestTimeEntry.time,
-      bestTimeUsername: bestTimeEntry.username
+      bestTime,
+      bestTimeUsername
     }
   });
 }

@@ -1,25 +1,72 @@
 
-# MVP
-
-CHROME:
+# Chrome
 - [ ] link to the leaderboard
 - [ ] link to the leaderboard plus
 - [ ] Make it look nice
 - [ ] Put it on the web store unlisted
-
-WEB:
-- [ ] use an admin key on requests for a little security idk?
-- [ ] Homepage is overall page
-  - load data for the past week but can also be month, year, all time
-  - links from every name to the user page
-
-# MVP 2
-
-CHROME:
 - [ ] cache
   - cache the saved data (date and list of names)
   - if there are no new ones from last successful request send, don't send a request
 
-WEB:
-- [ ] Login
-- [ ] Groups page for editable groups
+
+# Web
+
+https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
+
+v1: MVP 
+
+Reduce Read Operations
+- [x] Do this first: Dev mode mock the response to save fauna usage
+    - [x] /groups/test
+    - [x] If test, get the data from a saved test file
+    - [ ] Generate test data
+- [ ] Only allow weekly and monthly, no all (this is not preferable because I want all, and also the problem might still exist with weekly)
+- [ ] Make new table user_times, could be a long term solution
+
+UI
+- [ ] In the graph, account for ties for first place “0:20 by dar, sach”
+- [ ] Make it pretty
+    - [ ] Make it mobile ready
+
+Dev
+- [ ] Fix tsconfig to get rid of ../../../
+
+Option 1
+
+user_times - easier to load from, harder to enter into?
+This would require ~20 doc loads per page load
+{
+  Username: ‘pjflanagan’
+  Times: [ date and time object ]
+}
+
+Option 2
+
+date_leaderboards - easier to enter data into, harder to load from
+This could require 365+ doc loads per page load
+{
+  Date: ’2022-01-01’,
+  Leaderboard: [ username and time object ]
+}
+
+v2: Password Protected Groups
+
+- Home Page
+    - Login and verify password, store a cookie if it is valid
+    - Show a list of accessible groups loaded from the cookie
+- Group page, idk how to pass the password from the cookie to the backend, idk
+
+Move password to group page, store it as a cookie -> nah, if the “security” of a plaintext password is good enough for ESPN then here is fine too
+
+Hardcore-saki
+Taipei-101
+Flan-beano
+
+v3: Available for Everyone
+
+You create an account and set your username associated with you. You may only do this once and have to request me to override it if it’s wrong.
+
+From there you can join a group using a group password in the settings page
+
+You can see group stats and your own stats but not other people. 
+

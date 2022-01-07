@@ -8,7 +8,7 @@ type ReadQueryParameters = {
   groupName: string;
 }
 
-// TODO: put the password on this
+// v2: put the password on this
 const handler: Handler = async (event, context) => {
   const { groupName } = event.queryStringParameters as ReadQueryParameters;
 

@@ -22,7 +22,7 @@ const StatsComponent: FC<StatsComponentProps> = ({
   highestPowerIndex,
 }) => {
 
-  // TODO: longest streak
+  // IDEA: longest streak, streaks are not very common though
 
   return (
     <Row className={Style.statsRow}>
