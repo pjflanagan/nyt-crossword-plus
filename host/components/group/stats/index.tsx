@@ -22,66 +22,31 @@ const StatsComponent: FC<StatsComponentProps> = ({
   highestPowerIndex,
 }) => {
 
-  const highestPowerIndexTitle = (
-    <div style={{ height: '44px' }}>
-      <p style={{ margin: 0, fontSize: '1.2em' }}>Highest Power Rating</p>
-      <p style={{ margin: 0, fontSize: '0.9em' }}>{highestPowerIndex.username}</p>
-    </div>
-  );
-
-  const bestAvePlaceTitle = (
-    <div style={{ height: '44px' }}>
-      <p style={{ margin: 0, fontSize: '1.2em' }}>Best Ave Place</p>
-      <p style={{ margin: 0, fontSize: '0.9em' }}>{bestAvePlace.username}</p>
-    </div>
-  );
-
-  const bestTimeDateFormatted = moment(bestTime.date).format('MMM D');
-  const bestTimeTitle = (
-    <div style={{ height: '44px' }}>
-      <p style={{ margin: 0, fontSize: '1.2em' }}>Best Time</p>
-      <p style={{ margin: 0, fontSize: '0.9em' }}>{`${bestTime.username} - ${bestTimeDateFormatted}`}</p>
-    </div>
-  );
-
-  const aveTimeTitle = (
-    <div style={{ height: '44px' }}>
-      <p style={{ margin: 0, fontSize: '1.2em' }}>Average Time</p>
-    </div>
-  );
-
-  // const renderStatisticTitle = (title, subTitle) => {
-  //   return (
-  //     <div style={{ height: '44px' }}>
-  //       <p style={{ margin: 0, fontSize: '1.2em' }}>Best Time</p>
-  //       <p style={{ margin: 0, fontSize: '0.9em' }}>{`${bestTime.username} - ${bestTimeDateFormatted}`}</p>
-  //     </div>
-  //   )
-  // }
+  // TODO: longest streak
 
   return (
     <Row className={Style.statsRow}>
-      <Card>
+      <Card title="Highest Power Rating">
         <Statistic
-          title={highestPowerIndexTitle}
+          title={highestPowerIndex.username}
           value={highestPowerIndex.power.rating}
         />
       </Card>
-      <Card>
+      <Card title="Best Ave Place">
         <Statistic
-          title={bestAvePlaceTitle}
+          title={bestAvePlace.username}
           value={bestAvePlace.averagePlace}
         />
       </Card>
-      <Card>
+      <Card title="Best Time">
         <Statistic
-          title={bestTimeTitle}
+          title={`${bestTime.username} - ${moment(bestTime.date).format('MMM D')}`}
           value={formatTime(bestTime.time)}
         />
       </Card>
-      <Card>
+      <Card title="Average Time">
         <Statistic
-          title={aveTimeTitle}
+          title={<div style={{ height: '22px' }} />}
           value={formatTime(round(averageTime, 2))}
         />
       </Card>

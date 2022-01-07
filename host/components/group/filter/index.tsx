@@ -39,13 +39,13 @@ const FilterComponent: FC<FilterComponentProps> = ({
 
   return (
     <Space className={Style.filter}>
+      <Checkbox onChange={changeExcludeSundays}>Exclude Sundays</Checkbox>
       <Radio.Group value={filter.duration} onChange={changeDuration}>
-        <Radio.Button value={3}>Three Days</Radio.Button>
+        <Radio.Button value={3}>3 Days</Radio.Button>
         <Radio.Button value={7}>Week</Radio.Button>
         <Radio.Button value={31}>Month</Radio.Button>
         <Radio.Button value={false}>All</Radio.Button>
       </Radio.Group>
-      <Checkbox onChange={changeExcludeSundays}>Exclude Sundays</Checkbox>
     </Space>
   );
 }

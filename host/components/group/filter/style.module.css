@@ -1,5 +1,5 @@
 .filter {
   display: flex;
   justify-content: right;
-  padding: 14px;
+  padding: 14px 0;
 }

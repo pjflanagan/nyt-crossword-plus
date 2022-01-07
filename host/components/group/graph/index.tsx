@@ -32,14 +32,14 @@ const GraphComponent: FC<GraphComponentProps> = ({
   // TODO: useBreakpoint to get widths
   return (
     <Row className={Style.graphRow}>
-      <Card className={Style.graphCard}>
+      <Card className={Style.graphCard} title="Calendar">
         <LineChart width={720} height={200} data={graph}>
           <Legend verticalAlign="top" height={36} />
           <XAxis dataKey="date" />
           <YAxis tickFormatter={(s) => formatTime(s)} />
           <Tooltip formatter={formatTooltip} />
           <Line type="monotone" dataKey="averageTime" name='Average Time' stroke="#001529" />
-          <Line type="monotone" dataKey="bestTime" name='Best Time' stroke="#40a9ff" />
+          <Line type="monotone" dataKey="bestTime" name='Best Time' stroke="#40a9ff" strokeWidth={0} dot={{ stroke: '#40a9ff', strokeWidth: 2 }} />
         </LineChart>
       </Card>
     </Row>
