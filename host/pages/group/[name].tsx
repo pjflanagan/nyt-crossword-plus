@@ -19,8 +19,7 @@ export async function getServerSideProps({ params }) {
 
   let url = encodeURI(`${DOMAIN}/.netlify/functions/readGroupTimes?groupName=${name}`);
   if (name === 'test') {
-    // TODO: v1 call a URL that generates random data
-    url = encodeURI(`${DOMAIN}/data/test.json`);
+    url = encodeURI(`${DOMAIN}/api/test`);
   }
 
   const resp = await fetch(url);
