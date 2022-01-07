@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Divider } from 'antd';
 
 import { GroupLoginComponent } from './groupLogin';
 import { NytActionsComponents } from './nytActions';
@@ -9,7 +8,6 @@ const MainComponent: FC = () => {
   return (
     <PageComponent>
       <NytActionsComponents />
-      <Divider />
       <GroupLoginComponent />
     </PageComponent>
   );

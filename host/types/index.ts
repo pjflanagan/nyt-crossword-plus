@@ -1,3 +1,4 @@
+import moment from "moment";
 
 export type TimeEntry = {
   username: string;
@@ -11,6 +12,7 @@ export type DateEntries = {
 
 export type PlacedEntry = TimeEntry & {
   place: number;
+  moment: moment.Moment;
 }
 
 export type UserStat = {

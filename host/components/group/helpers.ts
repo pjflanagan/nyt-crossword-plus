@@ -1,7 +1,6 @@
 import {
   keys,
   groupBy,
-  reverse,
   mean,
   reduce,
   sum,
@@ -9,12 +8,14 @@ import {
   min,
   orderBy,
   flatten,
-  first
+  first,
+  filter
 } from 'lodash';
 import moment from 'moment';
 
 import { PlacedEntry, UserStat, DateEntries } from '../../types';
 import { GraphType } from './graph';
+import type { Filter } from './filter';
 
 export const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
   const dates = keys(dateGroups);
@@ -30,12 +31,24 @@ export const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
       datePlaces.push({
         ...entry,
         place,
+        moment: moment(entry.date)
       });
     });
     return datePlaces;
   });
   return flatten(placedDates);
 };
+
+export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedEntry[]) => {
+  let filteredEntries = placedEntries;
+  if (filterParams.excludeSundays) {
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Sunday');
+  }
+  if (filterParams.duration) {
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.isAfter(moment().day(-filterParams.duration)))
+  }
+  return filteredEntries;
+}
 
 export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
   const dateGroups = groupBy(placedEntries, 'date');
@@ -81,8 +94,8 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
 }
 
 export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
-  const bestTime = placedEntries[0];
-  const highestPowerIndex = table[0];
+  const bestTime = first(placedEntries);
+  const highestPowerIndex = first(table);
   const averageTime = mean(placedEntries.map(e => e.time));
   const bestAvePlace = reduce(table, (bestUserStat, currentUserStat) => {
     if (currentUserStat.averagePlace < bestUserStat.averagePlace) {
@@ -93,4 +106,14 @@ export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
   return {
     bestTime, averageTime, bestAvePlace, highestPowerIndex
   }
+}
+
+const prefix0 = (num: string): string => {
+  return (num.length === 1) ? `0${num}` : num;
+}
+
+export const formatTime = (timeInSeconds: number): string => {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60);
+  return `${minutes}:${prefix0(`${seconds}`)}`;
 }

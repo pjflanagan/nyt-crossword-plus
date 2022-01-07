@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Row, Col, Typography, Empty } from 'antd';
-import _ from 'lodash';
+import { orderBy, groupBy } from 'lodash';
 
 import { PageComponent } from '../page';
 import { PlacedEntry, TimeEntry } from '../../types';
@@ -9,7 +9,7 @@ import { StatsComponent } from './stats';
 import { TableComponent } from './table';
 import { GraphComponent } from './graph';
 import { Filter, DEFAULT_FILTER, FilterComponent } from './filter';
-import { makeStats, makeGraph, makeTable, getPlacedEntries } from './helpers';
+import { makeStats, makeGraph, makeTable, getPlacedEntries, makeFilteredEntries } from './helpers';
 
 import Style from './style.module.css';
 
@@ -31,7 +31,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
   const dashboardData = useMemo(() => {
     // this runs only when the filter or placedEntries changes
     // TODO: filter the placedEntries here
-
+    const filteredEntries = makeFilteredEntries(filter, placedEntries);
     const graph = makeGraph(placedEntries);
     const table = makeTable(placedEntries);
     const { bestTime, averageTime, bestAvePlace, highestPowerIndex } = makeStats(placedEntries, table);
@@ -49,8 +49,8 @@ const GroupComponent: FC<GroupComponentProps> = ({
 
   useEffect(() => {
     // this runs once on load to calculate place by dates for every entry
-    const orderedEntries = _.orderBy(entries, 'time', 'asc');
-    const dateGroups = _.groupBy(orderedEntries, 'date');
+    const orderedEntries = orderBy(entries, 'time', 'asc');
+    const dateGroups = groupBy(orderedEntries, 'date');
     const onloadPlacedEntries = getPlacedEntries(dateGroups);
     setPlacedEntries(onloadPlacedEntries);
   }, []);

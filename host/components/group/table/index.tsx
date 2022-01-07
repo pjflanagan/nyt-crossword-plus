@@ -4,6 +4,7 @@ import { Row, Table, Tooltip } from 'antd';
 import { UserStat } from '../../../types';
 
 import Style from './style.module.css';
+import { formatTime } from '../helpers';
 
 const COLUMNS = [
   {
@@ -31,14 +32,16 @@ const COLUMNS = [
     dataIndex: 'bestTime',
     key: 'bestTime',
     sorter: (a, b) => a.bestTime - b.bestTime,
-    sortDirections: ['ascend']
+    sortDirections: ['ascend'],
+    render: (bestTime) => formatTime(bestTime)
   },
   {
     title: 'Average Time',
     dataIndex: 'averageTime',
     key: 'averageTime',
     sorter: (a, b) => a.averageTime - b.averageTime,
-    sortDirections: ['ascend']
+    sortDirections: ['ascend'],
+    render: (averageTime) => formatTime(averageTime)
   },
   {
     title: 'First Place Finishes',

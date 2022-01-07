@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Row, Input, Button, Alert } from 'antd';
+import { Row, Input, Button, Alert, Card } from 'antd';
 import { TeamOutlined, LoginOutlined } from '@ant-design/icons'; // LockOutlined, QuestionCircleOutlined, OrderedListOutlined
 // import sha256 from 'crypto-js/sha256';
 import { toLower, trim } from 'lodash';
@@ -34,40 +34,47 @@ const GroupLoginComponent: FC = () => {
 
   return (
     <>
-      <h1>View a Group</h1>
-      <p>{`Enter a group name and password to see a group's stats.`}</p>
-      <Row>
-        <Input
-          style={{ margin: '0.5em 0', maxWidth: '480px' }}
-          size="large"
-          placeholder="Group Name"
-          prefix={<TeamOutlined />}
-          value={groupName}
-          onChange={e => setGroupName(e.target.value)}
-          onKeyPress={onKeyPress}
-        />
-      </Row>
-      {/* <Row>
-        <Input
-          style={{ margin: '0.5em 0', maxWidth: '480px' }}
-          size="large"
-          placeholder="Group Password"
-          prefix={<LockOutlined />}
-          value={groupPassword}
-          onChange={e => setGroupPassword(e.target.value)}
-          onKeyPress={onKeyPress}
-          type="password"
-        />
-      </Row> */}
-      <Row>
-        <Button
-          icon={<LoginOutlined />}
-          style={{ margin: '0.5em' }}
-          type="primary"
-          onClick={onSubmit}
+      <Row
+        style={{ margin: '0.5em 0' }}
+      >
+        <Card
+          title="View a Group"
+          style={{ width: '100%' }}
         >
-          See Group
-        </Button>
+          <Row>
+            <Input
+              style={{ margin: '0.5em 0', maxWidth: '480px' }}
+              size="large"
+              placeholder="Group Name"
+              prefix={<TeamOutlined />}
+              value={groupName}
+              onChange={e => setGroupName(e.target.value)}
+              onKeyPress={onKeyPress}
+            />
+          </Row>
+          {/* 
+            <Input
+              style={{ margin: '0.5em 0', maxWidth: '480px' }}
+              size="large"
+              placeholder="Group Password"
+              prefix={<LockOutlined />}
+              value={groupPassword}
+              onChange={e => setGroupPassword(e.target.value)}
+              onKeyPress={onKeyPress}
+              type="password"
+            /> 
+          */}
+          <Row>
+            <Button
+              icon={<LoginOutlined />}
+              style={{ margin: '0.5em 0' }}
+              type="primary"
+              onClick={onSubmit}
+            >
+              See Group Stats
+            </Button>
+          </Row>
+        </Card>
       </Row>
       {
         isError && <Alert

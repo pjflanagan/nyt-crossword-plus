@@ -68,7 +68,7 @@ const Countdown: FC = () => {
       percent={(DAY_IN_S - time) / DAY_IN_S * 100}
       status="active"
       format={() => formatTime(time)}
-      style={{ padding: '2em', maxWidth: '480px' }}
+      style={{ padding: '0 1em 0 0', maxWidth: '480px' }}
     />
   );
 }

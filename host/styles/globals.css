@@ -4,3 +4,7 @@
   width: 100%;
   height: 100%;
 }
+
+.nytActionsRow .ant-ribbon-wrapper {
+  width: 100%;
+}

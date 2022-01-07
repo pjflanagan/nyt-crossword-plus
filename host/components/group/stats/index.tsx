@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { Row, Card, Statistic, Space } from 'antd';
-import _ from 'lodash';
+import { round } from 'lodash';
 import moment from 'moment';
 
 import { TimeEntry, UserStat } from '../../../types';
 
 import Style from './style.module.css';
+import { formatTime } from '../helpers';
 
 type StatsComponentProps = {
   bestAvePlace: UserStat;
@@ -75,15 +76,13 @@ const StatsComponent: FC<StatsComponentProps> = ({
       <Card>
         <Statistic
           title={bestTimeTitle}
-          value={bestTime.time}
-          suffix="s"
+          value={formatTime(bestTime.time)}
         />
       </Card>
       <Card>
         <Statistic
           title={aveTimeTitle}
-          value={_.round(averageTime, 2)}
-          suffix="s"
+          value={formatTime(round(averageTime, 2))}
         />
       </Card>
     </Row>
