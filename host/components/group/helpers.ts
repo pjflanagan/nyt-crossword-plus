@@ -45,7 +45,8 @@ export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedE
     filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Sunday');
   }
   if (filterParams.duration) {
-    filteredEntries = filter(filteredEntries, (entry) => entry.moment.isAfter(moment().day(-filterParams.duration)))
+    const day = moment().subtract(filterParams.duration, 'day');
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.isAfter(day));
   }
   return filteredEntries;
 }

@@ -30,11 +30,10 @@ const GroupComponent: FC<GroupComponentProps> = ({
 
   const dashboardData = useMemo(() => {
     // this runs only when the filter or placedEntries changes
-    // TODO: filter the placedEntries here
     const filteredEntries = makeFilteredEntries(filter, placedEntries);
-    const graph = makeGraph(placedEntries);
-    const table = makeTable(placedEntries);
-    const { bestTime, averageTime, bestAvePlace, highestPowerIndex } = makeStats(placedEntries, table);
+    const graph = makeGraph(filteredEntries);
+    const table = makeTable(filteredEntries);
+    const { bestTime, averageTime, bestAvePlace, highestPowerIndex } = makeStats(filteredEntries, table);
 
     return {
       graph,

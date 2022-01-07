@@ -7,7 +7,8 @@ import { PageComponent } from '../page';
 const MainComponent: FC = () => {
   return (
     <PageComponent>
-      <NytActionsComponents />
+      {/* TODO: get if this needs an update */}
+      <NytActionsComponents needsUpdate={false} />
       <GroupLoginComponent />
     </PageComponent>
   );

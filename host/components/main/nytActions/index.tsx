@@ -4,8 +4,13 @@ import { QuestionCircleOutlined, OrderedListOutlined } from '@ant-design/icons';
 
 import { Countdown } from './countdown';
 
-const NytActionsComponents: FC = () => {
-  const [needsUpdate, _setNeedsUpdate] = useState(false);
+type NytActionsProps = {
+  needsUpdate: boolean;
+}
+
+const NytActionsComponents: FC<NytActionsProps> = ({
+  needsUpdate
+}) => {
   return (
     <Row className="nytActionsRow" style={{ margin: '0.5em 0' }}>
       <Badge.Ribbon

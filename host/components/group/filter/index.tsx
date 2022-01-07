@@ -5,7 +5,7 @@ import Style from './style.module.css';
 
 export type Filter = {
   excludeSundays: boolean;
-  duration: 7 | 31 | false;
+  duration: 3 | 7 | 31 | false;
 };
 
 export const DEFAULT_FILTER: Filter = {
@@ -33,13 +33,14 @@ const FilterComponent: FC<FilterComponentProps> = ({
   const changeExcludeSundays = (e) => {
     setFilter({
       ...filter,
-      excludeSundays: e.target.value
+      excludeSundays: e.target.checked
     })
   }
 
   return (
     <Space className={Style.filter}>
       <Radio.Group value={filter.duration} onChange={changeDuration}>
+        <Radio.Button value={3}>Three Days</Radio.Button>
         <Radio.Button value={7}>Week</Radio.Button>
         <Radio.Button value={31}>Month</Radio.Button>
         <Radio.Button value={false}>All</Radio.Button>

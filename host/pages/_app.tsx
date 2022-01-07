@@ -7,8 +7,7 @@ const DESCRIPTION = 'An improved NYT Crossword Leaderboard';
 const KEYWORDS = `drunk, weather, temperature, drinks, channel`;
 const ROOT = "https://nytcrosswordplus.flanny.app";
 
-const IMG = `${ROOT}/img/social/social.png`;
-const IMG_TW = `${ROOT}/img/social/social-tw.png`;
+const IMG = `${ROOT}/img/social.png`;
 
 const AUTHOR = "Peter James Flanagan";
 const HANDLE = "@peterjflan";
@@ -41,7 +40,7 @@ function App({ Component, pageProps }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={HANDLE} />
         <meta name="twitter:creator" content={HANDLE} />
-        <meta name="twitter:image" content={IMG_TW} />
+        <meta name="twitter:image" content={IMG} />
 
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
