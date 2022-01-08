@@ -16,20 +16,8 @@ https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serve
 v1: MVP 
 
 Reduce Read Operations
-- [x] Do this first: Dev mode mock the response to save fauna usage
-    - [x] /groups/test
-    - [x] If test, get the data from a saved test file
-    - [ ] Generate test data
-- [ ] Only allow weekly and monthly, no all (this is not preferable because I want all, and also the problem might still exist with weekly)
+- [ ] Only allow weekly and monthly, no all (this is not preferable because I want all, and also the problem might still exist with a monthly data load)
 - [ ] Make new table user_times, could be a long term solution
-
-UI
-- [ ] In the graph, account for ties for first place “0:20 by dar, sach”
-- [ ] Make it pretty
-    - [ ] Make it mobile ready
-
-Dev
-- [ ] Fix tsconfig to get rid of ../../../
 
 Option 1
 
@@ -51,6 +39,9 @@ This could require 365+ doc loads per page load
 
 v2: Password Protected Groups
 
+Dev
+- [ ] Fix tsconfig to get rid of ../../../
+
 - Home Page
     - Login and verify password, store a cookie if it is valid
     - Show a list of accessible groups loaded from the cookie
@@ -70,3 +61,31 @@ From there you can join a group using a group password in the settings page
 
 You can see group stats and your own stats but not other people. 
 
+
+
+// ---------
+
+Additional API Routes
+
+validateGroupLogin
+// get the group, if none exists return that error
+// get the password, if they don't match, tell them the password it wrong
+
+hasLeaderboardUpdate
+// get if the leaderboard has an entry for today
+
+user
+// load a user's data
+
+// requires load of all users (this is viewable in group mode)
+// - average place
+// - first place count
+
+// requires load of just user data
+// - average time
+// - fastest time
+// - slowest time
+// - median and mode time
+
+versus
+// enter two names and see how they compare

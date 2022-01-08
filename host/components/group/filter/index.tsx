@@ -4,12 +4,12 @@ import { Radio, Checkbox, Space } from 'antd';
 import Style from './style.module.css';
 
 export type Filter = {
-  excludeSundays: boolean;
+  excludeMidis: boolean;
   duration: 3 | 7 | 31 | false;
 };
 
 export const DEFAULT_FILTER: Filter = {
-  excludeSundays: false,
+  excludeMidis: false,
   duration: 7
 };
 
@@ -33,7 +33,7 @@ const FilterComponent: FC<FilterComponentProps> = ({
   const changeExcludeSundays = (e) => {
     setFilter({
       ...filter,
-      excludeSundays: e.target.checked
+      excludeMidis: e.target.checked
     })
   }
 

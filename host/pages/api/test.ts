@@ -15,7 +15,7 @@ const NAMES = [
 export default function handler(req, res) {
   const entryCount = Math.floor(Math.random() * 100) + 100;
 
-  // TODO: set random intelligence modifiers on each name
+  // v2: set random intelligence modifiers on each name
 
   const entries = [];
   for (
@@ -25,7 +25,7 @@ export default function handler(req, res) {
   ) {
     const dateEntries = sampleSize(NAMES, 6).map((username) => {
       let baseTime = 10;
-      if (date.format('dddd') === 'Sunday') {
+      if (date.format('dddd') === 'Saturday') {
         baseTime = 40;
       }
 

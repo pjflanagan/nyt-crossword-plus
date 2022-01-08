@@ -42,8 +42,8 @@ export const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
 
 export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedEntry[]) => {
   let filteredEntries = placedEntries;
-  if (filterParams.excludeSundays) {
-    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Sunday');
+  if (filterParams.excludeMidis) {
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Saturday');
   }
   if (filterParams.duration) {
     const day = moment().subtract(filterParams.duration, 'day');
