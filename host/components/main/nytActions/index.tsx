@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Row, Button, Card, Badge } from 'antd';
 import { QuestionCircleOutlined, OrderedListOutlined } from '@ant-design/icons';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 import { Countdown } from './countdown';
 
@@ -11,6 +12,16 @@ type NytActionsProps = {
 const NytActionsComponents: FC<NytActionsProps> = ({
   needsUpdate
 }) => {
+  const breakpoint = useBreakpoint();
+
+  const playPrompt = (!breakpoint.md)
+    ? 'Play'
+    : `Play Today's Puzzle`
+
+  const leaderboardPrompt = (!breakpoint.md)
+    ? 'Scores'
+    : `See Today's Leaderboard`
+
   return (
     <Row className="nytActionsRow" style={{ margin: '0.5em 0' }}>
       <Badge.Ribbon
@@ -29,7 +40,7 @@ const NytActionsComponents: FC<NytActionsProps> = ({
               target="_blank"
               type="link"
             >
-              {`Play Today's Puzzle`}
+              {playPrompt}
             </Button>,
             <Button
               key="leaderboard"
@@ -38,7 +49,7 @@ const NytActionsComponents: FC<NytActionsProps> = ({
               target="_blank"
               type="link"
             >
-              {`See Today's Leaderboard`}
+              {leaderboardPrompt}
             </Button>
           ]}
         >

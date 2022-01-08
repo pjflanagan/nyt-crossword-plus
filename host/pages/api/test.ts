@@ -15,6 +15,8 @@ const NAMES = [
 export default function handler(req, res) {
   const entryCount = Math.floor(Math.random() * 100) + 100;
 
+  // TODO: set random intelligence modifiers on each name
+
   const entries = [];
   for (
     let date = moment().subtract(entryCount, 'days');

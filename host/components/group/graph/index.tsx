@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { Row, Card } from 'antd';
 import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
-// import _ from 'lodash';
-// import moment from 'moment';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 import { formatTime } from '../helpers';
 
@@ -29,12 +28,25 @@ const formatTooltip = (value, name, props) => {
 const GraphComponent: FC<GraphComponentProps> = ({
   graph
 }) => {
-  // TODO: useBreakpoint to get widths
+  const breakpoints = useBreakpoint();
+  const width: number = ((): number => {
+    switch (true) {
+      case breakpoints.lg:
+        return 720;
+      case breakpoints.md:
+        return 640;
+      case breakpoints.sm:
+        return 480;
+      default:
+        return 280;
+    }
+  })();
+
   return (
     <Row className={Style.graphRow}>
-      <Card className={Style.graphCard} title="Calendar">
-        <LineChart width={720} height={200} data={graph}>
-          <Legend verticalAlign="top" height={36} />
+      <Card className={`${Style.graphCard} graphCard`} title="Calendar">
+        <LineChart width={width} height={200} data={graph}>
+          {breakpoints.md && <Legend verticalAlign="top" height={36} />}
           <XAxis dataKey="date" />
           <YAxis tickFormatter={(s) => formatTime(s)} />
           <Tooltip formatter={formatTooltip} />

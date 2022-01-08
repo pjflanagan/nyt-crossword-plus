@@ -1,5 +1,15 @@
 .statsRow {
-  margin: 0.5em 0;
+  /* margin: 0.5em 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; */
+
+  display: flex;
+  overflow: scroll;
+  width: 100%;
+  flex-wrap: nowrap;
+  padding: 0 0.25em;
+}
+
+.statsRow div {
+  margin: 0 0.25em;
 }

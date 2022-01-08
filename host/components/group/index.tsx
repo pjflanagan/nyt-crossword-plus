@@ -58,7 +58,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
   const renderContent = () => {
     if (placedEntries.length === 0) {
       return (
-        <Row className={Style.emptyRow}>
+        <Row className={Style.noContentRow}>
           <Empty />
         </Row>
       );
@@ -81,10 +81,10 @@ const GroupComponent: FC<GroupComponentProps> = ({
   return (
     <PageComponent>
       <Row>
-        <Col span={8}>
+        <Col xs={24} sm={8} style={{ padding: '0 0.5em' }}>
           <Title className={Style.title}>{name}</Title>
         </Col>
-        <Col span={16}>
+        <Col xs={24} sm={16} style={{ padding: '0 0.5em' }}>
           <FilterComponent filter={filter} setFilter={setFilter} />
         </Col>
       </Row>

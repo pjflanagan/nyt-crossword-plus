@@ -10,8 +10,12 @@
   color: #fff !important;
 }
 
-.content {
-  padding: 1em;
-  width: 800px;
-  margin: 0 auto;
+@media only screen and (min-width: 992px) {
+
+  .content {
+    padding: 1em;
+    width: 800px;
+    margin: 0 auto;
+  }
+
 }

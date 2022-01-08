@@ -1,10 +1,19 @@
 .title {
   margin: 0.2em 0 0.3em !important;
+  text-align: center;
 }
 
-.emptyRow {
+.noContentRow {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 120px;
+}
+
+@media only screen and (min-width: 576px) {
+
+  .title {
+    text-align: left;
+  }
+
 }

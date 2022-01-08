@@ -1,5 +1,13 @@
 .filter {
   display: flex;
-  justify-content: right;
+  justify-content: center;
   padding: 14px 0;
+}
+
+@media only screen and (min-width: 576px) {
+
+  .filter {
+    justify-content: right;
+  }
+
 }
