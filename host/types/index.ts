@@ -28,7 +28,18 @@ export type UserStat = {
   };
 }
 
+// DB Data
+
+export type CacheUpdate = {
+  latestTimesWriteTimestamp: number;
+  latestGroupReadTimestamp: number;
+}
+
 export type TimeByDateIndexDataEntry = [number, string];
+export type TimeEntryData = {
+  data: TimeEntry[];
+};
+
 export type TimeByDateIndex = {
   data: TimeByDateIndexDataEntry[];
 };

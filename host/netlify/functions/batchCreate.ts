@@ -1,13 +1,12 @@
 import { Handler } from '@netlify/functions';
 
 import { validResponse, errorResponse } from '../api';
-import { getFaunaClient, readTimesByDate, insertTimes } from '../db';
+import { getFaunaClient, readTimesByDate, writeTimes } from '../db';
 import { TimeEntry, TimeByDateIndexDataEntry } from '../../types';
 
 type BatchCreateRequestBody = {
   entries: TimeEntry[]
 };
-
 
 const handler: Handler = async (event, context) => {
 
@@ -46,7 +45,7 @@ const handler: Handler = async (event, context) => {
 
   // otherwise, insert newEntries
   try {
-    await insertTimes(client, newEntries);
+    await writeTimes(client, newEntries);
   } catch (e) {
     return errorResponse(500, `DB Error: unable to insert data, ${e}`);
   }

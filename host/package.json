@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "netlify": "netlify dev -p 3001",
     "pwa-asset-gen": "pwa-asset-generator ./public/src/icon.png ./public/pwa --background \"#1c1c1c\" --manifest ./public/manifest.json --index ./public/src/example_index.html --type png"
   },
   "dependencies": {
