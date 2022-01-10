@@ -2,11 +2,21 @@
 import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimes } from '../../db';
 import { TimeEntry } from '../../types';
 
+const WRITE_API_KEY = process.env.WRITE_API_KEY;
+
 type BatchCreateRequestBody = {
   entries: TimeEntry[]
 };
 
 const handler = async (req, res) => {
+  const { k } = req.query;
+
+  // access check
+  if (!k || k === '') {
+    return res.status(403).json({ errorMessage: `Write API key is missing` });
+  } else if (k !== WRITE_API_KEY) {
+    return res.status(403).json({ errorMessage: `Write API key is incorrect` });
+  }
 
   // validate there is a request body
   if (!req.body || req.body.length === 0) {

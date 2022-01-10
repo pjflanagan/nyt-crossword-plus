@@ -1,6 +1,4 @@
 
-const DOMAIN = 'nytcrosswordplus.flanny.app'; // 'localhost:3000'; // 
-
 const COLORS = {
   BLUE: '#3981f0',
   RED: 'red',
@@ -91,7 +89,7 @@ async function submitEntries(entries) {
     // the response "opaque" and unreadable, instead we just record that the 
     // request was sent, not any result from the request
     await fetch(
-      `http://${DOMAIN}/api/batchCreate`,
+      `http://${DOMAIN}/api/batchCreate?k=${WRITE_API_KEY}`,
       {
         method: 'POST',
         mode: 'no-cors',

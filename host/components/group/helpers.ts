@@ -32,7 +32,7 @@ export const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
       datePlaces.push({
         ...entry,
         place,
-        moment: moment(entry.date).utcOffset(-5)
+        moment: moment(entry.date)
       });
     });
     return datePlaces;
@@ -46,7 +46,7 @@ export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedE
     filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Saturday');
   }
   if (filterParams.duration) {
-    const day = moment().utcOffset(-5).subtract(filterParams.duration, 'day');
+    const day = moment().subtract(filterParams.duration, 'day');
     filteredEntries = filter(filteredEntries, (entry) => entry.moment.isAfter(day));
   }
   return filteredEntries;
@@ -64,7 +64,7 @@ export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
       e => e.username
     ).join(', ');
     return {
-      date: moment(date).utcOffset(-5).format('MMM D'),
+      date: moment(date).format('MMM D'),
       averageTime,
       bestTime,
       bestTimeUsername

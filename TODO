@@ -8,59 +8,42 @@
   - cache the saved data (date and list of names)
   - if there are no new ones from last successful request send, don't send a request
 
-
 # Web
 
 https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
 
-v1: MVP 
+## v1: MVP 
 
 - [x] use UTC offset
-v2: Password Protected Groups
+- [x] add an API key the endpoints `?k=<API_KEY>`
+- [ ] Autocode: send a daily update to Discord with the winners and stuff
 
-Dev
+`/api/readDailyStats`
+
+## v2: Improvements
+
+- [ ] Load only 1 week of data, separate request for the month and all
+- [ ] more restricted CORS
+- [ ] get leaderboard needs update flag
+
+`/api/hasLeaderboardUpdate`
+- get if the leaderboard has an entry for today, so we can put a tag on the leaderboard
+
+- [ ] Daily Selenium data scrape, go to url and scrape the data, then upload
+`/api/scrapeLeaderboard`
+- Use Autocode to trigger this every day 10 minutes before the crossword closes
+
+## v3: Password Protected Groups
+
 - [ ] Fix tsconfig to get rid of ../../../
-
-- Home Page
-    - Login and verify password, store a cookie if it is valid
-    - Show a list of accessible groups loaded from the cookie
-- Group page, idk how to pass the password from the cookie to the backend, idk
+- [ ] Password protect groups
+  - Home Page
+      - Login and verify password, store a cookie if it is valid
+      - Show a list of accessible groups loaded from the cookie
+  - Group page, idk how to pass the password from the cookie to the backend, idk
 
 Move password to group page, store it as a cookie -> nah, if the “security” of a plaintext password is good enough for ESPN then here is fine too
 
-v3: Available for Everyone
-
-You create an account and set your username associated with you. You may only do this once and have to request me to override it if it’s wrong.
-
-From there you can join a group using a group password in the settings page
-
-You can see group stats and your own stats but not other people. 
-
-
-
-// ---------
-
-Additional API Routes
-
-validateGroupLogin
-// get the group, if none exists return that error
-// get the password, if they don't match, tell them the password it wrong
-
-hasLeaderboardUpdate
-// get if the leaderboard has an entry for today
-
-user
-// load a user's data
-
-// requires load of all users (this is viewable in group mode)
-// - average place
-// - first place count
-
-// requires load of just user data
-// - average time
-// - fastest time
-// - slowest time
-// - median and mode time
-
-versus
-// enter two names and see how they compare
+`/api/validateGroupLogin`
+- get the group, if none exists return that error
+- get the password, if they don't match, tell them the password it wrong

@@ -4,7 +4,7 @@
   justify-content: space-between; */
 
   display: flex;
-  overflow: scroll;
+  overflow-x: scroll;
   width: 100%;
   flex-wrap: nowrap;
   padding: 0 0.25em;

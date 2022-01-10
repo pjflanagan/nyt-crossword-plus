@@ -19,8 +19,8 @@ export default function handler(_req, res) {
 
   const entries = [];
   for (
-    let date = moment().utcOffset(-5).subtract(entryCount, 'days');
-    date.isBefore(moment().utcOffset(-5));
+    let date = moment().subtract(entryCount, 'days');
+    date.isBefore(moment());
     date.add(1, 'day')
   ) {
     const dateEntries = sampleSize(NAMES, 6).map((username) => {
