@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { Row, Table, Tooltip } from 'antd';
 
 import { UserStat } from '../../../types';
+import { formatTime } from '../../../helpers';
 
 import Style from './style.module.css';
-import { formatTime } from '../helpers';
 
 const COLUMNS = [
   {

@@ -14,7 +14,7 @@ const handler = async (req, res) => {
   }
 
   let validatedEndDate = endDate;
-  // TODO: if endDate is empty, then set validatedEndDate to today
+  // v2: if endDate is empty, then set validatedEndDate to today
   // if (isEmpty(endDate)) {
   //   validatedEndDate =
   // }
