@@ -17,7 +17,7 @@ export default function PageGroup({ entries }) {
 export async function getServerSideProps({ params }) {
   const { name } = params;
 
-  let url = encodeURI(`${DOMAIN}/.netlify/functions/readGroupTimes?groupName=${name}`);
+  let url = encodeURI(`${DOMAIN}/api/readGroupTimes?groupName=${name}`);
   if (name === 'test') {
     url = encodeURI(`${DOMAIN}/api/test`);
   }

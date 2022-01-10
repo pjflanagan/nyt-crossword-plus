@@ -38,7 +38,7 @@ export default function handler(req, res) {
     entries.push(...dateEntries);
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     entries,
     errorMessage: '',
   });

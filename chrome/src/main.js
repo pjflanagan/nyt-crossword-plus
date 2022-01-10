@@ -1,5 +1,5 @@
 
-const DOMAIN = 'nytcrosswordplus.flanny.app'; // localhost:8888
+const DOMAIN = 'nytcrosswordplus.flanny.app';
 
 const COLORS = {
   BLUE: '#3981f0',
@@ -91,7 +91,7 @@ async function submitEntries(entries) {
     // the response "opaque" and unreadable, instead we just record that the 
     // request was sent, not any result from the request
     await fetch(
-      `http://${DOMAIN}/.netlify/functions/batchCreate`,
+      `http://${DOMAIN}/api/batchCreate`,
       {
         method: 'POST',
         mode: 'no-cors',
