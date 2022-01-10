@@ -14,9 +14,7 @@ import {
 } from 'lodash';
 import moment from 'moment';
 
-import { PlacedEntry, UserStat, DateEntries, TimeEntry } from '../../types';
-import { GraphType } from './graph';
-import type { Filter } from './filter';
+import { PlacedEntry, UserStat, DateEntries, TimeEntry, GraphType, Filter } from '../types';
 
 export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => {
   const placedEntries = [];
@@ -114,14 +112,4 @@ export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
   return {
     bestTime, averageTime, bestAvePlace, highestPowerIndex
   }
-}
-
-const prefix0 = (num: string): string => {
-  return (num.length === 1) ? `0${num}` : num;
-}
-
-export const formatTime = (timeInSeconds: number): string => {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = Math.floor(timeInSeconds % 60);
-  return `${minutes}:${prefix0(`${seconds}`)}`;
 }

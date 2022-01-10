@@ -4,9 +4,9 @@ import { round } from 'lodash';
 import moment from 'moment';
 
 import { TimeEntry, UserStat } from '../../../types';
+import { formatTime } from '../../../helpers';
 
 import Style from './style.module.css';
-import { formatTime } from '../helpers';
 
 type StatsComponentProps = {
   bestAvePlace: UserStat;

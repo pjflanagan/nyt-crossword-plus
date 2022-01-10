@@ -3,13 +3,13 @@ import { Row, Col, Typography, Empty } from 'antd';
 import { orderBy, groupBy } from 'lodash';
 
 import { PageComponent } from '../page';
-import { PlacedEntry, TimeEntry } from '../../types';
+import { PlacedEntry, TimeEntry, Filter } from '../../types';
 
 import { StatsComponent } from './stats';
 import { TableComponent } from './table';
 import { GraphComponent } from './graph';
-import { Filter, DEFAULT_FILTER, FilterComponent } from './filter';
-import { makeStats, makeGraph, makeTable, getDatesLeaderboards, makeFilteredEntries } from './helpers';
+import { DEFAULT_FILTER, FilterComponent } from './filter';
+import { makeStats, makeGraph, makeTable, getDatesLeaderboards, makeFilteredEntries } from '../../helpers';
 
 import Style from './style.module.css';
 

@@ -1,12 +1,9 @@
 import React, { FC } from 'react';
 import { Radio, Checkbox, Space } from 'antd';
 
-import Style from './style.module.css';
+import { Filter } from '../../../types';
 
-export type Filter = {
-  excludeMidis: boolean;
-  duration: 3 | 7 | 31 | false;
-};
+import Style from './style.module.css';
 
 export const DEFAULT_FILTER: Filter = {
   excludeMidis: false,

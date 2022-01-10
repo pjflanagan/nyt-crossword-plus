@@ -6,6 +6,8 @@ export type TimeEntry = {
   time: number;
 };
 
+// Stats
+
 export type DateEntries = {
   [key: string]: TimeEntry[],
 }
@@ -28,18 +30,16 @@ export type UserStat = {
   };
 }
 
-// DB Data
-
-export type CacheUpdate = {
-  latestTimesWriteTimestamp: number;
-  latestGroupReadTimestamp: number;
+export type GraphType = {
+  date: string;
+  averageTime: number;
+  bestTime: number;
+  bestTimeUsername: string;
 }
 
-export type TimeByDateIndexDataEntry = [number, string];
-export type TimeEntryData = {
-  data: TimeEntry[];
-};
+// Page State
 
-export type TimeByDateIndex = {
-  data: TimeByDateIndexDataEntry[];
+export type Filter = { // FilterState
+  excludeMidis: boolean;
+  duration: 3 | 7 | 31 | false;
 };

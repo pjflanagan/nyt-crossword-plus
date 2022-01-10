@@ -18,11 +18,12 @@ const date = getFormattedDate();
 let result = await lib.http.request['@1.1.6'].get({
   url: `https://nytcrosswordplus.flanny.app/api/readDailyStats`,
   queryParams: {
-    'groupName': process.env.GROUP_NAME,
+    'groupName': '<GROUP_NAME>',
     'date': date
   }
 });
 
+console.log(result.data)
 // error check before getting data
 if (result.statusCode !== 200) {
   return;
@@ -31,7 +32,7 @@ const data = result.data;
 
 // format the message
 const winnersText = data.winners.map(
-  p => `${p.place}. ${p.username} = ${p.time}`
+  p => `${p.place}. ${p.username} - ${p.time}`
 );
 const content = `
 Congratulations to Today's Winners:

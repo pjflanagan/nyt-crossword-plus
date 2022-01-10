@@ -3,16 +3,11 @@ import { Row, Card } from 'antd';
 import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
-import { formatTime } from '../helpers';
+import { formatTime } from '../../../helpers';
+import { GraphType } from '../../../types';
 
 import Style from './style.module.css';
 
-export type GraphType = {
-  date: string;
-  averageTime: number;
-  bestTime: number;
-  bestTimeUsername: string;
-}
 
 type GraphComponentProps = {
   graph: GraphType[];
