@@ -1,5 +1,5 @@
 
-const DOMAIN = 'nytcrosswordplus.flanny.app';
+const DOMAIN = 'nytcrosswordplus.flanny.app'; // 'localhost:3000'; // 
 
 const COLORS = {
   BLUE: '#3981f0',
