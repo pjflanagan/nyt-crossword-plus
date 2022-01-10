@@ -12,15 +12,15 @@ const NAMES = [
   'Starlord'
 ];
 
-export default function handler(req, res) {
+export default function handler(_req, res) {
   const entryCount = Math.floor(Math.random() * 100) + 100;
 
   // v2: set random intelligence modifiers on each name
 
   const entries = [];
   for (
-    let date = moment().subtract(entryCount, 'days');
-    date.isBefore(moment());
+    let date = moment().utcOffset(-5).subtract(entryCount, 'days');
+    date.isBefore(moment().utcOffset(-5));
     date.add(1, 'day')
   ) {
     const dateEntries = sampleSize(NAMES, 6).map((username) => {
@@ -40,6 +40,5 @@ export default function handler(req, res) {
 
   return res.status(200).json({
     entries,
-    errorMessage: '',
   });
 }

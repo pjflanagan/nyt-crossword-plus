@@ -31,12 +31,12 @@ const getReleaseHourForDay = (date: moment.Moment) => {
 
 // get if the crossword has released already today
 const hasReleasedCrosswordToday = () => {
-  return moment().get('hour') >= getReleaseHourForDay(moment());
+  return moment().utcOffset(-5).get('hour') >= getReleaseHourForDay(moment().utcOffset(-5));
 }
 
 // get the next time there will be a release
 const getNextReleaseTime = (): moment.Moment => {
-  const nextReleaseDate = moment();
+  const nextReleaseDate = moment().utcOffset(-5);
   nextReleaseDate.set('hour', getReleaseHourForDay(nextReleaseDate));
   nextReleaseDate.set('minute', 0);
   nextReleaseDate.set('seconds', 0);

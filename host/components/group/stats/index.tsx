@@ -40,7 +40,7 @@ const StatsComponent: FC<StatsComponentProps> = ({
       </Card>
       <Card title="Best Time">
         <Statistic
-          title={`${bestTime.username} - ${moment(bestTime.date).format('MMM D')}`}
+          title={`${bestTime.username} - ${moment(bestTime.date).utcOffset(-5).format('MMM D')}`}
           value={formatTime(bestTime.time)}
         />
       </Card>
