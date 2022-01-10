@@ -15,28 +15,7 @@ https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serve
 
 v1: MVP 
 
-Reduce Read Operations
-- [ ] Only allow weekly and monthly, no all (this is not preferable because I want all, and also the problem might still exist with a monthly data load)
-- [ ] Make new table user_times, could be a long term solution
-
-Option 1
-
-user_times - easier to load from, harder to enter into?
-This would require ~20 doc loads per page load
-{
-  Username: ‘pjflanagan’
-  Times: [ date and time object ]
-}
-
-Option 2
-
-date_leaderboards - easier to enter data into, harder to load from
-This could require 365+ doc loads per page load
-{
-  Date: ’2022-01-01’,
-  Leaderboard: [ username and time object ]
-}
-
+- [x] use UTC offset
 v2: Password Protected Groups
 
 Dev
@@ -48,10 +27,6 @@ Dev
 - Group page, idk how to pass the password from the cookie to the backend, idk
 
 Move password to group page, store it as a cookie -> nah, if the “security” of a plaintext password is good enough for ESPN then here is fine too
-
-Hardcore-saki
-Taipei-101
-Flan-beano
 
 v3: Available for Everyone
 
