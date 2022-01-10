@@ -9,7 +9,7 @@ import { StatsComponent } from './stats';
 import { TableComponent } from './table';
 import { GraphComponent } from './graph';
 import { Filter, DEFAULT_FILTER, FilterComponent } from './filter';
-import { makeStats, makeGraph, makeTable, getPlacedEntries, makeFilteredEntries } from './helpers';
+import { makeStats, makeGraph, makeTable, getDatesLeaderboards, makeFilteredEntries } from './helpers';
 
 import Style from './style.module.css';
 
@@ -50,7 +50,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
     // this runs once on load to calculate place by dates for every entry
     const orderedEntries = orderBy(entries, 'time', 'asc');
     const dateGroups = groupBy(orderedEntries, 'date');
-    const onloadPlacedEntries = getPlacedEntries(dateGroups);
+    const onloadPlacedEntries = getDatesLeaderboards(dateGroups);
     setPlacedEntries(onloadPlacedEntries);
   }, []);
 

@@ -14,8 +14,10 @@ const NAMES = [
 
 export default function handler(_req, res) {
   const entryCount = Math.floor(Math.random() * 100) + 100;
-
-  // v2: set random intelligence modifiers on each name
+  const players = NAMES.map(name => ({
+    name,
+    weight: Math.floor(Math.random() * 20)
+  }));
 
   const entries = [];
   for (
@@ -23,14 +25,14 @@ export default function handler(_req, res) {
     date.isBefore(moment());
     date.add(1, 'day')
   ) {
-    const dateEntries = sampleSize(NAMES, 6).map((username) => {
-      let baseTime = 10;
+    const dateEntries = sampleSize(players, 6).map((player) => {
+      let baseTime = 10 + player.weight;
       if (date.format('dddd') === 'Saturday') {
-        baseTime = 40;
+        baseTime += 30;
       }
 
       return {
-        username,
+        username: player.name,
         date: date.format('YYYY-MM-DD'),
         time: Math.floor(Math.random() * 48 + baseTime)
       };

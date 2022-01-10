@@ -14,29 +14,31 @@ import {
 } from 'lodash';
 import moment from 'moment';
 
-import { PlacedEntry, UserStat, DateEntries } from '../../types';
+import { PlacedEntry, UserStat, DateEntries, TimeEntry } from '../../types';
 import { GraphType } from './graph';
 import type { Filter } from './filter';
 
-export const getPlacedEntries = (dateGroups: DateEntries): PlacedEntry[] => {
-  const dates = keys(dateGroups);
-  const placedDates = dates.map(date => {
-    const datePlaces = [];
-    let lastTime = 0;
-    let place = 0;
-    dateGroups[date].forEach((entry) => {
-      if (lastTime !== entry.time) {
-        ++place;
-      }
-      lastTime = entry.time;
-      datePlaces.push({
-        ...entry,
-        place,
-        moment: moment(entry.date)
-      });
+export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => {
+  const placedEntries = [];
+  let lastTime = 0;
+  let place = 0;
+  orderedEntries.forEach((entry) => {
+    if (lastTime !== entry.time) {
+      ++place;
+    }
+    lastTime = entry.time;
+    placedEntries.push({
+      ...entry,
+      place,
+      moment: moment(entry.date)
     });
-    return datePlaces;
   });
+  return placedEntries;
+}
+
+export const getDatesLeaderboards = (dateGroups: DateEntries): PlacedEntry[] => {
+  const dates = keys(dateGroups);
+  const placedDates = dates.map(date => getPlacedEntries(dateGroups[date]));
   return flatten(placedDates);
 };
 

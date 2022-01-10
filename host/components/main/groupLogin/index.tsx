@@ -6,7 +6,7 @@ import { toLower, trim } from 'lodash';
 
 const GroupLoginComponent: FC = () => {
 
-  // v2: load cookies for which groups we have logged into
+  // v3: load cookies for which groups we have logged into
 
   const [groupName, setGroupName] = useState<string>('');
   // const [groupPassword, setGroupPassword] = useState<string>('');
@@ -20,7 +20,7 @@ const GroupLoginComponent: FC = () => {
     // const hash = sha256(groupPassword).toString();
     const validatedGroupName = toLower(trim(groupName));
 
-    // v2: validate using the backend if this page exists and if the password
+    // v3: validate using the backend if this page exists and if the password
     // is correct, if it is then go to that page
     // maybe here we can store a cookie with allowed pages
     window.location.href = `${window.location.origin}/group/${validatedGroupName}`; // ?p=${hash}`;

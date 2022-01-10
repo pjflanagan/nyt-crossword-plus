@@ -2,8 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { Progress } from 'antd';
 import moment from 'moment';
 
-// TODO: v1 https://spin.atomicobject.com/2016/07/25/date-math-time-zones-moment/
-
 const HOUR_IN_S = 60 * 60;
 const DAY_IN_S = 24 * HOUR_IN_S;
 const MINUTE_IN_MS = 60 * 1000;

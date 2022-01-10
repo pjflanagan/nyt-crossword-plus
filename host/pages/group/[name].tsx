@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+// import moment from 'moment';
 
 import { GroupComponent } from '../../components';
 import { TimeEntry } from '../../types';
@@ -17,7 +18,8 @@ export default function PageGroup({ entries }) {
 export async function getServerSideProps({ params }) {
   const { name } = params;
 
-  let url = encodeURI(`${DOMAIN}/api/readGroupTimes?groupName=${name}`);
+  // const date = moment().subtract(7, 'days').format('YYYY-MM-DD');
+  let url = encodeURI(`${DOMAIN}/api/readGroupTimes?groupName=${name}`); // &startDate=${date}
   if (name === 'test') {
     url = encodeURI(`${DOMAIN}/api/test`);
   }
