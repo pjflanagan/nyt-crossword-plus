@@ -14,7 +14,10 @@ import {
 } from 'lodash';
 import moment from 'moment';
 
+
 import { PlacedEntry, UserStat, DateEntries, TimeEntry, GraphType, Filter } from '../types';
+
+import { formatDate } from '.';
 
 export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => {
   const placedEntries = [];
@@ -28,7 +31,7 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
     placedEntries.push({
       ...entry,
       place,
-      moment: moment(entry.date)
+      moment: moment(entry.date).utcOffset(0)
     });
   });
   return placedEntries;
@@ -64,7 +67,7 @@ export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
       e => e.username
     ).join(', ');
     return {
-      date: moment(date).format('MMM D'),
+      date: formatDate(date),
       averageTime,
       bestTime,
       bestTimeUsername
@@ -101,6 +104,7 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
 
 export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
   // TODO: make this best most recent time
+  // const bestTime = first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
   const bestTime = first(placedEntries);
   const highestPowerIndex = first(table);
   const averageTime = mean(placedEntries.map(e => e.time));
