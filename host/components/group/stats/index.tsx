@@ -4,7 +4,7 @@ import { round } from 'lodash';
 import moment from 'moment';
 
 import { TimeEntry, UserStat } from '../../../types';
-import { formatTime } from '../../../helpers';
+import { formatDate, formatTime } from '../../../helpers';
 
 import Style from './style.module.css';
 
@@ -40,7 +40,7 @@ const StatsComponent: FC<StatsComponentProps> = ({
       </Card>
       <Card title="Best Time">
         <Statistic
-          title={`${bestTime.username} - ${moment(bestTime.date).format('MMM D')}`}
+          title={`${bestTime.username} - ${formatDate(bestTime.date)}`}
           value={formatTime(bestTime.time)}
         />
       </Card>

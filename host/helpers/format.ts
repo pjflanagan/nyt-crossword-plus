@@ -10,6 +10,10 @@ export const formatTime = (timeInSeconds: number): string => {
   return `${minutes}:${prefix0(`${seconds}`)}`;
 }
 
+export const formatDBDate = (date: string): moment.Moment => {
+  return moment(date).utcOffset(0);
+}
+
 export const formatDate = (date: string): string => {
-  return moment(date).utcOffset(0).format('MMM D');
+  return formatDBDate(date).format('MMM D');
 }

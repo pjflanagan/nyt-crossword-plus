@@ -17,7 +17,7 @@ import moment from 'moment';
 
 import { PlacedEntry, UserStat, DateEntries, TimeEntry, GraphType, Filter } from '../types';
 
-import { formatDate } from '.';
+import { formatDate, formatDBDate } from '.';
 
 export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => {
   const placedEntries = [];
@@ -31,7 +31,7 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
     placedEntries.push({
       ...entry,
       place,
-      moment: moment(entry.date).utcOffset(0)
+      moment: formatDBDate(entry.date)
     });
   });
   return placedEntries;
@@ -103,9 +103,7 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
 }
 
 export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
-  // TODO: make this best most recent time
-  // const bestTime = first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
-  const bestTime = first(placedEntries);
+  const bestTime = first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
   const highestPowerIndex = first(table);
   const averageTime = mean(placedEntries.map(e => e.time));
   const bestAvePlace = reduce(table, (bestUserStat, currentUserStat) => {
