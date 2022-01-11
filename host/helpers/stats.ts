@@ -28,8 +28,7 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
     placedEntries.push({
       ...entry,
       place,
-      // TODO: this is still the wrong date
-      moment: moment(entry.date).utcOffset(-5)
+      moment: moment(entry.date)
     });
   });
   return placedEntries;
@@ -44,7 +43,7 @@ export const getDatesLeaderboards = (dateGroups: DateEntries): PlacedEntry[] => 
 export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedEntry[]) => {
   let filteredEntries = placedEntries;
   if (filterParams.excludeMidis) {
-    filteredEntries = filter(filteredEntries, (entry) => entry.moment.utcOffset(-5).format('dddd') !== 'Saturday');
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Saturday');
   }
   if (filterParams.duration) {
     const day = moment().subtract(filterParams.duration, 'day');
@@ -65,7 +64,7 @@ export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
       e => e.username
     ).join(', ');
     return {
-      date: moment(date).utcOffset(-5).format('MMM D'),
+      date: moment(date).format('MMM D'),
       averageTime,
       bestTime,
       bestTimeUsername
