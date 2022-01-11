@@ -28,7 +28,8 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
     placedEntries.push({
       ...entry,
       place,
-      moment: moment(entry.date)
+      // TODO: this is still the wrong date
+      moment: moment(entry.date).utcOffset(-5)
     });
   });
   return placedEntries;
@@ -43,7 +44,7 @@ export const getDatesLeaderboards = (dateGroups: DateEntries): PlacedEntry[] => 
 export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedEntry[]) => {
   let filteredEntries = placedEntries;
   if (filterParams.excludeMidis) {
-    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Saturday');
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.utcOffset(-5).format('dddd') !== 'Saturday');
   }
   if (filterParams.duration) {
     const day = moment().subtract(filterParams.duration, 'day');
@@ -64,7 +65,7 @@ export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
       e => e.username
     ).join(', ');
     return {
-      date: moment(date).format('MMM D'),
+      date: moment(date).utcOffset(-5).format('MMM D'),
       averageTime,
       bestTime,
       bestTimeUsername
@@ -100,6 +101,7 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
 }
 
 export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
+  // TODO: make this best most recent time
   const bestTime = first(placedEntries);
   const highestPowerIndex = first(table);
   const averageTime = mean(placedEntries.map(e => e.time));

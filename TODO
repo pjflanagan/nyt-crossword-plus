@@ -12,14 +12,6 @@
 
 https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
 
-## v1: MVP 
-
-- [x] use UTC offset
-- [x] add an API key the endpoints `?k=<API_KEY>`
-- [ ] Autocode: send a daily update to Discord with the winners and stuff
-
-`/api/readDailyStats`
-
 ## v2: Improvements
 
 - [ ] Load only 1 week of data, separate request for the month and all

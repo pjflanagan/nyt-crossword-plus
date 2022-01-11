@@ -27,6 +27,10 @@ const handler = async (req, res) => {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
+  if (entries.length === 0) {
+    return res.status(400).json({ errorMessage: `No entries for today` });
+  }
+
   // get the stats
   const placedEntries = getPlacedEntries(orderBy(entries, 'time'));
   const winners = filter(placedEntries, (e) => e.place <= 3).map(e => ({

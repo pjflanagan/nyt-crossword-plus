@@ -5,7 +5,8 @@ function prefix0(num) {
 }
 
 function getFormattedDate() {
-  const d = new Date();
+  const today = new Date();
+  const d = new Date(today.toLocaleString('en-US', { timeZone: 'America/New_York' }));
   return [
     d.getFullYear(),
     prefix0('' + (d.getMonth() + 1)),
@@ -18,17 +19,26 @@ const date = getFormattedDate();
 let result = await lib.http.request['@1.1.6'].get({
   url: `https://nytcrosswordplus.flanny.app/api/readDailyStats`,
   queryParams: {
-    'groupName': '<GROUP_NAME>',
+    'groupName': '',
     'date': date
   }
 });
 
-console.log(result.data)
 // error check before getting data
 if (result.statusCode !== 200) {
   return;
 }
 const data = result.data;
+
+if (data.errorMessage && data.errorMessage !== '') {
+  return;
+}
+
+if (!data.winners) {
+  return;
+} else if (!data.groupAverageTime) {
+  return;
+}
 
 // format the message
 const winnersText = data.winners.map(
@@ -42,6 +52,6 @@ The group's average time was ${data.groupAverageTime}`;
 
 // send to discord
 await lib.discord.channels['@0.0.6'].messages.create({
-  channel_id: '817193529314902056',
+  channel_id: '',
   content,
 });
