@@ -4,18 +4,17 @@ import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 import { formatTime } from '../../../helpers';
-import { GraphType } from '../../../types';
+import { Graph } from '../../../types';
 
 import Style from './style.module.css';
 
-
 type GraphComponentProps = {
-  graph: GraphType[];
+  graph: Graph;
 }
 
 const formatTooltip = (value, name, props) => {
   if (name === 'Best Time') {
-    return `${formatTime(value)} by ${props.payload.bestTimeUsername}`;
+    return `${formatTime(value)} by ${props.payload.bestTimeUsernames.join(', ')}`;
   }
   return formatTime(value);
 }

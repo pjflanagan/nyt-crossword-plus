@@ -13,6 +13,10 @@ type StatsComponentProps = {
   highestPowerIndex: UserStat;
   bestTime: TimeEntry;
   averageTime: number;
+  longestStreak: {
+    duration: number;
+    usernames: string[];
+  }
 }
 
 const StatsComponent: FC<StatsComponentProps> = ({
@@ -20,10 +24,8 @@ const StatsComponent: FC<StatsComponentProps> = ({
   bestTime,
   averageTime,
   highestPowerIndex,
+  longestStreak,
 }) => {
-
-  // IDEA: longest streak, streaks are not very common though
-
   return (
     <Row className={Style.statsRow}>
       <Card title="Highest Power Rating">
@@ -32,6 +34,14 @@ const StatsComponent: FC<StatsComponentProps> = ({
           value={highestPowerIndex.power.rating}
         />
       </Card>
+      {
+        longestStreak.duration > 1 && <Card title="Longest Streak">
+          <Statistic
+            title={longestStreak.usernames.join(', ')}
+            value={longestStreak.duration}
+          />
+        </Card>
+      }
       <Card title="Best Ave Place">
         <Statistic
           title={bestAvePlace.username}

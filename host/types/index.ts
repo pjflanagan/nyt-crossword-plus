@@ -8,7 +8,7 @@ export type TimeEntry = {
 
 // Stats
 
-export type DateEntries = {
+export type DateTimeEntryMap = {
   [key: string]: TimeEntry[],
 }
 
@@ -30,12 +30,14 @@ export type UserStat = {
   };
 }
 
-export type GraphType = {
+export type GraphDateEntry = {
   date: string;
   averageTime: number;
   bestTime: number;
-  bestTimeUsername: string;
+  bestTimeUsernames: string[];
 }
+
+export type Graph = GraphDateEntry[];
 
 // Page State
 

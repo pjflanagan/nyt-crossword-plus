@@ -28,12 +28,12 @@ const GroupComponent: FC<GroupComponentProps> = ({
   const [placedEntries, setPlacedEntries] = useState<PlacedEntry[]>([]);
   const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
 
-  const dashboardData = useMemo(() => {
+  const makeData = () => {
     // this runs only when the filter or placedEntries changes
     const filteredEntries = makeFilteredEntries(filter, placedEntries);
     const graph = makeGraph(filteredEntries);
     const table = makeTable(filteredEntries);
-    const { bestTime, averageTime, bestAvePlace, highestPowerIndex } = makeStats(filteredEntries, table);
+    const { bestTime, averageTime, bestAvePlace, highestPowerIndex, longestStreak } = makeStats(filteredEntries, table, graph);
 
     return {
       graph,
@@ -41,10 +41,12 @@ const GroupComponent: FC<GroupComponentProps> = ({
       bestTime,
       averageTime,
       bestAvePlace,
-      highestPowerIndex
+      highestPowerIndex,
+      longestStreak
     };
+  }
 
-  }, [placedEntries, filter]);
+  const dashboardData = useMemo(makeData, [makeData, placedEntries, filter]);
 
   useEffect(() => {
     // this runs once on load to calculate place by dates for every entry
@@ -71,6 +73,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
           bestTime={dashboardData.bestTime}
           averageTime={dashboardData.averageTime}
           highestPowerIndex={dashboardData.highestPowerIndex}
+          longestStreak={dashboardData.longestStreak}
         />
         <GraphComponent graph={dashboardData.graph} />
         <TableComponent table={dashboardData.table} />

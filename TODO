@@ -12,10 +12,14 @@
 
 https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
 
-## v2: Improvements
+## v1: Final
 
 - [ ] Load only 1 week of data, separate request for the month and all
+
+## v2: Improvements
+
 - [ ] more restricted CORS
+- [ ] appearance improvements
 - [ ] get leaderboard needs update flag
 
 `/api/hasLeaderboardUpdate`
