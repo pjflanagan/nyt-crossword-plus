@@ -156,19 +156,23 @@ export const getLongestStreak = (graph: Graph) => {
   }
 }
 
-export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[], graph: Graph) => {
-  // v2: use the graph to get the longest streak
-  const bestTime = first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
-  const highestPowerIndex = first(table);
-  const averageTime = mean(placedEntries.map(e => e.time));
-  const bestAvePlace = reduce(table, (bestUserStat, currentUserStat) => {
+export const getBestTime = (placedEntries: PlacedEntry[]) => {
+  return first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
+}
+
+export const getBestAveragePlace = (table: UserStat[]) => {
+  return reduce(table, (bestUserStat, currentUserStat) => {
     if (currentUserStat.averagePlace < bestUserStat.averagePlace) {
       return currentUserStat;
     }
     return bestUserStat;
   });
-  const longestStreak = getLongestStreak(graph);
-  return {
-    bestTime, averageTime, bestAvePlace, highestPowerIndex, longestStreak
-  }
+}
+
+export const getHighestPowerIndex = (table: UserStat[]) => {
+  return first(table)
+}
+
+export const getAverageTime = (placedEntries: PlacedEntry[]) => {
+  return mean(placedEntries.map(e => e.time));
 }

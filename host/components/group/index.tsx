@@ -1,15 +1,13 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Row, Col, Typography, Empty } from 'antd';
 import { orderBy, groupBy } from 'lodash';
 
+import { TimeEntry, Filter } from '../../types';
+import { getDatesLeaderboards, makeFilteredEntries } from '../../helpers';
 import { PageComponent } from '../page';
-import { PlacedEntry, TimeEntry, Filter } from '../../types';
 
-import { StatsComponent } from './stats';
-import { TableComponent } from './table';
-import { GraphComponent } from './graph';
 import { DEFAULT_FILTER, FilterComponent } from './filter';
-import { makeStats, makeGraph, makeTable, getDatesLeaderboards, makeFilteredEntries } from '../../helpers';
+import { ContentComponent } from './content';
 
 import Style from './style.module.css';
 
@@ -25,40 +23,21 @@ const GroupComponent: FC<GroupComponentProps> = ({
   entries
 }) => {
 
-  const [placedEntries, setPlacedEntries] = useState<PlacedEntry[]>([]);
   const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
 
-  const makeData = () => {
-    // this runs only when the filter or placedEntries changes
-    const filteredEntries = makeFilteredEntries(filter, placedEntries);
-    const graph = makeGraph(filteredEntries);
-    const table = makeTable(filteredEntries);
-    const { bestTime, averageTime, bestAvePlace, highestPowerIndex, longestStreak } = makeStats(filteredEntries, table, graph);
-
-    return {
-      graph,
-      table,
-      bestTime,
-      averageTime,
-      bestAvePlace,
-      highestPowerIndex,
-      longestStreak
-    };
-  }
-
-  const dashboardData = useMemo(makeData, [makeData, placedEntries, filter]);
-
-  useEffect(() => {
-    // this runs once on load to calculate place by dates for every entry
-    const orderedEntries = orderBy(entries, 'time', 'asc');
-    const dateGroups = groupBy(orderedEntries, 'date');
-    const onloadPlacedEntries = getDatesLeaderboards(dateGroups);
-    setPlacedEntries(onloadPlacedEntries);
-  }, []);
-
+  // this runs only when the filter or placedEntries changes
+  const filteredEntries = useMemo(
+    () => {
+      const orderedEntries = orderBy(entries, 'time', 'asc');
+      const dateGroups = groupBy(orderedEntries, 'date');
+      const placedEntries = getDatesLeaderboards(dateGroups);
+      return makeFilteredEntries(filter, placedEntries)
+    },
+    [makeFilteredEntries, filter, entries]
+  );
 
   const renderContent = () => {
-    if (placedEntries.length === 0) {
+    if (entries.length === 0) {
       return (
         <Row className={Style.noContentRow}>
           <Empty />
@@ -67,17 +46,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
     }
 
     return (
-      <>
-        <StatsComponent
-          bestAvePlace={dashboardData.bestAvePlace}
-          bestTime={dashboardData.bestTime}
-          averageTime={dashboardData.averageTime}
-          highestPowerIndex={dashboardData.highestPowerIndex}
-          longestStreak={dashboardData.longestStreak}
-        />
-        <GraphComponent graph={dashboardData.graph} />
-        <TableComponent table={dashboardData.table} />
-      </>
+      <ContentComponent filteredEntries={filteredEntries} />
     );
   }
 

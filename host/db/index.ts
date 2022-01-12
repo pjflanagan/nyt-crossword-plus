@@ -7,7 +7,7 @@ const BITIO_PASSWORD = process.env.BITIO_PASSWORD || '';
 
 // Create a client using the connection information provided on bit.io.
 export const getClient = (): Client => {
-  const client = new Client({
+  const client: Client = new Client({
     user: BITIO_USERNAME,
     host: 'db.bit.io',
     database: 'bitdotio',

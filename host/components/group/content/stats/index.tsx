@@ -3,8 +3,8 @@ import { Row, Card, Statistic, Space } from 'antd';
 import { round } from 'lodash';
 import moment from 'moment';
 
-import { TimeEntry, UserStat } from '../../../types';
-import { formatDate, formatTime } from '../../../helpers';
+import { TimeEntry, UserStat } from '../../../../types';
+import { formatDate, formatTime } from '../../../../helpers';
 
 import Style from './style.module.css';
 
