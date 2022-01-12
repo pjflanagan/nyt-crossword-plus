@@ -10,12 +10,15 @@ import {
   flatten,
   first,
   filter,
-  map
+  map,
+  includes,
+  each,
+  maxBy
 } from 'lodash';
 import moment from 'moment';
 
 
-import { PlacedEntry, UserStat, DateEntries, TimeEntry, GraphType, Filter } from '../types';
+import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter } from '../types';
 
 import { formatDate, formatDBDate } from '.';
 
@@ -37,7 +40,7 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
   return placedEntries;
 }
 
-export const getDatesLeaderboards = (dateGroups: DateEntries): PlacedEntry[] => {
+export const getDatesLeaderboards = (dateGroups: DateTimeEntryMap): PlacedEntry[] => {
   const dates = keys(dateGroups);
   const placedDates = dates.map(date => getPlacedEntries(dateGroups[date]));
   return flatten(placedDates);
@@ -55,22 +58,22 @@ export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedE
   return filteredEntries;
 }
 
-export const makeGraph = (placedEntries: PlacedEntry[]): GraphType[] => {
+export const makeGraph = (placedEntries: PlacedEntry[]): Graph => {
   const dateGroups = groupBy(placedEntries, 'date');
   const dates = keys(dateGroups).sort((a, b) => moment(a).diff(moment(b)));
   return dates.map(date => {
     const dateLeaderboard = dateGroups[date];
     const averageTime = round(mean(dateLeaderboard.map(e => e.time)), 2);
     const bestTime = first(orderBy(dateLeaderboard, 'time', 'asc')).time;
-    const bestTimeUsername = map(
+    const bestTimeUsernames = map(
       filter(dateLeaderboard, (e) => e.time === bestTime),
       e => e.username
-    ).join(', ');
+    );
     return {
       date: formatDate(date),
       averageTime,
       bestTime,
-      bestTimeUsername
+      bestTimeUsernames
     }
   });
 }
@@ -102,17 +105,74 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
   });
 }
 
-export const makeStats = (placedEntries: PlacedEntry[], table: UserStat[]) => {
-  const bestTime = first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
-  const highestPowerIndex = first(table);
-  const averageTime = mean(placedEntries.map(e => e.time));
-  const bestAvePlace = reduce(table, (bestUserStat, currentUserStat) => {
+type StreakTracker = {
+  [username: string]: {
+    currentStreak: number;
+    longestStreak: number;
+  }
+}
+
+export const getLongestStreak = (graph: Graph) => {
+  let streakTracker: StreakTracker = {};
+
+  for (let i = 0; i < graph.length; ++i) {
+    const { bestTimeUsernames: todaysBestTimeUsernames } = graph[i];
+
+    each(todaysBestTimeUsernames, username => {
+      if (!streakTracker[username]) {
+        // if the entry does not exist, create it and initialize it
+        streakTracker[username] = {
+          currentStreak: 1,
+          longestStreak: 0
+        }
+      } else {
+        // if the entry does exist, add to their current streak
+        streakTracker[username].currentStreak += 1;
+      }
+    });
+
+    // for all the entries in streakTracker
+    each(Object.keys(streakTracker), ((username) => {
+      // if the currentStreak is longer than longestStreak replace it
+      const entry = streakTracker[username];
+      if (entry.currentStreak > entry.longestStreak) {
+        entry.longestStreak = entry.currentStreak;
+      }
+      // if not in todaysBestTimeUsernames, set current streak to zero
+      if (!includes(todaysBestTimeUsernames, username)) {
+        entry.currentStreak = 0;
+      }
+    }));
+  }
+
+  const streakTrackerArray = map(streakTracker, (e, username) => ({ ...e, username }));
+
+  const longestStreakEntry = maxBy(streakTrackerArray, 'longestStreak');
+  const longestStreak = longestStreakEntry?.longestStreak || 0;
+
+  return {
+    duration: longestStreak,
+    usernames: filter(streakTrackerArray, e => e.longestStreak === longestStreak).map(e => e.username),
+  }
+}
+
+export const getBestTime = (placedEntries: PlacedEntry[]) => {
+  return first(orderBy(placedEntries, ['time', 'date'], ['asc', 'desc']));
+}
+
+export const getBestAveragePlace = (table: UserStat[]) => {
+  return reduce(table, (bestUserStat, currentUserStat) => {
     if (currentUserStat.averagePlace < bestUserStat.averagePlace) {
       return currentUserStat;
     }
     return bestUserStat;
   });
-  return {
-    bestTime, averageTime, bestAvePlace, highestPowerIndex
-  }
+}
+
+export const getHighestPowerIndex = (table: UserStat[]) => {
+  return first(table)
+}
+
+export const getAverageTime = (placedEntries: PlacedEntry[]) => {
+  return mean(placedEntries.map(e => e.time));
 }

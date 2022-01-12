@@ -12,4 +12,5 @@
 
 .statsRow div {
   margin: 0 0.25em;
+  min-width: 28%;
 }
