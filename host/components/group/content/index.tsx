@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { PlacedEntry } from '../../../types';
 import { makeGraph, makeTable, getLongestStreak, getBestAveragePlace, getHighestPowerIndex, getBestTime, getAverageTime } from '../../../helpers';
@@ -15,8 +15,12 @@ const ContentComponent: FC<ContentComponentProps> = ({
   filteredEntries
 }) => {
 
-  const graph = useMemo(() => makeGraph(filteredEntries), [makeGraph, filteredEntries]);
+  const [currentUsername, setCurrentUsername] = useState<string>('');
+
+  // TODO: calculate graph with current username
+  const graph = useMemo(() => makeGraph(filteredEntries, currentUsername), [makeGraph, filteredEntries, currentUsername]);
   const table = useMemo(() => makeTable(filteredEntries), [makeTable, filteredEntries]);
+  // TODO: pass a map of best times to longest streak instead of the whole graph
   const longestStreak = useMemo(() => getLongestStreak(graph), [getLongestStreak, graph]);
   const bestAvePlace = useMemo(() => getBestAveragePlace(table), [getBestAveragePlace, table]);
   const highestPowerIndex = useMemo(() => getHighestPowerIndex(table), [getHighestPowerIndex, table]);
@@ -32,8 +36,8 @@ const ContentComponent: FC<ContentComponentProps> = ({
         highestPowerIndex={highestPowerIndex}
         longestStreak={longestStreak}
       />
-      <GraphComponent graph={graph} />
-      <TableComponent table={table} />
+      <GraphComponent graph={graph} currentUsername={currentUsername} />
+      <TableComponent table={table} currentUsername={currentUsername} setCurrentUsername={setCurrentUsername} />
     </>
   );
 }

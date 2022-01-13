@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Row, Table, Tooltip } from 'antd';
 
-import { UserStat } from '../../../../types';
+import { TableRow, UserStat } from '../../../../types';
 import { formatTime } from '../../../../helpers';
 
 import Style from './style.module.css';
@@ -64,18 +64,39 @@ const COLUMNS = [
   },
 ];
 
+
 type TableComponentProps = {
   table: UserStat[];
+  currentUsername: string;
+  setCurrentUsername: (username: string) => void;
 }
 
 const TableComponent: FC<TableComponentProps> = ({
   table,
+  currentUsername,
+  setCurrentUsername
 }) => {
+
+  const keyedTable = table.map(e => ({ ...e, key: e.username }));
+
+  const rowSelection = {
+    onChange: (_selectedRowKeys: React.Key[], selectedRows: TableRow[]) => {
+      setCurrentUsername(selectedRows[0].username);
+    },
+    getCheckboxProps: (record: TableRow) => ({
+      // disabled
+      name: record.key,
+    }),
+  };
 
   return (
     <Row className={Style.tableRow}>
       <Table
-        dataSource={table}
+        rowSelection={{
+          type: 'radio',
+          ...rowSelection,
+        }}
+        dataSource={keyedTable}
         columns={COLUMNS as any}
         pagination={{ pageSize: 20 }}
         scroll={{ y: 480, x: 900 }}

@@ -30,11 +30,17 @@ export type UserStat = {
   };
 }
 
+export type TableRow = UserStat & {
+  key: string;
+}
+
 export type GraphDateEntry = {
   date: string;
   averageTime: number;
+  medianTime: number;
   bestTime: number;
   bestTimeUsernames: string[];
+  currentUsernameTime: number | undefined;
 }
 
 export type Graph = GraphDateEntry[];
@@ -43,5 +49,5 @@ export type Graph = GraphDateEntry[];
 
 export type Filter = { // FilterState
   excludeMidis: boolean;
-  duration: 3 | 7 | 31 | false;
+  duration: 3 | 8 | 31 | false;
 };

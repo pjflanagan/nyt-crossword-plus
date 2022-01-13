@@ -18,7 +18,7 @@ import {
 import moment from 'moment';
 
 
-import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter } from '../types';
+import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter, GraphDateEntry } from '../types';
 
 import { formatDate, formatDBDate } from '.';
 
@@ -58,22 +58,45 @@ export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedE
   return filteredEntries;
 }
 
-export const makeGraph = (placedEntries: PlacedEntry[]): Graph => {
+export const median = (times: number[]) => {
+  if (times.length === 0) {
+    return 0;
+  }
+  if (times.length === 1) {
+    return times[0];
+  }
+  if (times.length % 2 === 1) {
+    return times[Math.floor(times.length / 2)];
+  }
+  return round(
+    mean([
+      times[times.length / 2],
+      times[times.length / 2 + 1]
+    ]
+    ), 2);
+}
+
+export const makeGraph = (placedEntries: PlacedEntry[], currentUsername: string): Graph => {
   const dateGroups = groupBy(placedEntries, 'date');
   const dates = keys(dateGroups).sort((a, b) => moment(a).diff(moment(b)));
-  return dates.map(date => {
+  return dates.map((date): GraphDateEntry => {
     const dateLeaderboard = dateGroups[date];
+    const orderedDateLeaderboard = orderBy(dateLeaderboard, 'time', 'asc');
     const averageTime = round(mean(dateLeaderboard.map(e => e.time)), 2);
-    const bestTime = first(orderBy(dateLeaderboard, 'time', 'asc')).time;
+    const medianTime = median(orderedDateLeaderboard.map(e => e.time));
+    const bestTime = first(orderedDateLeaderboard).time;
     const bestTimeUsernames = map(
       filter(dateLeaderboard, (e) => e.time === bestTime),
       e => e.username
     );
+    const currentUsernameTime = dateLeaderboard.find(e => e.username === currentUsername)?.time;
     return {
       date: formatDate(date),
       averageTime,
+      medianTime,
       bestTime,
-      bestTimeUsernames
+      bestTimeUsernames,
+      currentUsernameTime
     }
   });
 }

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Row, Card } from 'antd';
 import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
+import { blue, magenta } from '@ant-design/colors';
 
 import { formatTime } from '../../../../helpers';
 import { Graph } from '../../../../types';
@@ -10,6 +11,7 @@ import Style from './style.module.css';
 
 type GraphComponentProps = {
   graph: Graph;
+  currentUsername: string;
 }
 
 const formatTooltip = (value, name, props) => {
@@ -20,7 +22,8 @@ const formatTooltip = (value, name, props) => {
 }
 
 const GraphComponent: FC<GraphComponentProps> = ({
-  graph
+  graph,
+  currentUsername
 }) => {
   const breakpoints = useBreakpoint();
   const width: number = ((): number => {
@@ -39,13 +42,18 @@ const GraphComponent: FC<GraphComponentProps> = ({
   return (
     <Row className={Style.graphRow}>
       <Card className={`${Style.graphCard} graphCard`} title="Calendar">
-        <LineChart width={width} height={200} data={graph}>
+        <LineChart width={width} height={280} data={graph}>
           {breakpoints.md && <Legend verticalAlign="top" height={36} />}
           <XAxis dataKey="date" />
           <YAxis tickFormatter={(s) => formatTime(s)} />
           <Tooltip formatter={formatTooltip} />
-          <Line type="monotone" dataKey="averageTime" name='Average Time' stroke="#001529" />
-          <Line type="monotone" dataKey="bestTime" name='Best Time' stroke="#40a9ff" strokeWidth={0} dot={{ stroke: '#40a9ff', strokeWidth: 2 }} />
+          <Line type="monotone" dataKey="averageTime" name='Average Time' stroke={blue[7]} />
+          <Line type="monotone" dataKey="medianTime" name='Median Time' stroke={blue[8]} />
+          {
+            currentUsername !== '' &&
+            <Line type="monotone" dataKey="currentUsernameTime" name={currentUsername} stroke={magenta.primary} strokeWidth={0} dot={{ stroke: magenta.primary, strokeWidth: 2 }} />
+          }
+          <Line type="monotone" dataKey="bestTime" name='Best Time' stroke={blue.primary} strokeWidth={0} dot={{ stroke: blue.primary, strokeWidth: 2 }} />
         </LineChart>
       </Card>
     </Row>
