@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
-import { Row, Col, Typography, Empty } from 'antd';
+import { Row, Col, Typography, Empty, Spin } from 'antd';
 import { orderBy, groupBy } from 'lodash';
 
 import { TimeEntry, Filter } from '../../types';
@@ -16,11 +16,13 @@ const { Title } = Typography;
 type GroupComponentProps = {
   name: string;
   entries: TimeEntry[];
+  isLoading: boolean;
 }
 
 const GroupComponent: FC<GroupComponentProps> = ({
   name,
-  entries
+  entries,
+  isLoading
 }) => {
 
   const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
@@ -37,6 +39,14 @@ const GroupComponent: FC<GroupComponentProps> = ({
   );
 
   const renderContent = () => {
+    if (isLoading) {
+      return (
+        <Row className={Style.noContentRow}>
+          <Spin size="large" />
+        </Row>
+      );
+    }
+
     if (entries.length === 0) {
       return (
         <Row className={Style.noContentRow}>
