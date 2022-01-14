@@ -48,7 +48,7 @@ const StatsComponent: FC<StatsComponentProps> = ({
           value={bestAvePlace.averagePlace}
         />
       </Card>
-      <Card title="Best Time">
+      <Card title="Fastest Time">
         <Statistic
           title={`${bestTime.username} - ${formatDate(bestTime.date)}`}
           value={formatTime(bestTime.time)}

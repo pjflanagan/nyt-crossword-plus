@@ -41,6 +41,7 @@ export type GraphDateEntry = {
   bestTime: number;
   bestTimeUsernames: string[];
   currentUsernameTime: number | undefined;
+  currentUsernamePlace: number | undefined;
 }
 
 export type Graph = GraphDateEntry[];

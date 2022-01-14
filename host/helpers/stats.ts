@@ -89,14 +89,15 @@ export const makeGraph = (placedEntries: PlacedEntry[], currentUsername: string)
       filter(dateLeaderboard, (e) => e.time === bestTime),
       e => e.username
     );
-    const currentUsernameTime = dateLeaderboard.find(e => e.username === currentUsername)?.time;
+    const currentUserEntry = dateLeaderboard.find(e => e.username === currentUsername);
     return {
       date: formatDate(date),
       averageTime,
       medianTime,
       bestTime,
       bestTimeUsernames,
-      currentUsernameTime
+      currentUsernameTime: currentUserEntry?.time,
+      currentUsernamePlace: currentUserEntry?.place
     }
   });
 }

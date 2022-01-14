@@ -5,20 +5,19 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { blue, magenta } from '@ant-design/colors';
 
 import { formatTime } from '../../../../helpers';
-import { Graph } from '../../../../types';
+import { Graph, GraphDateEntry } from '../../../../types';
 
 import Style from './style.module.css';
+
+function ordinal(n) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
 
 type GraphComponentProps = {
   graph: Graph;
   currentUsername: string;
-}
-
-const formatTooltip = (value, name, props) => {
-  if (name === 'Best Time') {
-    return `${formatTime(value)} by ${props.payload.bestTimeUsernames.join(', ')}`;
-  }
-  return formatTime(value);
 }
 
 const GraphComponent: FC<GraphComponentProps> = ({
@@ -38,6 +37,20 @@ const GraphComponent: FC<GraphComponentProps> = ({
         return 280;
     }
   })();
+
+  type TooltipProps = {
+    payload: GraphDateEntry;
+  }
+
+  const formatTooltip = (value: number, name: string, props: TooltipProps) => {
+    if (name === 'Fastest Time') {
+      return `${formatTime(value)} by ${props.payload.bestTimeUsernames.join(', ')}`;
+    }
+    if (name === currentUsername) {
+      return `${formatTime(value)} for ${ordinal(props.payload.currentUsernamePlace)}`;
+    }
+    return formatTime(value);
+  }
 
   return (
     <Row className={Style.graphRow}>

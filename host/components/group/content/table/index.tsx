@@ -28,7 +28,7 @@ const COLUMNS = [
     ),
   },
   {
-    title: 'Best Time',
+    title: 'Fastest Time',
     dataIndex: 'bestTime',
     key: 'bestTime',
     sorter: (a, b) => a.bestTime - b.bestTime,
