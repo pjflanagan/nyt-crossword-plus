@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import { GroupComponent } from '../../components';
 import { TimeEntry } from '../../types';
 
-const DOMAIN = process.env.DOMAIN || '';
-
 export default function PageGroup() {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -23,9 +21,9 @@ export default function PageGroup() {
       }
 
       // const date = moment().subtract(7, 'days').format('YYYY-MM-DD');
-      let url = encodeURI(`${DOMAIN}/api/readGroupTimes?groupName=${name}`); // &startDate=${date}
+      let url = encodeURI(`/api/readGroupTimes?groupName=${name}`); // &startDate=${date}
       if (name === 'test') {
-        url = encodeURI(`${DOMAIN}/api/test`);
+        url = encodeURI(`/api/test`);
       }
 
       const resp = await fetch(url);

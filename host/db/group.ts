@@ -1,10 +1,12 @@
 
 import { Client } from 'pg';
 
+import { DB_NAME } from '.';
+
 export const readGroupTimes = async (client: Client, groupName: string) => {
   const result = await client.query(`
-    SELECT * FROM "pjflanagan/nyt_crossword_plus"."times" WHERE "username" IN (
-      SELECT username FROM "pjflanagan/nyt_crossword_plus"."group_members" WHERE "group" = '${groupName}'
+    SELECT * FROM ${DB_NAME}."times" WHERE "username" IN (
+      SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
     );
   `);
   return result.rows;
@@ -12,11 +14,11 @@ export const readGroupTimes = async (client: Client, groupName: string) => {
 
 export const readGroupTimesInRange = async (client: Client, groupName: string, startDate: string, endDate: string) => {
   const result = await client.query(`
-    SELECT * FROM "pjflanagan/nyt_crossword_plus"."times"
+    SELECT * FROM ${DB_NAME}."times"
     WHERE "date" >= DATE('${startDate}')
       AND "date" <= DATE('${endDate}')
       AND "username" IN (
-        SELECT username FROM "pjflanagan/nyt_crossword_plus"."group_members" WHERE "group" = '${groupName}'
+        SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
       );
   `);
   return result.rows;
@@ -24,8 +26,8 @@ export const readGroupTimesInRange = async (client: Client, groupName: string, s
 
 export const readGroupTimesOnDate = async (client: Client, groupName: string, date: string) => {
   const result = await client.query(`
-    SELECT * FROM "pjflanagan/nyt_crossword_plus"."times" WHERE "date" = DATE('${date}') AND "username" IN (
-      SELECT username FROM "pjflanagan/nyt_crossword_plus"."group_members" WHERE "group" = '${groupName}'
+    SELECT * FROM ${DB_NAME}."times" WHERE "date" = DATE('${date}') AND "username" IN (
+      SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
     );
   `);
   return result.rows;

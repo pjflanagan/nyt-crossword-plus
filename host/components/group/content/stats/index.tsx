@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
-import { Row, Card, Statistic, Space } from 'antd';
+import { Row, Card, Statistic } from 'antd';
 import { round } from 'lodash';
-import moment from 'moment';
 
 import { TimeEntry, UserStat } from '../../../../types';
-import { formatDate, formatTime } from '../../../../helpers';
+import { formatDate, formatTimeMMSS } from '../../../../helpers';
 
 import Style from './style.module.css';
 
@@ -51,13 +50,13 @@ const StatsComponent: FC<StatsComponentProps> = ({
       <Card title="Fastest Time">
         <Statistic
           title={`${bestTime.username} - ${formatDate(bestTime.date)}`}
-          value={formatTime(bestTime.time)}
+          value={formatTimeMMSS(bestTime.time)}
         />
       </Card>
       <Card title="Average Time">
         <Statistic
           title={<div style={{ height: '22px' }} />}
-          value={formatTime(round(averageTime, 2))}
+          value={formatTimeMMSS(round(averageTime, 2))}
         />
       </Card>
     </Row>

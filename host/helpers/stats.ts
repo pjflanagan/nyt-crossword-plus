@@ -49,7 +49,8 @@ export const getDatesLeaderboards = (dateGroups: DateTimeEntryMap): PlacedEntry[
 export const makeFilteredEntries = (filterParams: Filter, placedEntries: PlacedEntry[]) => {
   let filteredEntries = placedEntries;
   if (filterParams.excludeMidis) {
-    filteredEntries = filter(filteredEntries, (entry) => entry.moment.format('dddd') !== 'Saturday');
+    // filter the Saturday puzzle
+    filteredEntries = filter(filteredEntries, (entry) => entry.moment.day() !== 6);
   }
   if (filterParams.duration) {
     const day = moment().subtract(filterParams.duration, 'day');
@@ -136,13 +137,13 @@ type StreakTracker = {
   }
 }
 
-export const getLongestStreak = (graph: Graph) => {
+export const getLongestStreak = (bestTimeUsernamesByDate: string[][]) => {
   let streakTracker: StreakTracker = {};
 
-  for (let i = 0; i < graph.length; ++i) {
-    const { bestTimeUsernames: todaysBestTimeUsernames } = graph[i];
+  for (let i = 0; i < bestTimeUsernamesByDate.length; ++i) {
+    const daysBestTimeUsernames = bestTimeUsernamesByDate[i];
 
-    each(todaysBestTimeUsernames, username => {
+    each(daysBestTimeUsernames, username => {
       if (!streakTracker[username]) {
         // if the entry does not exist, create it and initialize it
         streakTracker[username] = {
@@ -163,7 +164,7 @@ export const getLongestStreak = (graph: Graph) => {
         entry.longestStreak = entry.currentStreak;
       }
       // if not in todaysBestTimeUsernames, set current streak to zero
-      if (!includes(todaysBestTimeUsernames, username)) {
+      if (!includes(daysBestTimeUsernames, username)) {
         entry.currentStreak = 0;
       }
     }));

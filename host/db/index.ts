@@ -18,5 +18,8 @@ export const getClient = (): Client => {
   return client;
 }
 
+// TODO: move to env
+export const DB_NAME = `"pjflanagan/nyt_crossword_plus"`
+
 export * from './times';
 export * from './group';

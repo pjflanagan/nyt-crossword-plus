@@ -4,7 +4,7 @@ import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { blue, magenta } from '@ant-design/colors';
 
-import { formatTime } from '../../../../helpers';
+import { formatTimeMMSS } from '../../../../helpers';
 import { Graph, GraphDateEntry } from '../../../../types';
 
 import Style from './style.module.css';
@@ -44,12 +44,12 @@ const GraphComponent: FC<GraphComponentProps> = ({
 
   const formatTooltip = (value: number, name: string, props: TooltipProps) => {
     if (name === 'Fastest Time') {
-      return `${formatTime(value)} by ${props.payload.bestTimeUsernames.join(', ')}`;
+      return `${formatTimeMMSS(value)} by ${props.payload.bestTimeUsernames.join(', ')}`;
     }
     if (name === currentUsername) {
-      return `${formatTime(value)} for ${ordinal(props.payload.currentUsernamePlace)}`;
+      return `${formatTimeMMSS(value)} for ${ordinal(props.payload.currentUsernamePlace)}`;
     }
-    return formatTime(value);
+    return formatTimeMMSS(value);
   }
 
   return (
@@ -58,7 +58,7 @@ const GraphComponent: FC<GraphComponentProps> = ({
         <LineChart width={width} height={280} data={graph}>
           {breakpoints.md && <Legend verticalAlign="top" height={36} />}
           <XAxis dataKey="date" />
-          <YAxis tickFormatter={(s) => formatTime(s)} />
+          <YAxis tickFormatter={(s) => formatTimeMMSS(s)} />
           <Tooltip formatter={formatTooltip} />
           <Line type="monotone" dataKey="averageTime" name='Average Time' stroke={blue[7]} />
           <Line type="monotone" dataKey="medianTime" name='Median Time' stroke={blue[8]} />

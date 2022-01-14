@@ -27,7 +27,8 @@ export default function handler(_req, res) {
   ) {
     const dateEntries = sampleSize(players, 6).map((player) => {
       let baseTime = 10 + player.weight;
-      if (date.format('dddd') === 'Saturday') {
+      if (date.day() === 6) {
+        // if the day is Saturday
         baseTime += 30;
       }
 

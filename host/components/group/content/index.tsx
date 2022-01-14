@@ -17,11 +17,11 @@ const ContentComponent: FC<ContentComponentProps> = ({
 
   const [currentUsername, setCurrentUsername] = useState<string>('');
 
-  // TODO: calculate graph with current username
   const graph = useMemo(() => makeGraph(filteredEntries, currentUsername), [makeGraph, filteredEntries, currentUsername]);
   const table = useMemo(() => makeTable(filteredEntries), [makeTable, filteredEntries]);
-  // TODO: pass a map of best times to longest streak instead of the whole graph
-  const longestStreak = useMemo(() => getLongestStreak(graph), [getLongestStreak, graph]);
+
+  const bestTimeUsernamesByDate = graph.map(e => e.bestTimeUsernames);
+  const longestStreak = useMemo(() => getLongestStreak(bestTimeUsernamesByDate), [getLongestStreak, bestTimeUsernamesByDate]);
   const bestAvePlace = useMemo(() => getBestAveragePlace(table), [getBestAveragePlace, table]);
   const highestPowerIndex = useMemo(() => getHighestPowerIndex(table), [getHighestPowerIndex, table]);
   const bestTime = useMemo(() => getBestTime(filteredEntries), [getBestTime, filteredEntries]);

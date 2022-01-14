@@ -4,7 +4,7 @@ import { filter, isEmpty, mean, orderBy } from 'lodash';
 import { TimeEntry } from '../../types';
 
 import { getClient, readGroupTimesOnDate } from '../../db';
-import { getPlacedEntries, formatTime } from '../../helpers';
+import { getPlacedEntries, formatTimeMMSS } from '../../helpers';
 
 // /api/dailyStats?groupName=<GROUP_NAME>&date=<YYYY-MM-DD>
 
@@ -35,7 +35,7 @@ const handler = async (req, res) => {
   const placedEntries = getPlacedEntries(orderBy(entries, 'time'));
   const winners = filter(placedEntries, (e) => e.place <= 3).map(e => ({
     place: e.place,
-    time: formatTime(e.time),
+    time: formatTimeMMSS(e.time),
     username: e.username
   }));
   const aveTime = mean(entries.map(e => e.time));
@@ -43,7 +43,7 @@ const handler = async (req, res) => {
   // respond
   res.status(200).json({
     winners,
-    groupAverageTime: formatTime(aveTime)
+    groupAverageTime: formatTimeMMSS(aveTime)
   });
 }
 

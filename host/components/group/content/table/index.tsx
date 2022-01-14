@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Row, Table, Tooltip } from 'antd';
 
 import { TableRow, UserStat } from '../../../../types';
-import { formatTime } from '../../../../helpers';
+import { formatTimeMMSS } from '../../../../helpers';
 
 import Style from './style.module.css';
 
@@ -33,7 +33,7 @@ const COLUMNS = [
     key: 'bestTime',
     sorter: (a, b) => a.bestTime - b.bestTime,
     sortDirections: ['ascend'],
-    render: (bestTime) => formatTime(bestTime)
+    render: (bestTime: number) => formatTimeMMSS(bestTime)
   },
   {
     title: 'Average Time',
@@ -41,7 +41,7 @@ const COLUMNS = [
     key: 'averageTime',
     sorter: (a, b) => a.averageTime - b.averageTime,
     sortDirections: ['ascend'],
-    render: (averageTime) => formatTime(averageTime)
+    render: (averageTime: number) => formatTimeMMSS(averageTime)
   },
   {
     title: 'First Place Finishes',
