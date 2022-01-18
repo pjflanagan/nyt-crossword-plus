@@ -62,7 +62,7 @@ const GraphComponent: FC<GraphComponentProps> = ({
           <Tooltip formatter={formatTooltip} />
           <Line type="monotone" dataKey="averageTime" name='Average Time' stroke={blue[7]} />
           <Line type="monotone" dataKey="medianTime" name='Median Time' stroke={blue[8]} />
-          <Line type="monotone" dataKey="bestTime" name='Best Time' stroke={blue.primary} strokeWidth={0} dot={{ stroke: blue.primary, strokeWidth: 2 }} />s
+          <Line type="monotone" dataKey="bestTime" name='Fastest Time' stroke={blue.primary} strokeWidth={0} dot={{ stroke: blue.primary, strokeWidth: 2 }} />s
           {
             currentUsername !== '' &&
             <Line type="monotone" dataKey="currentUsernameTime" name={currentUsername} stroke={magenta.primary} strokeWidth={0} dot={{ stroke: magenta.primary, strokeWidth: 2 }} />

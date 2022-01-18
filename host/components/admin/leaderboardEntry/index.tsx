@@ -65,7 +65,7 @@ const LeaderboardEntryComponent: FC = () => {
         return;
       }
       // on success, unset all the leaderboard entries and show success message
-      setSuccessMessage(`Added new entries for ${entries.map(e => e.username).join(',')} on ${values.date.format('YYYY-MM-DD')}`);
+      setSuccessMessage(`Added new entries for ${data.newEntries.map(e => e.username).join(',')} on ${values.date.format('YYYY-MM-DD')}`);
       form.resetFields(['entries'])
     });
   };

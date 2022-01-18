@@ -14,6 +14,7 @@ https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serve
 
 ## v2: Improvements
 
+- [ ] Chrome extension inserts the API key into the admin page
 - [ ] Load only 1 week of data, separate request for the month and all
 - [ ] more restricted CORS
 - [ ] appearance improvements
