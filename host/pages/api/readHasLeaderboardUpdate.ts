@@ -2,7 +2,7 @@
 
 import { isEmpty } from 'lodash';
 
-import { getClient, getCountOfTimesOnDate } from '../../db';
+import { getClient, getCountOfTimesOnDate } from 'db';
 
 const handler = async (req, res) => {
   const { date } = req.query;

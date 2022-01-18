@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
-import { TimeEntry } from '../../types';
 
-import { getClient, readGroupTimes } from '../../db';
+import { TimeEntry } from 'types';
+import { getClient, readGroupTimes } from 'db';
 
 // v3: put the password on this
 const handler = async (req, res) => {

@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { getCurrentlyAvailableCrosswordDate } from '../../helpers';
+import { getCurrentlyAvailableCrosswordDate } from 'helpers';
+
+import { PageComponent } from '../page';
 
 import { GroupLoginComponent } from './groupLogin';
 import { NytActionsComponents } from './nytActions';
-import { PageComponent } from '../page';
 
 const MainComponent: FC = () => {
 

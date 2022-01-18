@@ -17,18 +17,12 @@ https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serve
 - [ ] Load only 1 week of data, separate request for the month and all
 - [ ] more restricted CORS
 - [ ] appearance improvements
-- [ ] get leaderboard needs update flag
-
-`/api/hasLeaderboardUpdate`
-- get if the leaderboard has an entry for today, so we can put a tag on the leaderboard
-
 - [ ] Daily Selenium data scrape, go to url and scrape the data, then upload
-`/api/scrapeLeaderboard`
-- Use Autocode to trigger this every day 10 minutes before the crossword closes
+  `/api/scrapeLeaderboard`
+  - Use Autocode to trigger this every day 10 minutes before the crossword closes
 
 ## v3: Password Protected Groups
 
-- [ ] Fix tsconfig to get rid of ../../../
 - [ ] Password protect groups
   - Home Page
       - Login and verify password, store a cookie if it is valid

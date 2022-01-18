@@ -1,6 +1,6 @@
 
-import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimes } from '../../db';
-import { TimeEntry } from '../../types';
+import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimes } from 'db';
+import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
 
@@ -28,7 +28,12 @@ const handler = async (req, res) => {
   if (!reqEntries || reqEntries.length === 0) {
     return res.status(400).json({ errorMessage: `No entries found on request body` });
   }
+
+  // get the date off of the first entry (they should all be the same)
   const date = reqEntries[0].date;
+  if (!date || date.length === 0) {
+    return res.status(400).json({ errorMessage: `No date found on entries` });
+  }
 
   // read existing times from fauna
   const client = getClient();
@@ -45,6 +50,7 @@ const handler = async (req, res) => {
   // if there are no new entries, respond early
   if (newEntries.length === 0) {
     return res.status(200).json({
+      errorMessage: `No new entries to add`,
       newEntries
     });
   }

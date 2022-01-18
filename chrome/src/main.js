@@ -5,7 +5,7 @@ const COLORS = {
   GREEN: 'green',
 }
 
-// Formmating and Parsing
+// Formatting and Parsing
 
 function prefix0(num) {
   return (num.length < 2) ? '0' + num : num;

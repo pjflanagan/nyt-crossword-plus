@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-// import moment from 'moment';
 
-import { GroupComponent } from '../../components';
-import { TimeEntry } from '../../types';
+import { GroupComponent } from 'components';
+import { TimeEntry } from 'types';
 
 export default function PageGroup() {
 

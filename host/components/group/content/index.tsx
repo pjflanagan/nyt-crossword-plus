@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 
-import { PlacedEntry } from '../../../types';
-import { makeGraph, makeTable, getLongestStreak, getBestAveragePlace, getHighestPowerIndex, getBestTime, getAverageTime } from '../../../helpers';
+import { PlacedEntry } from 'types';
+import { makeGraph, makeTable, getLongestStreak, getBestAveragePlace, getHighestPowerIndex, getBestTime, getAverageTime } from 'helpers';
 
 import { StatsComponent } from './stats';
 import { TableComponent } from './table';

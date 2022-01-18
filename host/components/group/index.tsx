@@ -2,8 +2,9 @@ import React, { FC, useMemo, useState } from 'react';
 import { Row, Col, Typography, Empty, Spin } from 'antd';
 import { orderBy, groupBy } from 'lodash';
 
-import { TimeEntry, Filter } from '../../types';
-import { getDatesLeaderboards, makeFilteredEntries } from '../../helpers';
+import { TimeEntry, Filter } from 'types';
+import { getDatesLeaderboards, makeFilteredEntries } from 'helpers';
+
 import { PageComponent } from '../page';
 
 import { DEFAULT_FILTER, FilterComponent } from './filter';

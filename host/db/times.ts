@@ -2,7 +2,8 @@
 import { Client } from 'pg';
 import { flatten } from 'lodash';
 
-import { TimeEntry } from '../types';
+import { TimeEntry } from 'types';
+
 import { DB_NAME } from '.';
 
 export const getCountOfTimesOnDate = async (client: Client, date: string): Promise<string[]> => {

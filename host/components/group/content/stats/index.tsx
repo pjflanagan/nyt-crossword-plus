@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Row, Card, Statistic } from 'antd';
 import { round } from 'lodash';
 
-import { TimeEntry, UserStat } from '../../../../types';
-import { formatDate, formatTimeMMSS } from '../../../../helpers';
+import { TimeEntry, UserStat } from 'types';
+import { formatDate, formatTimeMMSS } from 'helpers';
 
 import Style from './style.module.css';
 

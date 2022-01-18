@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
-import { TimeEntry } from '../../types';
 
-import { getClient, readGroupTimesInRange } from '../../db';
+import { TimeEntry } from 'types';
+import { getClient, readGroupTimesInRange } from 'db';
 
 const handler = async (req, res) => {
   const { groupName, startDate, endDate } = req.query;

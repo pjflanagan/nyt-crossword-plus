@@ -1,10 +1,9 @@
 
-
 import { filter, isEmpty, mean, orderBy } from 'lodash';
-import { TimeEntry } from '../../types';
 
-import { getClient, readGroupTimesOnDate } from '../../db';
-import { getPlacedEntries, formatTimeMMSS } from '../../helpers';
+import { TimeEntry } from 'types';
+import { getClient, readGroupTimesOnDate } from 'db';
+import { getPlacedEntries, formatTimeMMSS } from 'helpers';
 
 // /api/dailyStats?groupName=<GROUP_NAME>&date=<YYYY-MM-DD>
 

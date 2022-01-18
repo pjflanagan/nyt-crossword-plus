@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Radio, Checkbox, Space } from 'antd';
 
-import { Filter } from '../../../types';
+import { Filter } from 'types';
 
 import Style from './style.module.css';
 

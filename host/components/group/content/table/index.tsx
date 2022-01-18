@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Row, Table, Tooltip } from 'antd';
 
-import { TableRow, UserStat } from '../../../../types';
-import { formatTimeMMSS } from '../../../../helpers';
+import { TableRow, UserStat } from 'types';
+import { formatTimeMMSS } from 'helpers';
 
 import Style from './style.module.css';
 

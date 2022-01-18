@@ -45,7 +45,7 @@ const winnersText = data.winners.map(
   p => `${p.place}. ${p.username} - ${p.time}`
 );
 const content = `
-Congratulations to Today's Winners:
+Congratulations to today's winners:
 ${winnersText.join('\n')}
 
 The group's average time was ${data.groupAverageTime}`;

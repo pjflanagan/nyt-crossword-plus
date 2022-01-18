@@ -18,7 +18,7 @@ import {
 import moment from 'moment';
 
 
-import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter, GraphDateEntry } from '../types';
+import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter, GraphDateEntry } from 'types';
 
 import { formatDate, formatDBDate } from '.';
 

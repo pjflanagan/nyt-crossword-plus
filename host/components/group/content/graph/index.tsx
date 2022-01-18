@@ -4,8 +4,8 @@ import { LineChart, XAxis, YAxis, Legend, Line, Tooltip } from 'recharts';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { blue, magenta } from '@ant-design/colors';
 
-import { formatTimeMMSS } from '../../../../helpers';
-import { Graph, GraphDateEntry } from '../../../../types';
+import { formatTimeMMSS } from 'helpers';
+import { Graph, GraphDateEntry } from 'types';
 
 import Style from './style.module.css';
 

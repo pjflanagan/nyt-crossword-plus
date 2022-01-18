@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Progress } from 'antd';
 import moment from 'moment';
 
-import { formatTimeHHMM, getTimeUntilNextRelease } from '../../../../helpers';
+import { formatTimeHHMM, getTimeUntilNextRelease } from 'helpers';
 
 const HOUR_IN_S = 60 * 60;
 const DAY_IN_S = 24 * HOUR_IN_S;
