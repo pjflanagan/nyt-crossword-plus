@@ -5,6 +5,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 import { TimeEntry } from 'types';
+import { trim } from 'lodash';
 
 type FormData = {
   apiKey: string;
@@ -15,6 +16,7 @@ type FormData = {
   }[];
 }
 
+// TODO: maybe the admin page should replace into, incase a previous value was wrong
 const fetchBatchCreate = async (apiKey: string, entries: TimeEntry[]) => {
   try {
     // we do not store the response because we are using no-cors, which makes
@@ -53,7 +55,7 @@ const LeaderboardEntryComponent: FC = () => {
     const entries = values.entries.map(e => {
       return {
         time: e.time.minutes() * 60 + e.time.seconds(),
-        username: e.username,
+        username: trim(e.username),
         date: values.date.format('YYYY-MM-DD')
       }
     });

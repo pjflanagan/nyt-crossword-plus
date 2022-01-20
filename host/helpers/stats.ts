@@ -63,18 +63,12 @@ export const median = (times: number[]) => {
   if (times.length === 0) {
     return 0;
   }
-  if (times.length === 1) {
-    return times[0];
-  }
-  if (times.length % 2 === 1) {
-    return times[Math.floor(times.length / 2)];
-  }
-  return round(
-    mean([
-      times[times.length / 2],
-      times[times.length / 2 + 1]
-    ]
-    ), 2);
+
+  times.sort((a, b) => a - b);
+  const half = Math.floor(times.length / 2);
+  if (times.length % 2)
+    return times[half];
+  return mean([times[half - 1], times[half]]);
 }
 
 export const makeGraph = (placedEntries: PlacedEntry[], currentUsername: string): Graph => {
