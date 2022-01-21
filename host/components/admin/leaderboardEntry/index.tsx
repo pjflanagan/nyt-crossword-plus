@@ -57,7 +57,7 @@ const LeaderboardEntryComponent: FC = () => {
   const renderSuccessMessage = () => {
     return (
       <>
-        <h1>{`Admin update for ${successData.date.format('YYYY-MM-DD')}`}</h1>
+        <p>{`Admin update for ${successData.date.format('YYYY-MM-DD')}`}</p>
         <ul>
           <li>{userEntriesBulletPoint('Created entries', successData.newEntries)}</li>
           <li>{userEntriesBulletPoint('Updated entries', successData.updateEntries)}</li>
@@ -99,6 +99,16 @@ const LeaderboardEntryComponent: FC = () => {
 
   return (
     <Card title="Manually Enter Leaderboard">
+
+      <p>This form can be used to enter, update, and delete times on any day.</p>
+      <ul>
+        <li>The API Key is required to update the leaderboard</li>
+        <li>Only enter leaderboard times for one date per submission</li>
+        <li>Usernames are case sensitive</li>
+        <li>Entering a time of 0 will delete an entry</li>
+      </ul>
+      <p>{`Use this carefully and please don't cheat`}</p>
+
       <Form
         form={form}
         name="manual_leaderboard_entry"
