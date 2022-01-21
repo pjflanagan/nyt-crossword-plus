@@ -15,6 +15,7 @@ export type DateTimeEntryMap = {
 export type PlacedEntry = TimeEntry & {
   place: number;
   moment: moment.Moment;
+  dayScore: number;
 }
 
 export type UserStat = {
@@ -27,7 +28,7 @@ export type UserStat = {
   power: {
     rating: number;
     index: number;
-  };
+  }
 }
 
 export type TableRow = UserStat & {

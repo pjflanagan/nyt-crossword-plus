@@ -13,7 +13,8 @@ import {
   map,
   includes,
   each,
-  maxBy
+  maxBy,
+  last
 } from 'lodash';
 import moment from 'moment';
 
@@ -22,10 +23,33 @@ import { PlacedEntry, UserStat, DateTimeEntryMap, TimeEntry, Graph, Filter, Grap
 
 import { formatDate, formatDBDate } from '.';
 
+type PowerRatingParams = {
+  fastestTime: number;
+  slowestTime: number;
+  participantCount: number;
+  time: number;
+  place: number;
+}
+
+const getDayScore = ({
+  fastestTime,
+  slowestTime,
+  participantCount,
+  time,
+  place,
+}: PowerRatingParams): number => {
+  const placeScore = (participantCount - place) / participantCount;
+  const timeScore = (slowestTime - time) / (slowestTime - fastestTime);
+  return (placeScore + timeScore) / 2;
+}
+
 export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => {
   const placedEntries = [];
   let lastTime = 0;
   let place = 0;
+  const fastestTime = first(orderedEntries).time;
+  const slowestTime = last(orderedEntries).time;
+  const participantCount = orderedEntries.length;
   orderedEntries.forEach((entry) => {
     if (lastTime !== entry.time) {
       ++place;
@@ -34,7 +58,14 @@ export const getPlacedEntries = (orderedEntries: TimeEntry[]): PlacedEntry[] => 
     placedEntries.push({
       ...entry,
       place,
-      moment: formatDBDate(entry.date)
+      moment: formatDBDate(entry.date),
+      dayScore: getDayScore({
+        fastestTime,
+        slowestTime,
+        participantCount,
+        time: entry.time,
+        place
+      }),
     });
   });
   return placedEntries;
@@ -99,11 +130,13 @@ export const makeGraph = (placedEntries: PlacedEntry[], currentUsername: string)
 
 export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
   const usernameGroups = groupBy(placedEntries, 'username');
+  const dayCount = keys(groupBy(placedEntries, 'date')).length;
   const usernames = keys(usernameGroups);
-  const userStats = usernames.map(username => {
+  const userStats: UserStat[] = usernames.map(username => {
     const userEntries = usernameGroups[username];
     const userTimes = userEntries.map(e => e.time);
     const userPlaces = userEntries.map(e => e.place);
+    const userScores = userEntries.map(e => e.dayScore);
     const averagePlace = round(mean(userPlaces), 2);
     return {
       username,
@@ -113,9 +146,9 @@ export const makeTable = (placedEntries: PlacedEntry[]): UserStat[] => {
       averagePlace,
       gamesPlayed: userEntries.length,
       power: {
-        rating: round(userEntries.length / averagePlace * 100, 2),
-        index: 0,
-      }
+        rating: round(1000 * sum(userScores) / dayCount, 2),
+        index: undefined,
+      },
     };
   });
   return orderBy(userStats, 'power.rating', 'desc').map((userStat, i) => {

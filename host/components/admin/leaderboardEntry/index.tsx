@@ -38,8 +38,14 @@ const fetchBatchCreate = async (apiKey: string, entries: TimeEntry[]) => {
 }
 
 const userEntriesBulletPoint = (actionTitle: string, entries: TimeEntry[]) => {
-  const entriesString = (entries.length === 0) ? 'None' : entries.map(e => e.username).join(',');
-  return `${actionTitle}: ${entriesString}`
+  if (entries.length === 0) {
+    return null;
+  }
+  return (
+    <li>
+      {`${actionTitle}: ${entries.map(e => e.username).join(',')}`}
+    </li>
+  );
 }
 
 const LeaderboardEntryComponent: FC = () => {
@@ -59,9 +65,9 @@ const LeaderboardEntryComponent: FC = () => {
       <>
         <p>{`Admin update for ${successData.date.format('YYYY-MM-DD')}`}</p>
         <ul>
-          <li>{userEntriesBulletPoint('Created entries', successData.newEntries)}</li>
-          <li>{userEntriesBulletPoint('Updated entries', successData.updateEntries)}</li>
-          <li>{userEntriesBulletPoint('Deleted entries', successData.deleteEntries)}</li>
+          {userEntriesBulletPoint('Created entries', successData.newEntries)}
+          {userEntriesBulletPoint('Updated entries', successData.updateEntries)}
+          {userEntriesBulletPoint('Deleted entries', successData.deleteEntries)}
         </ul>
       </>
     );

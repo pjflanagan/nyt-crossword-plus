@@ -18,7 +18,7 @@ const COLUMNS = [
     title: 'Power Index',
     dataIndex: 'power',
     key: 'power',
-    sorter: (a, b) => a.power.index - b.power.index,
+    sorter: (a, b) => a.powerRating - b.powerRating,
     sortDirections: ['ascend'],
     defaultSortOrder: 'ascend',
     render: (power) => (
