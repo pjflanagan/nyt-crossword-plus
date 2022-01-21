@@ -1,8 +1,16 @@
 
-import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimes } from 'db';
+import { getClient, getEntriesOnDate, writeTimes, updateTimes, deleteTimes } from 'db';
 import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
+
+/*
+TODO: headers
+https://css-tricks.com/accessing-data-netlify-functions-react/
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS", 
+*/
 
 type BatchCreateRequestBody = {
   entries: TimeEntry[]
@@ -37,35 +45,61 @@ const handler = async (req, res) => {
 
   // read existing times from fauna
   const client = getClient();
-  let prevUsernames: string[];
+  let prevEntries: [string, number][];
   try {
-    prevUsernames = await getUsernamesWhoHavePlayedOnDate(client, date);
+    prevEntries = await getEntriesOnDate(client, date);
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
   // filter existing from new request
-  const newEntries = reqEntries.filter(reqEntry => !prevUsernames.includes(reqEntry.username));
+  const updateEntries = [];
+  const newEntries = [];
+  const deleteEntries = [];
+  reqEntries.forEach(reqEntry => {
+    const prevEntryForUser = prevEntries.find(e => e[0] === reqEntry.username);
+    if (!prevEntryForUser && reqEntry.time !== 0) {
+      // if there is no old entry and the new entry time isn't 0, add it to new entries
+      newEntries.push(reqEntry);
+    } else if (prevEntryForUser && prevEntryForUser[1] !== reqEntry.time) {
+      // if there is an entry that is different than before
+      if (reqEntry.time === 0) {
+        // if the time is 0, consider that a delete
+        deleteEntries.push(reqEntry);
+      } else {
+        // else that is an update
+        updateEntries.push(reqEntry);
+      }
+    }
+  });
 
   // if there are no new entries, respond early
-  if (newEntries.length === 0) {
+  if (newEntries.length === 0 && updateEntries.length === 0 && deleteEntries.length === 0) {
     return res.status(200).json({
       errorMessage: `No new entries to add`,
-      newEntries
+      newEntries,
+      updateEntries,
+      deleteEntries
     });
   }
 
   // otherwise, insert newEntries
   try {
-    await writeTimes(client, newEntries);
+    await Promise.all([
+      writeTimes(client, newEntries),
+      updateTimes(client, updateEntries),
+      deleteTimes(client, deleteEntries),
+    ]);
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to insert data, ${e}` });
   }
 
   // respond
   return res.status(200).json({
-    successMessage: 'Added new entries',
-    newEntries
+    successMessage: 'Updated entries',
+    newEntries,
+    updateEntries,
+    deleteEntries
   });
 }
 

@@ -16,7 +16,6 @@ type FormData = {
   }[];
 }
 
-// TODO: maybe the admin page should replace into, incase a previous value was wrong
 const fetchBatchCreate = async (apiKey: string, entries: TimeEntry[]) => {
   try {
     // we do not store the response because we are using no-cors, which makes
@@ -33,22 +32,40 @@ const fetchBatchCreate = async (apiKey: string, entries: TimeEntry[]) => {
     return data;
   } catch (e) {
     return {
-      errorMessage: 'Unable to upload entries'
+      errorMessage: 'Unable to update entries'
     }
   }
+}
+
+const userEntriesBulletPoint = (actionTitle: string, entries: TimeEntry[]) => {
+  const entriesString = (entries.length === 0) ? 'None' : entries.map(e => e.username).join(',');
+  return `${actionTitle}: ${entriesString}`
 }
 
 const LeaderboardEntryComponent: FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [successData, setSuccessData] = useState(null);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 8000);
-  }, [successMessage]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setSuccessMessage(null);
+  //   }, 8000);
+  // }, [successMessage]);
+
+  const renderSuccessMessage = () => {
+    return (
+      <>
+        <h1>{`Admin update for ${successData.date.format('YYYY-MM-DD')}`}</h1>
+        <ul>
+          <li>{userEntriesBulletPoint('Created entries', successData.newEntries)}</li>
+          <li>{userEntriesBulletPoint('Updated entries', successData.updateEntries)}</li>
+          <li>{userEntriesBulletPoint('Deleted entries', successData.deleteEntries)}</li>
+        </ul>
+      </>
+    );
+  }
 
   const onFinish = (values: FormData) => {
     setErrorMessage(null);
@@ -67,7 +84,10 @@ const LeaderboardEntryComponent: FC = () => {
         return;
       }
       // on success, unset all the leaderboard entries and show success message
-      setSuccessMessage(`Added new entries for ${data.newEntries.map(e => e.username).join(',')} on ${values.date.format('YYYY-MM-DD')}`);
+      setSuccessData({
+        date: values.date,
+        ...data
+      });
       form.resetFields(['entries'])
     });
   };
@@ -187,13 +207,13 @@ const LeaderboardEntryComponent: FC = () => {
         />
       }
       {
-        successMessage && <Alert
+        successData && <Alert
           message="Success"
-          description={successMessage}
+          description={renderSuccessMessage()}
           type="success"
           closable
           style={{ maxWidth: '480px' }}
-          onClose={() => setSuccessMessage(null)}
+          onClose={() => setSuccessData(null)}
         />
       }
     </Card>
