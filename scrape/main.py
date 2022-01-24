@@ -2,8 +2,8 @@ import requests
 import logging
 from bs4 import BeautifulSoup as soup
 from datetime import datetime
-import csv
 import os
+import json
 
 def get_cookie(username, password):
     """Fetches a login cookie from the NYT api
@@ -12,6 +12,7 @@ def get_cookie(username, password):
         password (string): Password to use.
 
     Returns: String containing the login cookie fetched using the provided credentials.
+    Raises: ValueError if cookie is not returned
     """
 
     login_resp = requests.post(
@@ -64,7 +65,7 @@ def scrape_leaderboard(cookie):
                 time = (60 * int(minutes)) + int(seconds)
 
                 if name.endswith('(you)'):
-                    name = name.split()[0]
+                    name.replace('(you)', '').strip()
 
                 entries.append({
                     'username': name, 
@@ -82,14 +83,19 @@ def save_entries(entries):
         entries (list(dict)): Entries to send to the backend
     """
 
-    logging.info('Scraped entries: {entries}'.format(entries=entries))
-
     url = ('https://nytcrosswordplus.flanny.app/api/times/write?k={api_key}').format(api_key=os.environ['API_KEY'])
-    save_entries_response = requests.post(url, data={
+    request_body = {
         'entries': entries,
-    })
+    }
+    serialized_body = json.dumps(request_body)
+    logging.info('Serialized payload: {payload}'.format(payload=request_body))
 
-    logging.info('Received response: {response}'.format(response=save_entries_response))
+    save_entries_response = requests.post(url, data=serialized_body)
+
+    if save_entries_response.ok:
+        logging.info('Received successful response: {response}'.format(response=save_entries_response.json()))
+    else:
+        logging.error('Received error response: {response}'.format(response=save_entries_response.json()))
 
 def main(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
