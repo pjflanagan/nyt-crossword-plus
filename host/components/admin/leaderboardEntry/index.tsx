@@ -22,7 +22,7 @@ const fetchAdminLeaderboard = async (apiKey: string, entries: TimeEntry[]) => {
     // the response "opaque" and unreadable, instead we just record that the 
     // request was sent, not any result from the request
     const resp = await fetch(
-      `/api/leaderboard/write/admin?k=${apiKey}`,
+      `/api/times/write/admin?k=${apiKey}`,
       {
         method: 'POST',
         body: JSON.stringify({ entries }),
