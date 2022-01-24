@@ -72,18 +72,3 @@ const handler = async (req, res) => {
 }
 
 export default handler;
-
-/*
-
-nytcrossword.flanny.app/api/leaderboard/write?k=<API_KEY>
-{
-  entries: [
-    {
-      date: "YYYY-MM-DD",
-      time: 74 (time in seconds)
-      username: "User Name" (case sensitive)
-    }
-  ]
-}
-You can just send all the updates at once 
-*/

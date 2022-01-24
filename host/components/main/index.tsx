@@ -14,17 +14,17 @@ const MainComponent: FC = () => {
   useEffect(() => {
     const fetchInitData = async () => {
       const date = getCurrentlyAvailableCrosswordDate();
-      const url = encodeURI(`/api/leaderboard/read/hasUpdate?date=${date}`);
+      const url = encodeURI(`/api/times/read/entryCount?date=${date}`);
 
       const resp = await fetch(url);
-      let { leaderboardEntryCount: _, hasLeaderboardUpdate, errorMessage } = await resp.json();
+      let { entryCount: _, hasEntries, errorMessage } = await resp.json();
 
       if (errorMessage && errorMessage !== '') {
         console.error(errorMessage);
         return;
       }
 
-      setLeaderboardNeedsUpdate(!hasLeaderboardUpdate);
+      setLeaderboardNeedsUpdate(!hasEntries);
     };
 
     fetchInitData();

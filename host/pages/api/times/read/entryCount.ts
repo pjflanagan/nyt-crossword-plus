@@ -24,8 +24,8 @@ const handler = async (req, res) => {
 
   // respond
   res.status(200).json({
-    leaderboardEntryCount: count,
-    hasLeaderboardUpdate: count > 0
+    entryCount: count,
+    hasEntries: count > 0
   });
 }
 
