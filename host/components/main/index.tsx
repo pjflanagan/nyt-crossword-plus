@@ -14,7 +14,7 @@ const MainComponent: FC = () => {
   useEffect(() => {
     const fetchInitData = async () => {
       const date = getCurrentlyAvailableCrosswordDate();
-      const url = encodeURI(`/api/readHasLeaderboardUpdate?date=${date}`);
+      const url = encodeURI(`/api/leaderboard/read/hasUpdate?date=${date}`);
 
       const resp = await fetch(url);
       let { leaderboardEntryCount: _, hasLeaderboardUpdate, errorMessage } = await resp.json();

@@ -17,7 +17,7 @@ function getFormattedDate() {
 // send the http request
 const date = getFormattedDate();
 let result = await lib.http.request['@1.1.6'].get({
-  url: `https://nytcrosswordplus.flanny.app/api/readDailyStats`,
+  url: `https://nytcrosswordplus.flanny.app/api/group/read/dailyStats`,
   queryParams: {
     'groupName': '',
     'date': date

@@ -16,13 +16,13 @@ type FormData = {
   }[];
 }
 
-const fetchBatchCreate = async (apiKey: string, entries: TimeEntry[]) => {
+const fetchAdminLeaderboard = async (apiKey: string, entries: TimeEntry[]) => {
   try {
     // we do not store the response because we are using no-cors, which makes
     // the response "opaque" and unreadable, instead we just record that the 
     // request was sent, not any result from the request
     const resp = await fetch(
-      `/api/batchCreate?k=${apiKey}`,
+      `/api/leaderboard/write/admin?k=${apiKey}`,
       {
         method: 'POST',
         body: JSON.stringify({ entries }),
@@ -82,8 +82,8 @@ const LeaderboardEntryComponent: FC = () => {
         date: values.date.format('YYYY-MM-DD')
       }
     });
-    // fetch the batchCreate endpoint with the values
-    fetchBatchCreate(values.apiKey, entries).then((data) => {
+    // fetch the writeAdminTime endpoint with the values
+    fetchAdminLeaderboard(values.apiKey, entries).then((data) => {
       // if there is an error message, then post that
       if (data.errorMessage && data.errorMessage !== '') {
         setErrorMessage(data.errorMessage);

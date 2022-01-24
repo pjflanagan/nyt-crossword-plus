@@ -89,7 +89,7 @@ async function submitEntries(entries) {
     // the response "opaque" and unreadable, instead we just record that the 
     // request was sent, not any result from the request
     await fetch(
-      `http://${DOMAIN}/api/batchCreate?k=${WRITE_API_KEY}`,
+      `http://${DOMAIN}/api/leaderboard/write?k=${WRITE_API_KEY}`,
       {
         method: 'POST',
         mode: 'no-cors',

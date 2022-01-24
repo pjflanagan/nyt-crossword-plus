@@ -4,14 +4,6 @@ import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
 
-/*
-TODO: headers
-https://css-tricks.com/accessing-data-netlify-functions-react/
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS", 
-*/
-
 type BatchCreateRequestBody = {
   entries: TimeEntry[]
 };

@@ -20,9 +20,9 @@ export default function PageGroup() {
       }
 
       // const date = moment().subtract(7, 'days').format('YYYY-MM-DD');
-      let url = encodeURI(`/api/readGroupTimes?groupName=${name}`); // &startDate=${date}
+      let url = encodeURI(`/api/group/read?groupName=${name}`); // &startDate=${date}
       if (name === 'test') {
-        url = encodeURI(`/api/test`);
+        url = encodeURI(`/api/group/read/test`);
       }
 
       const resp = await fetch(url);
