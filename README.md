@@ -1,19 +1,23 @@
 
-# NYT Crossword
+# NYT Crossword Plus
 
-## Chrome
-
-This is a simple chrome extension that runs every time a user loads the leaderboard and stores any new results found. For security, this is an unlisted Chrome extension.
-
-- Load all usernames and times for date
-- If the username is not in there, add it
-
-To install, see the `README.md` file in `./chrome`.
-
-## AutoCode
-
-A Discord bot that messages with daily results.
+This app is a stat sheet for the NYT Daily Mini Crossword leaderboard. It is made up of several parts outlined below.
 
 ## Web
 
-This is a simple leaderboard webpage that displays a leaderboard for the crossword. There is also a collection of Next.js API functions that read and write to the Bit.io db.
+This is a simple webserver that features:
+- A leaderboard page with history and stats 
+- Next.js API endpoints that read and write to the Bit.io db
+- An admin page for manual leaderboard entry
+
+## Scrape
+
+This is a leaderboard scraper that runs on Google Cloud once a day 5 minutes before the new crossword is released using Python and BeautifulSoup.
+
+## AutoCode
+
+This is a Discord bot that messages a group chat with daily results.
+
+## Chrome
+
+This is a simple Chrome extension that runs every time a user loads the leaderboard and stores any new results found. Because the scraper is being run daily, the Chrome extension is no longer the primary means of updating the db and serves only as a redundancy.

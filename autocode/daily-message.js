@@ -1,3 +1,7 @@
+
+const GROUP_NAME = '';
+const CHANNEL_ID = '';
+
 const lib = require('lib')({ token: process.env.STDLIB_SECRET_TOKEN });
 
 function prefix0(num) {
@@ -19,7 +23,7 @@ const date = getFormattedDate();
 let result = await lib.http.request['@1.1.6'].get({
   url: `https://nytcrosswordplus.flanny.app/api/group/read/dailyStats`,
   queryParams: {
-    'groupName': '',
+    'groupName': GROUP_NAME,
     'date': date
   }
 });
@@ -52,6 +56,6 @@ The group's average time was ${data.groupAverageTime}`;
 
 // send to discord
 await lib.discord.channels['@0.0.6'].messages.create({
-  channel_id: '',
+  channel_id: CHANNEL_ID,
   content,
 });
