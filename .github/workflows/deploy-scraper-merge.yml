@@ -28,7 +28,7 @@ jobs:
           runtime: python37
           project_id: '${{ env.PROJECT_ID }}'
           entry_point: main 
-          event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+          event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: 'projects/${{ env.PROJECT_ID }}/topics/scrape-scheduler'
           timeout: 540
           env_vars: 'API_KEY=${{ secrets.BACKEND_API_KEY }}'
