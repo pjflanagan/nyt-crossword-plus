@@ -27,6 +27,7 @@ jobs:
           name: scrapeCrosswordLeaderboard
           runtime: python37
           project_id: '${{ env.PROJECT_ID }}'
+          source_dir: scrape
           entry_point: main 
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: 'projects/${{ env.PROJECT_ID }}/topics/scrape-scheduler'
