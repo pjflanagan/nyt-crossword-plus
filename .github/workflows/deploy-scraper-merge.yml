@@ -1,0 +1,36 @@
+name: Deploy Cloud Function
+on:
+  push:
+    paths:
+    - 'scrape/**'
+    workflow_dispatch:
+
+env:
+  PROJECT_ID: nytcrossword-9fc50
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Authenticate with GCP Service account 
+        id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Deploy cloud function
+        id: deploy
+        uses: google-github-actions/deploy-cloud-functions@main
+        with:
+          name: scrapeCrosswordLeaderboard
+          runtime: python37
+          project_id: '${{ env.PROJECT_ID }}'
+          source_dir: scrape
+          entry_point: main 
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: 'projects/${{ env.PROJECT_ID }}/topics/scrape-scheduler'
+          timeout: 540
+          env_vars: 'API_KEY=${{ secrets.BACKEND_API_KEY }}'
