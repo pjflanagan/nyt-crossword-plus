@@ -5,7 +5,7 @@ on:
     - github_deploy
 
 env:
-  PROJECT: nytcrossword-9fc50
+  PROJECT_ID: nytcrossword-9fc50
 
 jobs:
   build:
@@ -26,9 +26,9 @@ jobs:
         with:
           name: scrapeCrosswordLeaderboard
           runtime: python37
-          project_id: '${{ env.PROJECT }}'
+          project_id: '${{ env.PROJECT_ID }}'
           entry_point: main 
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: scrape-scheduler
+          event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+          event_trigger_resource: 'projects/${{ env.PROJECT_ID }}/topics/scrape-scheduler'
           timeout: 540
           env_vars: 'API_KEY=${{ secrets.BACKEND_API_KEY }}'
