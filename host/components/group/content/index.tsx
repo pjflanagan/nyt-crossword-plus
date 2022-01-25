@@ -17,15 +17,15 @@ const ContentComponent: FC<ContentComponentProps> = ({
 
   const [currentUsername, setCurrentUsername] = useState<string>('');
 
-  const graph = useMemo(() => makeGraph(filteredEntries, currentUsername), [makeGraph, filteredEntries, currentUsername]);
-  const table = useMemo(() => makeTable(filteredEntries), [makeTable, filteredEntries]);
+  const graph = useMemo(() => makeGraph(filteredEntries, currentUsername), [filteredEntries, currentUsername]);
+  const table = useMemo(() => makeTable(filteredEntries), [filteredEntries]);
 
   const bestTimeUsernamesByDate = graph.map(e => e.bestTimeUsernames);
-  const longestStreak = useMemo(() => getLongestStreak(bestTimeUsernamesByDate), [getLongestStreak, bestTimeUsernamesByDate]);
-  const bestAvePlace = useMemo(() => getBestAveragePlace(table), [getBestAveragePlace, table]);
-  const highestPowerIndex = useMemo(() => getHighestPowerIndex(table), [getHighestPowerIndex, table]);
-  const bestTime = useMemo(() => getBestTime(filteredEntries), [getBestTime, filteredEntries]);
-  const averageTime = useMemo(() => getAverageTime(filteredEntries), [getAverageTime, filteredEntries]);
+  const longestStreak = useMemo(() => getLongestStreak(bestTimeUsernamesByDate), [bestTimeUsernamesByDate]);
+  const bestAvePlace = useMemo(() => getBestAveragePlace(table), [table]);
+  const highestPowerIndex = useMemo(() => getHighestPowerIndex(table), [table]);
+  const bestTime = useMemo(() => getBestTime(filteredEntries), [filteredEntries]);
+  const averageTime = useMemo(() => getAverageTime(filteredEntries), [filteredEntries]);
 
   return (
     <>

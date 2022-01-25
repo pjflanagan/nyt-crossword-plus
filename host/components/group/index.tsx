@@ -36,7 +36,7 @@ const GroupComponent: FC<GroupComponentProps> = ({
       const placedEntries = getDatesLeaderboards(dateGroups);
       return makeFilteredEntries(filter, placedEntries)
     },
-    [makeFilteredEntries, filter, entries]
+    [filter, entries]
   );
 
   const renderContent = () => {

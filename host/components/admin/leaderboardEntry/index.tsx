@@ -1,7 +1,9 @@
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useCookie } from "react-use";
 import { Alert, Button, Card, DatePicker, Form, Input, TimePicker } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import moment from 'moment';
 
 import { TimeEntry } from 'types';
@@ -50,15 +52,13 @@ const userEntriesBulletPoint = (actionTitle: string, entries: TimeEntry[]) => {
 
 const LeaderboardEntryComponent: FC = () => {
 
+  const [apiKeyCookie, updateCookie, _deleteCookie] = useCookie('nytCrosswordPlus-apiKey');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successData, setSuccessData] = useState(null);
   const [form] = Form.useForm();
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setSuccessMessage(null);
-  //   }, 8000);
-  // }, [successMessage]);
+  const breakpoints = useBreakpoint();
+  let renderEntryGap = breakpoints.sm;
 
   const renderSuccessMessage = () => {
     return (
@@ -74,6 +74,7 @@ const LeaderboardEntryComponent: FC = () => {
   }
 
   const onFinish = (values: FormData) => {
+    updateCookie(values.apiKey);
     setErrorMessage(null);
     const entries = values.entries.map(e => {
       return {
@@ -83,19 +84,20 @@ const LeaderboardEntryComponent: FC = () => {
       }
     });
     // fetch the writeAdminTime endpoint with the values
-    fetchAdminLeaderboard(values.apiKey, entries).then((data) => {
-      // if there is an error message, then post that
-      if (data.errorMessage && data.errorMessage !== '') {
-        setErrorMessage(data.errorMessage);
-        return;
-      }
-      // on success, unset all the leaderboard entries and show success message
-      setSuccessData({
-        date: values.date,
-        ...data
-      });
-      form.resetFields(['entries'])
-    });
+    // fetchAdminLeaderboard(values.apiKey, entries).then((data) => {
+    //   // if there is an error message, then post that
+    //   if (data.errorMessage && data.errorMessage !== '') {
+    //     setErrorMessage(data.errorMessage);
+    //     return;
+    //   }
+    //   // on success, unset all the leaderboard entries and show success message
+    //   updateCookie(values.apiKey);
+    //   setSuccessData({
+    //     date: values.date,
+    //     ...data
+    //   });
+    //   form.resetFields(['entries']);
+    // });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -122,6 +124,9 @@ const LeaderboardEntryComponent: FC = () => {
         wrapperCol={{ span: 20 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        initialValues={{
+          apiKey: apiKeyCookie
+        }}
       >
 
         {/* API Key */}
@@ -160,7 +165,10 @@ const LeaderboardEntryComponent: FC = () => {
               {fields.map(({ key, name, ...restField }, index) => (
                 <Form.Item
                   key={key}
-                  wrapperCol={{ offset: index === 0 ? 0 : 4, span: 20 }}
+                  wrapperCol={{
+                    offset: (index !== 0 && renderEntryGap) ? 4 : 0,
+                    span: 20
+                  }}
                   label={index === 0 ? 'Leaderboard' : ''}
                   style={{ marginBottom: 0 }}
                 >
@@ -187,7 +195,10 @@ const LeaderboardEntryComponent: FC = () => {
                 </Form.Item>
               ))}
               <Form.Item
-                wrapperCol={{ offset: fields.length === 0 ? 0 : 4, span: 20 }}
+                wrapperCol={{
+                  offset: (fields.length > 0 && renderEntryGap) ? 4 : 0,
+                  span: 20
+                }}
                 label={fields.length === 0 ? 'Leaderboard' : ''}
               >
                 <Button
@@ -206,7 +217,12 @@ const LeaderboardEntryComponent: FC = () => {
         </Form.List>
 
         {/* Submit */}
-        <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
+        <Form.Item
+          wrapperCol={{
+            offset: renderEntryGap ? 4 : 0,
+            span: 20
+          }}
+        >
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
