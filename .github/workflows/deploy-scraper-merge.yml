@@ -1,8 +1,6 @@
 name: Deploy Cloud Function
 on:
   push:
-    paths:
-    - 'scrape/**'
     branches:
     - github_deploy
 
