@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - 'scrape/**'
+    workflow_dispatch:
 
 env:
   PROJECT_ID: nytcrossword-9fc50
