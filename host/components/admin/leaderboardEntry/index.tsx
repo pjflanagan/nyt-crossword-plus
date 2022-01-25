@@ -74,7 +74,6 @@ const LeaderboardEntryComponent: FC = () => {
   }
 
   const onFinish = (values: FormData) => {
-    updateCookie(values.apiKey);
     setErrorMessage(null);
     const entries = values.entries.map(e => {
       return {
@@ -84,20 +83,20 @@ const LeaderboardEntryComponent: FC = () => {
       }
     });
     // fetch the writeAdminTime endpoint with the values
-    // fetchAdminLeaderboard(values.apiKey, entries).then((data) => {
-    //   // if there is an error message, then post that
-    //   if (data.errorMessage && data.errorMessage !== '') {
-    //     setErrorMessage(data.errorMessage);
-    //     return;
-    //   }
-    //   // on success, unset all the leaderboard entries and show success message
-    //   updateCookie(values.apiKey);
-    //   setSuccessData({
-    //     date: values.date,
-    //     ...data
-    //   });
-    //   form.resetFields(['entries']);
-    // });
+    fetchAdminLeaderboard(values.apiKey, entries).then((data) => {
+      // if there is an error message, then post that
+      if (data.errorMessage && data.errorMessage !== '') {
+        setErrorMessage(data.errorMessage);
+        return;
+      }
+      // on success, unset all the leaderboard entries and show success message
+      updateCookie(values.apiKey);
+      setSuccessData({
+        date: values.date,
+        ...data
+      });
+      form.resetFields(['entries']);
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
