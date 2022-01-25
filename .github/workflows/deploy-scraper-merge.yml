@@ -1,8 +1,8 @@
 name: Deploy Cloud Function
 on:
   push:
-    branches:
-    - github_deploy
+    paths:
+    - 'scrape/**'
 
 env:
   PROJECT_ID: nytcrossword-9fc50
