@@ -1,9 +1,9 @@
 import requests
 import logging
 from bs4 import BeautifulSoup as soup
-from datetime import datetime
 import os
 import json
+import calendar
 
 def get_cookie(username, password):
     """Fetches a login cookie from the NYT api
@@ -47,12 +47,13 @@ def scrape_leaderboard(cookie):
     })
     page = soup(response.content, features='html.parser')
     solvers = page.find_all('div', class_='lbd-score')
+    [_, month, day, year] = page.find('h3', class_='lbd-type__date').text.strip().split()
 
-    current_datetime = datetime.now()
-    month = str(current_datetime.strftime('%m'))
-    day = str(current_datetime.strftime('%d'))
-    year = str(current_datetime.strftime('%Y'))
-    timestamp = year + '-' + month + '-' + day
+    day = day.replace(",", "")
+    month_number = list(calendar.month_name).index(month)
+    month_string = f'{month_number:02d}'
+    day_string = f'{int(day):02d}'
+    timestamp = year + '-' + month_string + '-' + day_string
 
     entries = []
     for solver in solvers:
@@ -65,7 +66,7 @@ def scrape_leaderboard(cookie):
                 time = (60 * int(minutes)) + int(seconds)
 
                 if name.endswith('(you)'):
-                    name.replace('(you)', '').strip()
+                    name = name.replace('(you)', '').strip()
 
                 entries.append({
                     'username': name, 
