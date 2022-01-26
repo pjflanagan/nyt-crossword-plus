@@ -1,43 +1,10 @@
 
 # v2: Improvements -------------------------------------------------------------
 
-## Chrome
-
-- [ ] UI
-  - link to the leaderboard from icon
-  - link to the leaderboard plus from icon
-
-- [ ] Insert API key into admin page automatically (see below)
-
-## Host
-
-- [ ] Admin page
-  - [ ] Make the Admin Key a hash of a known password, then change the API Key field to be just normal password entry
-  - [ ] Make an Entry Request page, a user submits the entry they think is missing and then I can approve later
-  - [ ] Load data
-    - [ ] Load a list of all possible usernames so we can autofill...
-    - [ ] Load that day's entries onto page so I can see which ones are missing (load on change, require API key to be entered)
-    - [ ] Autofill usernames from list of all usernames, warn when username is already in the db for that day
-  - [ ] Chrome extension inserts the API key into the admin page
-
-- [ ] Load only 1 week of data, separate request for the month and all
-
-- [ ] Daily Selenium data scrape, go to url and scrape the data, then upload
-  `/api/scrapeLeaderboard`
-  - Use Autocode to trigger this every day 15 minutes before the crossword closes
-
-
-# v3: Password Protected Groups ------------------------------------------------
-
 ## Host
 
 - [ ] appearance improvements
-
-- [ ] Admin page
-  - [ ] Edit group members
-
-- [ ] more restricted CORS, get proper response in Chrome 
-  - https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
+- [ ] Load only 1 week of data, separate request for the month and all
 
 - [ ] Password protect groups
   - Home Page
@@ -51,17 +18,46 @@ Move password to group page, store it as a cookie -> nah, if the “security” 
 - get the group, if none exists return that error
 - get the password, if they don't match, tell them the password it wrong
 
-## Chrome
+## AutoCode
 
-- [ ] cache
-  - cache the saved data (date and list of names)
-  - if there are no new ones from last successful request send, don't send a request
+- [ ] Weekly stats every Sunday
+
+
+# v3: Password Protected Groups ------------------------------------------------
+
+## Host
+
+- [ ] Admin page
+  - [ ] Edit group members
+  - [ ] Make an Entry Request page, a user submits the entry they think is missing and then I can approve later
+  - [ ] Load data
+    - [ ] Load a list of all possible usernames so we can autofill...
+    - [ ] Load that day's entries onto page so I can see which ones are missing (load on change, require API key to be entered)
+    - [ ] Autofill usernames from list of all usernames, warn when username is already in the db for that day
 
 
 # v4: Public MVP ---------------------------------------------------------------
 
 ## Host
-- [ ] Login, link account, join/create groups
+- [ ] Login using Auth0
+- [ ] Link account by adding NYT password (we login and scan for a (you) on the leaderboard
+- [ ] Create a group 
+- [ ] Join a group
 
-## Chrome 
+
+# Will Not Do ------------------------------------------------------------------
+
+## Host
+- [ ] more restricted CORS, get proper response in Chrome 
+  - https://stackoverflow.com/questions/55769272/how-to-set-up-cors-in-netlify-serverless-function 
+
+## Chrome
+
+- [ ] UI
+  - link to the leaderboard from icon
+  - link to the leaderboard plus from icon
+- [ ] Insert API key into admin page automatically (see below)
 - [ ] Put it on the web store unlisted
+- [ ] cache
+  - cache the saved data (date and list of names)
+  - if there are no new ones from last successful request send, don't send a request
