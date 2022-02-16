@@ -1,5 +1,5 @@
 
-import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimes } from 'db';
+import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimesSequentially } from 'db';
 import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
@@ -59,7 +59,7 @@ const handler = async (req, res) => {
 
   // otherwise, insert newEntries
   try {
-    await writeTimes(client, newEntries);
+    await writeTimesSequentially(client, newEntries);
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to insert data, ${e}` });
   }

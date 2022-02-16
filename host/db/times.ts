@@ -45,6 +45,20 @@ export const writeTimes = async (client: Client, entries: TimeEntry[]): Promise<
   return;
 }
 
+export const writeTimesSequentially = async (client: Client, entries: TimeEntry[]): Promise<void> => {
+  if (entries.length === 0) {
+    return;
+  }
+  const writeQueries = entries.map((e) => {
+    return client.query(`
+      INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
+      VALUES ('${e.username}', '${e.date}', ${e.time});
+    `);
+  })
+  await Promise.all(writeQueries);
+  return;
+}
+
 export const updateTimes = async (client: Client, entries: TimeEntry[]): Promise<void> => {
   if (entries.length === 0) {
     return;

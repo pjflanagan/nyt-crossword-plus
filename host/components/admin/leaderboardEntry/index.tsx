@@ -114,7 +114,7 @@ const LeaderboardEntryComponent: FC = () => {
         <li>Usernames are case sensitive</li>
         <li>Entering a time of 0 will delete an entry</li>
       </ul>
-      <p>{`Use this carefully and please don't cheat`}</p>
+      <p>{`Use this carefully and please don't cheat.`}</p>
 
       <Form
         form={form}

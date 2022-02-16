@@ -4,7 +4,7 @@ import '../styles/globals.css';
 
 const TITLE = 'NYT Crossword Leaderboard Plus';
 const DESCRIPTION = 'An improved NYT Crossword Leaderboard';
-const KEYWORDS = `drunk, weather, temperature, drinks, channel`;
+const KEYWORDS = `crossword, leaderboard, nyt, daily, mini`;
 const ROOT = "https://nytcrosswordplus.flanny.app";
 
 const IMG = `${ROOT}/img/social.png`;
