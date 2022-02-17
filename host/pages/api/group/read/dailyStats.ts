@@ -22,9 +22,10 @@ const handler = async (req, res) => {
   let entries: TimeEntry[];
   try {
     entries = await readGroupTimesOnDate(client, groupName, date);
+    await client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
-  }
+  } 
 
   if (entries.length === 0) {
     return res.status(400).json({ errorMessage: `No entries for today` });
@@ -40,7 +41,7 @@ const handler = async (req, res) => {
   const aveTime = mean(entries.map(e => e.time));
 
   // respond
-  res.status(200).json({
+  return res.status(200).json({
     winners,
     groupAverageTime: formatTimeMMSS(aveTime)
   });

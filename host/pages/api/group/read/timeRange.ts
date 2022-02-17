@@ -24,12 +24,13 @@ const handler = async (req, res) => {
   let entries: TimeEntry[];
   try {
     entries = await readGroupTimesInRange(client, groupName, startDate, validatedEndDate);
+    await client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
   // respond
-  res.status(200).json({
+  return res.status(200).json({
     entries
   });
 }

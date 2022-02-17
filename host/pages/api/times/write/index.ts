@@ -49,7 +49,7 @@ const handler = async (req, res) => {
     prevUsernames = await getUsernamesWhoHavePlayedOnDate(client, date);
   } catch (e) {
     console.error(`ERROR: unable to load previous entries for date ${date}`);
-    client.end();
+    await client.end();
     return res.status(500).json({ errorMessage: `DB Error: unable to load previous entries, ${e}` });
   }
 
@@ -59,7 +59,7 @@ const handler = async (req, res) => {
   // if there are no new entries, respond early
   if (newEntries.length === 0) {
     console.log(`INFO: No new entries for date ${date}`);
-    client.end();
+    await client.end();
     return res.status(200).json({
       newEntries
     });
@@ -69,15 +69,14 @@ const handler = async (req, res) => {
   try {
     console.log(`INFO: writing times for date ${date}`);
     await writeTimesSequentially(client, newEntries);
+    await client.end();
   } catch (e) {
     console.error(`ERROR: unable to write times for ${date}`);
-    client.end();
     return res.status(500).json({ errorMessage: `DB Error: unable to insert data, ${e}` });
   }
 
   // respond
   console.log(`SUCCESS: added times for date ${date}`);
-  client.end();
   return res.status(200).json({
     successMessage: `Added new entries`,
     newEntries

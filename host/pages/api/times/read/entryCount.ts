@@ -18,12 +18,13 @@ const handler = async (req, res) => {
   try {
     const res = await getCountOfTimesOnDate(client, date);
     count = parseInt(res[0]);
+    await client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
   // respond
-  res.status(200).json({
+  return res.status(200).json({
     entryCount: count,
     hasEntries: count > 0
   });
