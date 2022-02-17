@@ -49,13 +49,20 @@ export const writeTimesSequentially = async (client: Client, entries: TimeEntry[
   if (entries.length === 0) {
     return;
   }
-  const writeQueries = entries.map((e) => {
-    return client.query(`
-      INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
-      VALUES ('${e.username}', '${e.date}', ${e.time});
-    `);
-  })
-  await Promise.all(writeQueries);
+  for (let i = 0; i < entries.length; ++i ){
+    const entry = entries[i];
+    try {
+      await client.query(`
+        INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
+        VALUES ('${entry.username}', '${entry.date}', ${entry.time});
+      `);
+      console.log(`SUCCESS: Insert ${entry.username} - ${entry.time} on ${entry.date}`);
+
+    } catch {
+      console.error(`FAILURE: Insert ${entry.username} - ${entry.time} on ${entry.date}`);
+    }
+  }
+
   return;
 }
 
