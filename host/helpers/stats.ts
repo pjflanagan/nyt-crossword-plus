@@ -38,6 +38,12 @@ const getDayScore = ({
   time,
   place,
 }: PowerRatingParams): number => {
+  // if you are the only participant that day
+  // or everyone ties for first
+  // you get a 1
+  if (participantCount === 1 || fastestTime === slowestTime) {
+    return 1;
+  }
   const placeScore = (participantCount - place) / participantCount;
   const timeScore = (slowestTime - time) / (slowestTime - fastestTime);
   return (placeScore + timeScore) / 2;
