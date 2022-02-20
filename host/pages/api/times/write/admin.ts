@@ -36,12 +36,12 @@ const handler = async (req, res) => {
   }
 
   // read existing times from fauna
-  const client = getClient();
+  const client = await getClient();
   let prevEntries: [string, number][];
   try {
     prevEntries = await getEntriesOnDate(client, date);
   } catch (e) {
-    await client.end();
+    client.end();
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
@@ -68,7 +68,7 @@ const handler = async (req, res) => {
 
   // if there are no new entries, respond early
   if (newEntries.length === 0 && updateEntries.length === 0 && deleteEntries.length === 0) {
-    await client.end();
+    client.end();
     return res.status(200).json({
       errorMessage: `No new entries to add`,
       newEntries,
@@ -84,7 +84,7 @@ const handler = async (req, res) => {
       updateTimes(client, updateEntries),
       deleteTimes(client, deleteEntries),
     ]);
-    await client.end();
+    client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to insert data, ${e}` });
   }

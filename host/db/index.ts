@@ -6,7 +6,7 @@ const BITIO_USERNAME = process.env.BITIO_USERNAME || '';
 const BITIO_PASSWORD = process.env.BITIO_PASSWORD || '';
 
 // Create a client using the connection information provided on bit.io.
-export const getClient = (): Client => {
+export const getClient = async (): Promise<Client> => {
   const client: Client = new Client({
     user: BITIO_USERNAME,
     host: 'db.bit.io',
@@ -14,7 +14,7 @@ export const getClient = (): Client => {
     password: BITIO_PASSWORD,
     port: 5432,
   });
-  client.connect();
+  await client.connect();
   return client;
 }
 

@@ -18,11 +18,11 @@ const handler = async (req, res) => {
   }
 
   // run query
-  const client = getClient();
+  const client = await getClient();
   let entries: TimeEntry[];
   try {
     entries = await readGroupTimesOnDate(client, groupName, date);
-    await client.end();
+    client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   } 
