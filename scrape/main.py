@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as soup
 import os
 import calendar
 import bitdotio
+import json
 
 DB_NAME = '"pjflanagan/nyt_crossword_plus"'
 
@@ -147,6 +148,9 @@ def main(event, context):
             cookie = get_cookie(username, password)
 
         entries = scrape_leaderboard(cookie)
+        
+        serialized_entries = json.dumps(entries)
+        logging.info('Entries: {entries}'.format(entries=serialized_entries))
 
         if (entries):
             save_entries(entries)
