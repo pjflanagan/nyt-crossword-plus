@@ -97,6 +97,8 @@ def save_entries(entries):
         logging.info('Received successful response: {response}'.format(response=save_entries_response.json()))
     else:
         logging.error('Received error response: {response}'.format(response=save_entries_response.json()))
+    
+    return save_entries_response.ok
 
 def main(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
@@ -116,7 +118,11 @@ def main(event, context):
         entries = scrape_leaderboard(cookie)
 
         if (entries):
-            save_entries(entries)
+            tries = 0
+            validResponse = False
+            while tries < 3 or not validResponse:
+                validResponse = save_entries(entries)
+                tries += 1
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
