@@ -78,7 +78,7 @@ def scrape_leaderboard(cookie):
 
     return entries
 
-def save_entries(entries):
+async def save_entries(entries):
     """Posts the entries for the current day to the backend.
     Args:
         entries (list(dict)): Entries to send to the backend
@@ -100,6 +100,13 @@ def save_entries(entries):
     
     return save_entries_response.ok
 
+async def save_entries_with_retrys(entries):
+    tries = 0
+    validResponse = False
+    while tries < 3 or not validResponse:
+        validResponse = await save_entries(entries)
+        tries += 1
+
 def main(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
@@ -118,11 +125,7 @@ def main(event, context):
         entries = scrape_leaderboard(cookie)
 
         if (entries):
-            tries = 0
-            validResponse = False
-            while tries < 3 or not validResponse:
-                validResponse = save_entries(entries)
-                tries += 1
+            save_entries_with_retrys(entries)
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
