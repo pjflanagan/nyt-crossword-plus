@@ -12,7 +12,7 @@ def getUsernamesWhoHavePlayedOnDate(cur, date):
     cur.execute('SELECT username FROM {DB_NAME}."times" WHERE "date"=DATE(\'{date}\');'.format(date=date))
 
 def writeTimes(cur, entries):
-    valuesFormatted = ",".join(list(map(lambda e: '(\'{username}\', \'{date}\', {time})'.format(username=e.username, date=e.date, time=e.time), entries)))
+    valuesFormatted = ",".join(list(map(lambda e: '(\'{username}\', \'{date}\', {time})'.format(username=e['username'], date=e['date'], time=e['time']), entries)))
     cur.execute('INSERT INTO {DB_NAME}."times" ("username", "date", "time") VALUES {values};'.format(values=valuesFormatted))
 
 def get_cookie(username, password):
@@ -108,7 +108,7 @@ def save_entries(entries):
         logging.info('Loading previous entries')
         prevUsernames = []
         try:
-            prevUsernames = getUsernamesWhoHavePlayedOnDate(cur, entries[0].date)
+            prevUsernames = getUsernamesWhoHavePlayedOnDate(cur, entries[0]['date'])
         except Exception as error:
             logging.error('{error}'.format(error=error))
             return
