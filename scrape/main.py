@@ -120,6 +120,9 @@ def save_entries_via_db(entries):
     Args:
         entries (list(dict)): Entries to send to the backend
     """
+    
+    serialized_entries = json.dumps(entries)
+    logging.info('Entries: {entries}'.format(entries=serialized_entries))
 
     logging.info('Logging into db')
     bitio_api_key = os.environ['BITIO_API_KEY']
@@ -171,9 +174,6 @@ def main(event, context):
             cookie = get_cookie(username, password)
 
         entries = scrape_leaderboard(cookie)
-        
-        serialized_entries = json.dumps(entries)
-        logging.info('Entries: {entries}'.format(entries=serialized_entries))
 
         if (entries):
             save_entries_via_api(entries)
