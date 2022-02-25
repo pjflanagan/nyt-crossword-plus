@@ -90,7 +90,32 @@ def scrape_leaderboard(cookie):
     logging.info('Parsed entries')
     return entries
 
-def save_entries(entries):
+def save_entries_via_api(entries):
+    """Posts the entries for the current day to the backend.
+    Args:
+        entries (list(dict)): Entries to send to the backend
+    """
+
+    wake_url = ('https://nytcrosswordplus.flanny.app/api/times/read/entryCount?date={date}').format(date=entries[0]['date'])
+    requests.get(wake_url)
+
+    url = ('https://nytcrosswordplus.flanny.app/api/times/write?k={api_key}').format(api_key=os.environ['API_KEY'])
+    request_body = {
+        'entries': entries,
+    }
+    serialized_body = json.dumps(request_body)
+    logging.info('Serialized payload: {payload}'.format(payload=request_body))
+
+    save_entries_response = requests.post(url, data=serialized_body)
+    
+    if save_entries_response.ok:
+        logging.info('Received successful response: {response}'.format(response=save_entries_response.json()))
+    else:
+        logging.error('Received error response: {response}'.format(response=save_entries_response.json()))
+    
+    return save_entries_response.ok
+
+def save_entries_via_db(entries):
     """Posts the entries for the current day to the backend.
     Args:
         entries (list(dict)): Entries to send to the backend
@@ -151,7 +176,7 @@ def main(event, context):
         logging.info('Entries: {entries}'.format(entries=serialized_entries))
 
         if (entries):
-            save_entries(entries)
+            save_entries_via_api(entries)
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
