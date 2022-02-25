@@ -6,14 +6,12 @@ import calendar
 import bitdotio
 import json
 
-DB_NAME = '"pjflanagan/nyt_crossword_plus"'
-
 def getUsernamesWhoHavePlayedOnDate(cur, date):
-    cur.execute('SELECT username FROM {DB_NAME}."times" WHERE "date"=DATE(\'{date}\');'.format(date=date))
+    cur.execute('SELECT username FROM "pjflanagan/nyt_crossword_plus"."times" WHERE "date"=DATE(\'{date}\');'.format(date=date))
 
 def writeTimes(cur, entries):
     valuesFormatted = ",".join(list(map(lambda e: '(\'{username}\', \'{date}\', {time})'.format(username=e['username'], date=e['date'], time=e['time']), entries)))
-    cur.execute('INSERT INTO {DB_NAME}."times" ("username", "date", "time") VALUES {values};'.format(values=valuesFormatted))
+    cur.execute('INSERT INTO "pjflanagan/nyt_crossword_plus"."times" ("username", "date", "time") VALUES {values};'.format(values=valuesFormatted))
 
 def get_cookie(username, password):
     """Fetches a login cookie from the NYT api
