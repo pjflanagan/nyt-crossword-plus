@@ -116,9 +116,9 @@ def save_entries_via_api(entries):
     return save_entries_response.ok
 
 def save_entries_via_db(entries):
-    """Posts the entries for the current day to the backend.
+    """Inserts the entries for the current day to the db.
     Args:
-        entries (list(dict)): Entries to send to the backend
+        entries (list(dict)): Entries to insert into db
     """
     
     serialized_entries = json.dumps(entries)
@@ -176,7 +176,7 @@ def main(event, context):
         entries = scrape_leaderboard(cookie)
 
         if (entries):
-            save_entries_via_api(entries)
+            save_entries_via_db(entries)
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
