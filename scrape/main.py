@@ -176,7 +176,7 @@ def main(event, context):
         entries = scrape_leaderboard(cookie)
 
         if (entries):
-            save_entries_via_db(entries)
+            save_entries_via_api(entries)
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
