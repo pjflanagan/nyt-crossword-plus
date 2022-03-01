@@ -1,3 +1,6 @@
 
 [build]
-  base = "host/"
+base = "host/"
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"

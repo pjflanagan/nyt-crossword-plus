@@ -45,14 +45,13 @@ export const writeTimes = async (client: Client, entries: TimeEntry[]): Promise<
   return;
 }
 
-export const writeTimesSequentially = async (client: Client, entries: TimeEntry[]): Promise<void> => {
+export const writeTimesIndividually = async (client: Client, entries: TimeEntry[]): Promise<void> => {
   if (entries.length === 0) {
     return;
   }
-  for (let i = 0; i < entries.length; ++i ){
-    const entry = entries[i];
+  await Promise.all(entries.map(entry => {
     try {
-      await client.query(`
+      client.query(`
         INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
         VALUES ('${entry.username}', '${entry.date}', ${entry.time});
       `);
@@ -61,8 +60,7 @@ export const writeTimesSequentially = async (client: Client, entries: TimeEntry[
     } catch {
       console.error(`FAILURE: Insert ${entry.username} - ${entry.time} on ${entry.date}`);
     }
-  }
-
+  }));
   return;
 }
 

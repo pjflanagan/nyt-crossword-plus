@@ -1,5 +1,5 @@
 
-import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimesSequentially } from 'db';
+import { getClient, getUsernamesWhoHavePlayedOnDate, writeTimesIndividually } from 'db';
 import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
@@ -80,7 +80,7 @@ const handler = async (req, res) => {
   // otherwise, insert newEntries
   console.log(`Writing new times for date ${date}`);
   try {
-    await writeTimesSequentially(client, newEntries);
+    await writeTimesIndividually(client, newEntries);
     client.end();
   } catch (e) {
     console.error(`Unable to write times for ${date}`);
