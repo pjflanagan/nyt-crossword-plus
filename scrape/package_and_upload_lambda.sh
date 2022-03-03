@@ -9,4 +9,6 @@ zip -g nyt-lambda.zip main.py
 echo "Packaged lambda in nyt-lambda.zip"
 echo "Cleaning up"
 rm -r package
-echo "TODO: Upload versions to s3 and automatically deploy"
+echo "Deploying to AWS"
+aws lambda update-function-code --function-name nyt-crossword-plus --zip-file fileb://nyt-lambda.zip
+echo "Deployed to AWS.  TODO: Keep versions in s3"

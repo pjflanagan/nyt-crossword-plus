@@ -213,10 +213,11 @@ def main(event, context):
         password = os.environ['password']
         cookie = os.environ['cookie']
 
-        entries = scrape_leaderboard(cookie)
-        write_entries_to_dynamo(entries)
+#         entries = scrape_leaderboard(cookie)
+#         write_entries_to_dynamo(entries)
         print("Getting all entries from today:")
-        print(get_entries_from_dynamo("2022-03-02"))
+        print("UPDATE WORKED")
+#         print(get_entries_from_dynamo("2022-03-02"))
 
 #         if (entries):
 #             save_entries_via_db(entries)
