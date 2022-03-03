@@ -5,6 +5,9 @@ import os
 import calendar
 import bitdotio
 import json
+import boto3
+from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 
 def getUsernamesWhoHavePlayedOnDate(cur, date):
     cur.execute('SELECT username FROM "pjflanagan/nyt_crossword_plus"."times" WHERE "date"=DATE(\'{date}\');'.format(date=date))
@@ -23,7 +26,7 @@ def get_cookie(username, password):
     Raises: ValueError if cookie is not returned
     """
 
-    logging.info('Getting cookie')
+    print('Getting cookie')
     login_resp = requests.post(
         'https://myaccount.nytimes.com/svc/ios/v2/login',
         data={
@@ -64,7 +67,7 @@ def scrape_leaderboard(cookie):
     month_string = f'{month_number:02d}'
     day_string = f'{int(day):02d}'
     timestamp = year + '-' + month_string + '-' + day_string
-    logging.info('Parsed timestamp')
+    print('Parsed timestamp')
 
     entries = []
     for solver in solvers:
@@ -87,7 +90,8 @@ def scrape_leaderboard(cookie):
         except:
             pass
 
-    logging.info('Parsed entries')
+    print('Parsed entries')
+    print(entries)
     return entries
 
 def save_entries_via_api(entries):
@@ -115,6 +119,44 @@ def save_entries_via_api(entries):
     
     return save_entries_response.ok
 
+def write_entries_to_dynamo(entries):
+    """
+    Writes directly to Amazon DynamoDB database
+    """
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('nyt_crossword_plus')
+    print("Table status is: ")
+    print(table.table_status)
+    # TODO: Batch uploads batch.put_item if too slow
+    for entry in entries:
+        try:
+            print("Loading entry " + str(entry))
+            response = table.put_item(
+                Item={
+                    'username': entry["username"],
+                    'date': entry["date"],
+                    'time': entry["time"]
+                }
+            )
+        except Exception as e:
+            print(e)
+    print("All items uploaded")
+
+def get_entries_from_dynamo(date):
+    """
+    Gets all entries from a specific date
+    """
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('nyt_crossword_plus')
+    try:
+        response = table.query (
+            KeyConditionExpression=Key('date').eq(date)
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        return response['Items']
+
 def save_entries_via_db(entries):
     """Inserts the entries for the current day to the db.
     Args:
@@ -128,6 +170,7 @@ def save_entries_via_db(entries):
     bitio_api_key = os.environ['BITIO_API_KEY']
     db = bitdotio.bitdotio(bitio_api_key)
 
+    print("Got the API KEY")
     with db.get_connection() as con:
         cur = con.cursor()
 
@@ -166,17 +209,17 @@ def main(event, context):
     """
 
     try:
-        cookie = event.get('attributes', {}).get('cookie')
-        username = event.get('attributes', {}).get('username')
-        password = event.get('attributes', {}).get('password')
-
-        if not cookie:
-            cookie = get_cookie(username, password)
+        username = os.environ['username']
+        password = os.environ['password']
+        cookie = os.environ['cookie']
 
         entries = scrape_leaderboard(cookie)
+        write_entries_to_dynamo(entries)
+        print("Getting all entries from today:")
+        print(get_entries_from_dynamo("2022-03-02"))
 
-        if (entries):
-            save_entries_via_db(entries)
+#         if (entries):
+#             save_entries_via_db(entries)
 
     except Exception as error:
         logging.error('{error}'.format(error=error))
