@@ -1,5 +1,5 @@
 
-import { getClient, getEntriesOnDate, writeTimes, updateTimes, deleteTimes } from 'db';
+import { getClient, getEntriesOnDate, writeTimes, deleteTimes } from 'db';
 import { TimeEntry } from 'types';
 
 const WRITE_API_KEY = process.env.WRITE_API_KEY;
@@ -41,7 +41,6 @@ const handler = async (req, res) => {
   try {
     prevEntries = await getEntriesOnDate(client, date);
   } catch (e) {
-    client.end();
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   }
 
@@ -68,7 +67,6 @@ const handler = async (req, res) => {
 
   // if there are no new entries, respond early
   if (newEntries.length === 0 && updateEntries.length === 0 && deleteEntries.length === 0) {
-    client.end();
     return res.status(200).json({
       errorMessage: `No new entries to add`,
       newEntries,
@@ -83,7 +81,6 @@ const handler = async (req, res) => {
       writeTimes(client, [...newEntries, ...updateEntries]),
       deleteTimes(client, deleteEntries),
     ]);
-    client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to insert data, ${e}` });
   }

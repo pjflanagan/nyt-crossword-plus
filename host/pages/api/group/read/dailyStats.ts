@@ -22,7 +22,6 @@ const handler = async (req, res) => {
   let entries: TimeEntry[];
   try {
     entries = await readGroupTimesOnDate(client, groupName, date);
-    client.end();
   } catch (e) {
     return res.status(500).json({ errorMessage: `DB Error: unable to load data, ${e}` });
   } 

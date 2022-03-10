@@ -1,5 +1,5 @@
 
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import { DynamoDB } from "aws-sdk";
 
 import { TimeEntry } from 'types';
 
@@ -29,10 +29,13 @@ export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<
         ],
       },
     },
-  }).then(data => {
+  })
+  .promise()
+  .then(data => {
     const { times } = data.Responses;
     entries = times.map(e => [e.username.S, parseInt(e.time.N)]);
-  }).catch(err => {
+  })
+  .catch(err => {
     throw err;
   });
   return entries;
