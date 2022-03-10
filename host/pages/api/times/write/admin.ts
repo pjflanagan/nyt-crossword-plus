@@ -37,7 +37,7 @@ const handler = async (req, res) => {
 
   // read existing times from fauna
   const client = await getClient();
-  let prevEntries: [string, number][];
+  let prevEntries: TimeEntry[];
   try {
     prevEntries = await getEntriesOnDate(client, date);
   } catch (e) {
@@ -49,7 +49,7 @@ const handler = async (req, res) => {
   const newEntries = [];
   const deleteEntries = [];
   reqEntries.forEach(reqEntry => {
-    const prevEntryForUser = prevEntries.find(e => e[0] === reqEntry.username);
+    const prevEntryForUser = prevEntries.find(e => e.username === reqEntry.username);
     if (!prevEntryForUser && reqEntry.time !== 0) {
       // if there is no old entry and the new entry time isn't 0, add it to new entries
       newEntries.push(reqEntry);

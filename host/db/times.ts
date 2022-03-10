@@ -3,6 +3,8 @@ import { DynamoDB } from "aws-sdk";
 
 import { TimeEntry } from 'types';
 
+import { convertDBTimes } from ".";
+
 // READ
 
 export const getCountOfTimesOnDate = async (client: DynamoDB, date: string): Promise<number> => {
@@ -12,11 +14,11 @@ export const getCountOfTimesOnDate = async (client: DynamoDB, date: string): Pro
 
 export const getUsernamesWhoHavePlayedOnDate = async (client: DynamoDB, date: string): Promise<string[]> => {
   const entries = await getEntriesOnDate(client, date);
-  return entries.map(e => e[0]);
+  return entries.map(e => e.username);
 }
 
-export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<[string, number][]> => {
-  let entries: [string, number][];
+export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<TimeEntry[]> => {
+  let entries: TimeEntry[];
   await client.batchGetItem({
     RequestItems: {
       'times': {
@@ -33,16 +35,12 @@ export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<
   .promise()
   .then(data => {
     const { times } = data.Responses;
-    entries = times.map(e => [e.username.S, parseInt(e.time.N)]);
+    entries = convertDBTimes(times);
   })
   .catch(err => {
     throw err;
   });
   return entries;
-  // const result = await client.executeStatement({
-  //   Statement: `SELECT username, time FROM times WHERE "date"='${date}'`
-  // })
-  // return result.Items.map(item => [item.username.S, parseInt(item.time.N)]);
 }
 
 // WRITE

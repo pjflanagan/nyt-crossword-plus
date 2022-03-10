@@ -1,8 +1,9 @@
 import { DynamoDB } from 'aws-sdk';
 import { TimeEntry } from 'types';
+import { convertDBTimes } from '.';
 
 export const readGroupTimes = async (client: DynamoDB, groupName: string): Promise<TimeEntry[]> => {
-  let times: TimeEntry[];
+  let entries: TimeEntry[];
   await client.executeStatement({
     Statement: `SELECT * FROM times WHERE username IN (
         SELECT username FROM group_members WHERE group = '${groupName}'
@@ -10,16 +11,17 @@ export const readGroupTimes = async (client: DynamoDB, groupName: string): Promi
   })
   .promise()
   .then(data => {
-    times = data.Items as TimeEntry[];
+    const times = data.Items;
+    entries = convertDBTimes(times);
   })
   .catch(err => {
     throw err;
   });
-  return times;
+  return entries;
 }
 
 export const readGroupTimesOnDate = async (client: DynamoDB, groupName: string, date: string): Promise<TimeEntry[]> => {
-  let times: TimeEntry[];
+  let entries: TimeEntry[];
   await client.executeStatement({
     Statement: `SELECT * FROM times WHERE date = DATE('${date}') AND username IN (
       SELECT username FROM group_members WHERE group = '${groupName}'
@@ -27,12 +29,13 @@ export const readGroupTimesOnDate = async (client: DynamoDB, groupName: string, 
   })
   .promise()
   .then(data => {
-    times = data.Items as TimeEntry[];
+    const times = data.Items;
+    entries = convertDBTimes(times);
   })
   .catch(err => {
     throw err;
   });
-  return times;
+  return entries;
 }
 
 // TODO: export const readGroupTimesInRange = async (client: DynamoDB, groupName: string, startDate: string, endDate: string)
