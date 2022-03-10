@@ -80,8 +80,7 @@ const handler = async (req, res) => {
   // otherwise, insert newEntries
   try {
     await Promise.all([
-      writeTimes(client, newEntries),
-      updateTimes(client, updateEntries),
+      writeTimes(client, [...newEntries, ...updateEntries]),
       deleteTimes(client, deleteEntries),
     ]);
     client.end();

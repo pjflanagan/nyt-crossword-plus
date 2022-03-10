@@ -1,25 +1,19 @@
 
 
-import { Client } from 'pg';
+import aws, { DynamoDB } from "aws-sdk";
 
-const BITIO_USERNAME = process.env.BITIO_USERNAME || '';
-const BITIO_PASSWORD = process.env.BITIO_PASSWORD || '';
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env
 
-// Create a client using the connection information provided on bit.io.
-export const getClient = async (): Promise<Client> => {
-  const client: Client = new Client({
-    user: BITIO_USERNAME,
-    host: 'db.bit.io',
-    database: 'bitdotio',
-    password: BITIO_PASSWORD,
-    port: 5432,
+export const getClient = async (): Promise<DynamoDB> => {
+  aws.config.update({
+    credentials: {
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: AWS_SECRET_ACCESS_KEY
+    },
+    region: AWS_REGION,
   });
-  await client.connect();
-  return client;
+  return new aws.DynamoDB();
 }
-
-// TODO: move to env
-export const DB_NAME = `"pjflanagan/nyt_crossword_plus"`
 
 export * from './times';
 export * from './group';

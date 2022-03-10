@@ -1,34 +1,38 @@
+import { DynamoDB } from 'aws-sdk';
+import { TimeEntry } from 'types';
 
-import { Client } from 'pg';
-
-import { DB_NAME } from '.';
-
-export const readGroupTimes = async (client: Client, groupName: string) => {
-  const result = await client.query(`
-    SELECT * FROM ${DB_NAME}."times" WHERE "username" IN (
-      SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
-    );
-  `);
-  return result.rows;
+export const readGroupTimes = async (client: DynamoDB, groupName: string): Promise<TimeEntry[]> => {
+  let times: TimeEntry[];
+  await client.executeStatement({
+    Statement: `SELECT * FROM times WHERE username IN (
+        SELECT username FROM group_members WHERE group = '${groupName}'
+      )`
+  })
+  .promise()
+  .then(data => {
+    times = data.Items as TimeEntry[];
+  })
+  .catch(err => {
+    throw err;
+  });
+  return times;
 }
 
-export const readGroupTimesInRange = async (client: Client, groupName: string, startDate: string, endDate: string) => {
-  const result = await client.query(`
-    SELECT * FROM ${DB_NAME}."times"
-    WHERE "date" >= DATE('${startDate}')
-      AND "date" <= DATE('${endDate}')
-      AND "username" IN (
-        SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
-      );
-  `);
-  return result.rows;
+export const readGroupTimesOnDate = async (client: DynamoDB, groupName: string, date: string): Promise<TimeEntry[]> => {
+  let times: TimeEntry[];
+  await client.executeStatement({
+    Statement: `SELECT * FROM times WHERE date = DATE('${date}') AND username IN (
+      SELECT username FROM group_members WHERE group = '${groupName}'
+      )`
+  })
+  .promise()
+  .then(data => {
+    times = data.Items as TimeEntry[];
+  })
+  .catch(err => {
+    throw err;
+  });
+  return times;
 }
 
-export const readGroupTimesOnDate = async (client: Client, groupName: string, date: string) => {
-  const result = await client.query(`
-    SELECT * FROM ${DB_NAME}."times" WHERE "date" = DATE('${date}') AND "username" IN (
-      SELECT username FROM ${DB_NAME}."group_members" WHERE "group" = '${groupName}'
-    );
-  `);
-  return result.rows;
-}
+// TODO: export const readGroupTimesInRange = async (client: DynamoDB, groupName: string, startDate: string, endDate: string)

@@ -1,94 +1,90 @@
 
-import { Client } from 'pg';
-import { flatten } from 'lodash';
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
 
 import { TimeEntry } from 'types';
 
-import { DB_NAME } from '.';
-
 // READ
 
-export const getCountOfTimesOnDate = async (client: Client, date: string): Promise<string[]> => {
-  const result = await client.query({
-    rowMode: 'array',
-    text: `SELECT COUNT(*) FROM ${DB_NAME}."times" WHERE "date"=DATE('${date}');`
-  });
-  return flatten(result.rows);
+export const getCountOfTimesOnDate = async (client: DynamoDB, date: string): Promise<number> => {
+  const entries = await getEntriesOnDate(client, date);
+  return entries.length;
 }
 
-export const getUsernamesWhoHavePlayedOnDate = async (client: Client, date: string): Promise<string[]> => {
-  const result = await client.query({
-    rowMode: 'array',
-    text: `SELECT username FROM ${DB_NAME}."times" WHERE "date"=DATE('${date}');`
-  });
-  return flatten(result.rows);
+export const getUsernamesWhoHavePlayedOnDate = async (client: DynamoDB, date: string): Promise<string[]> => {
+  const entries = await getEntriesOnDate(client, date);
+  return entries.map(e => e[0]);
 }
 
-export const getEntriesOnDate = async (client: Client, date: string): Promise<[string, number][]> => {
-  const result = await client.query({
-    rowMode: 'array',
-    text: `SELECT username, time FROM ${DB_NAME}."times" WHERE "date"=DATE('${date}');`
+export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<[string, number][]> => {
+  let entries: [string, number][];
+  await client.batchGetItem({
+    RequestItems: {
+      'times': {
+        Keys: [
+          {
+            date: {
+              S: date
+            },
+          },
+        ],
+      },
+    },
+  }).then(data => {
+    const { times } = data.Responses;
+    entries = times.map(e => [e.username.S, parseInt(e.time.N)]);
+  }).catch(err => {
+    throw err;
   });
-  return result.rows as [string, number][];
+  return entries;
+  // const result = await client.executeStatement({
+  //   Statement: `SELECT username, time FROM times WHERE "date"='${date}'`
+  // })
+  // return result.Items.map(item => [item.username.S, parseInt(item.time.N)]);
 }
 
 // WRITE
 
-export const writeTimes = async (client: Client, entries: TimeEntry[]): Promise<void> => {
+export const writeTimes = async (client: DynamoDB, entries: TimeEntry[]): Promise<void> => {
   if (entries.length === 0) {
     return;
   }
-  await client.query(`
-    INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
-    VALUES ${entries.map(e => `('${e.username}', '${e.date}', ${e.time})`).join(',')};
-  `);
+  await Promise.all(
+    entries.map(e => {
+      client.putItem({
+        TableName: 'times',
+        Item: {
+          'username': {
+            S: e.username
+          },
+          'date': {
+            S: e.date
+          },
+          'time': {
+            N: `${e.time}`
+          },
+        }
+      })
+    })
+  );
   return;
 }
 
-export const writeTimesIndividually = async (client: Client, entries: TimeEntry[]): Promise<void> => {
+export const deleteTimes = async (client: DynamoDB, entries: TimeEntry[]): Promise<void> => {
   if (entries.length === 0) {
     return;
   }
-  await Promise.all(entries.map(entry => {
-    try {
-      client.query(`
-        INSERT INTO ${DB_NAME}."times" ("username", "date", "time")
-        VALUES ('${entry.username}', '${entry.date}', ${entry.time});
-      `);
-      console.log(`SUCCESS: Insert ${entry.username} - ${entry.time} on ${entry.date}`);
-
-    } catch {
-      console.error(`FAILURE: Insert ${entry.username} - ${entry.time} on ${entry.date}`);
-    }
+  await Promise.all(entries.map(e => {
+    client.deleteItem({
+      TableName: 'times',
+      Key: {
+        'username': {
+          S: e.username
+        },
+        date: {
+          S: e.date
+        }
+      },
+    })
   }));
-  return;
-}
-
-export const updateTimes = async (client: Client, entries: TimeEntry[]): Promise<void> => {
-  if (entries.length === 0) {
-    return;
-  }
-  const updateQueries = entries.map((e) => {
-    return client.query(`
-        UPDATE ${DB_NAME}."times"
-        SET "time" = ${e.time}
-        WHERE "username" = '${e.username}' AND "date" = '${e.date}';
-      `);
-  })
-  await Promise.all(updateQueries);
-  return;
-}
-
-export const deleteTimes = async (client: Client, entries: TimeEntry[]): Promise<void> => {
-  if (entries.length === 0) {
-    return;
-  }
-  const updateQueries = entries.map((e) => {
-    return client.query(`
-        DELETE FROM ${DB_NAME}."times"
-        WHERE "username" = '${e.username}' AND "date" = '${e.date}';
-      `);
-  })
-  await Promise.all(updateQueries);
   return;
 }
