@@ -5,13 +5,16 @@ import { TimeEntry } from "types";
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env
 
-export const getClient = async (): Promise<DynamoDB> => {
+export const getClient = async (
+  accessKeyId = AWS_ACCESS_KEY_ID,
+  secretAccessKey = AWS_SECRET_ACCESS_KEY,
+  region = AWS_REGION): Promise<DynamoDB> => {  
   aws.config.update({
     credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY
+        accessKeyId,
+        secretAccessKey
     },
-    region: AWS_REGION,
+    region,
   });
   return new aws.DynamoDB();
 }

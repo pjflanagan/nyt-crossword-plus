@@ -4,10 +4,12 @@ import { convertDBTimes } from '.';
 
 export const readGroupTimes = async (client: DynamoDB, groupName: string): Promise<TimeEntry[]> => {
   let entries: TimeEntry[];
+
+  // NESTED DOESN'T DO ANYTHING
   await client.executeStatement({
-    Statement: `SELECT * FROM times WHERE username IN (
-        SELECT username FROM group_members WHERE group = '${groupName}'
-      )`
+    Statement: `SELECT * FROM "times" WHERE "username" IN (
+      SELECT "username" FROM "groups" WHERE "group" = 'partitionKeyValue'
+    )`
   })
   .promise()
   .then(data => {
@@ -24,7 +26,7 @@ export const readGroupTimesOnDate = async (client: DynamoDB, groupName: string, 
   let entries: TimeEntry[];
   await client.executeStatement({
     Statement: `SELECT * FROM times WHERE date = DATE('${date}') AND username IN (
-      SELECT username FROM group_members WHERE group = '${groupName}'
+      SELECT username FROM groups WHERE group = '${groupName}'
       )`
   })
   .promise()
