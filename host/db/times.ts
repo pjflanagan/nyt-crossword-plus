@@ -28,11 +28,6 @@ export const getEntriesOnDate = async (client: DynamoDB, date: string): Promise<
               S: date
             },
           },
-          {
-            username: {
-              S: 'pjflanagan'
-            }
-          }
         ],
       },
     },

@@ -15,8 +15,9 @@ describe('db/time.ts', function () {
     td.forEach(([date, entryCount]) => {
       it(`should return ${entryCount} for ${date}`, async function () {
         const client = await getClient(
-          // TODO: don't expose this
-
+          process.env.AWS_ACCESS_KEY_ID,
+          process.env.AWS_SECRET_ACCESS_KEY,
+          process.env.AWS_REGION
         );
         const count = await getCountOfTimesOnDate(client, date);
         assert.equal(count, entryCount);
@@ -24,4 +25,3 @@ describe('db/time.ts', function () {
     });
   });
 });
-
